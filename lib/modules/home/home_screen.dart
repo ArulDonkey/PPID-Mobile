@@ -105,13 +105,28 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildHomeCard(
             cardIcons: _homeCardIconUrls,
             cardLabels: _homeCardLabels,
+            onTap: () {},
+          ),
+          SizedBox(height: 50),
+          SizedBox(
+            height: 210,
+            child: NewsSlider(
+              title: "Berita PPID UIN Sunan Gunung Djati Bandung",
+              count: 10,
+              onTap: () {
+                Navigator.pushNamed(context, "news");
+              },
+            ),
           ),
           SizedBox(height: 24),
           SizedBox(
             height: 200,
             child: NewsSlider(
-              title: "Berita PPID UIN Sunan Gunung Djati Bandung",
+              title: "Berita UIN Sunan Gunung Djati Bandung",
               count: 10,
+              onTap: () {
+                Navigator.pushNamed(context, "news");
+              },
             ),
           ),
         ],
@@ -123,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHomeCard({
     required List<String> cardIcons,
     required List<String> cardLabels,
+    Function()? onTap,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -135,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
               iconUrl: cardIcons[index],
               title: cardLabels[index],
               description: "Informasi Publik",
+              onTap: onTap,
             );
           },
         ),

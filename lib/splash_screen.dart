@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
+import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -26,8 +28,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BackgroundedContainer(
-        child: Center(
-          child: Image.asset("assets/images/ppid_logo.png"),
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Image.asset("assets/images/ppid_logo.png"),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 50.0),
+                  child: SpinKitThreeBounce(
+                    size: 20,
+                    color: Pallete.blue,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

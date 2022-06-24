@@ -26,9 +26,13 @@ class _CarouselState extends State<Carousel> {
         CarouselSlider.builder(
           itemCount: widget.imageUrls.length,
           itemBuilder: (context, index, pageViewIndex) {
-            return Image.network(widget.imageUrls[index]);
+            return Image.asset(
+              "assets/images/carousel_dummy.png",
+              fit: BoxFit.cover,
+            );
           },
           options: CarouselOptions(
+            viewportFraction: .68,
             autoPlay: true,
             enlargeCenterPage: true,
             enableInfiniteScroll: true,
@@ -39,7 +43,7 @@ class _CarouselState extends State<Carousel> {
             },
           ),
         ),
-        SizedBox(height: 10),
+        // SizedBox(height: 10),
         CarouselIndicator(
           count: widget.imageUrls.length,
           index: widget.index,

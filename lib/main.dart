@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/modules/home/home_screen.dart';
+import 'package:ppid_mobile/modules/news/news_screen.dart';
 import 'package:ppid_mobile/splash_screen.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "home": (context) => HomeScreen(),
+        "news": (context) => NewsScreen(),
       },
       theme: ThemeData(
         fontFamily: GoogleFonts.poppins().fontFamily,
