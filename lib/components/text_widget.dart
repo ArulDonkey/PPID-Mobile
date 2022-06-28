@@ -11,6 +11,7 @@ class TextWidget extends StatelessWidget {
   String? fontFamily;
   TextOverflow? overflow;
   bool? isUnderlined;
+  TextAlign? textAlign;
   TextWidget(
     this.text, {
     Key? key,
@@ -21,12 +22,14 @@ class TextWidget extends StatelessWidget {
     this.fontFamily,
     this.overflow,
     this.isUnderlined,
+    this.textAlign,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
         color: color,
         fontSize: fontSize,

@@ -45,6 +45,9 @@ class _NewsScreenState extends State<NewsScreen> {
             description: "description",
             date: "date",
             imageUrl: "https://via.placeholder.com/500",
+            onTap: () {
+              Navigator.pushNamed(context, "news-detail");
+            },
           );
         },
         separatorBuilder: (context, index) {

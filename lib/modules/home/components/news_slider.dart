@@ -9,11 +9,15 @@ class NewsSlider extends StatefulWidget {
   String title;
   int count;
   Function()? onTap;
+  List<String> imageUrls;
+  List<Title> newsTitles;
   NewsSlider({
     Key? key,
     required this.title,
     required this.count,
     this.onTap,
+    required this.imageUrls,
+    required this.newsTitles,
   }) : super(key: key);
 
   @override
@@ -41,8 +45,8 @@ class _NewsSliderState extends State<NewsSlider> {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               return NewsItem(
-                imageUrl: "https://via.placeholder.com/500",
-                title: "Berita",
+                imageUrl: widget.imageUrls[index],
+                title: widget.newsTitles[index].toString(),
               );
             },
             separatorBuilder: (context, index) {

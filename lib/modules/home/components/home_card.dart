@@ -20,76 +20,75 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        _buildWhiteContainer(),
-        Positioned(
-          top: -23,
-          left: 23,
-          right: 23,
-          child: _buildBlueContainer(),
-        ),
-        // _buildBlueContainer(),
-      ],
-    );
-  }
-
-  Widget _buildWhiteContainer() {
     return GestureDetector(
       onTap: onTap,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 50,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(.1),
-                  offset: Offset(0, 10),
-                  spreadRadius: .1,
-                  blurRadius: 5,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                TextWidget(
-                  title,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11,
-                ),
-                TextWidget(
-                  description,
-                  fontSize: 11,
-                ),
-              ],
-            ),
-          ),
+          _buildWhiteContainer(),
           Positioned(
-            bottom: 10,
-            right: 30,
-            left: 30,
-            child: Container(
-              height: 1,
-              width: 40,
-              color: Pallete.blue,
-            ),
+            top: -23,
+            left: 20,
+            right: 20,
+            child: _buildBlueContainer(),
           ),
         ],
       ),
     );
   }
 
+  Widget _buildWhiteContainer() {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 55,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(.1),
+                offset: Offset(0, 10),
+                spreadRadius: .1,
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              TextWidget(
+                title,
+                fontWeight: FontWeight.w700,
+                fontSize: 11,
+              ),
+              TextWidget(
+                description,
+                fontSize: 11,
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 10,
+          right: 30,
+          left: 30,
+          child: Container(
+            height: 1,
+            width: 40,
+            color: Pallete.blue,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildBlueContainer() {
     return Container(
-      width: 50,
-      height: 50,
+      width: 55,
+      height: 55,
       decoration: BoxDecoration(
         color: Colors.blue,
         borderRadius: BorderRadius.circular(60),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ppid_mobile/configs/pallete.config.dart';
 
 AppBar customAppBar({
   required BuildContext context,
@@ -10,7 +11,7 @@ AppBar customAppBar({
   Widget? title,
   List<Widget>? actions,
   double elevation = 0,
-  Color backgroundColor = Colors.white,
+  Color backgroundColor = Pallete.bw,
   bool centerTitle = false,
   SystemUiOverlayStyle? systemUiOverlayStyle,
 }) {

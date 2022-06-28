@@ -6,4 +6,5 @@ class Pallete {
   static const Color lightGreen = Color(0xFFADCE24);
   static const Color yellow = Color(0xFFFBCB0A);
   static const Color disabled = Color(0xFFDBDBDB);
+  static const Color bw = Color(0xFFF9FCFE);
 }
