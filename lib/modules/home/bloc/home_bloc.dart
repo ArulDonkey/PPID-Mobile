@@ -27,8 +27,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     GetBeritaUinEvent event,
     Emitter<HomeState> emit,
   ) async {
+    emit(BeritaUinLoadingState());
     try {
-      emit(BeritaUinLoadingState());
       Map<String, dynamic> params = {
         "page": 1,
         "per_page": 5,
@@ -40,17 +40,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       var beritaUins = response.data;
       // log(beritaUins.toString());
 
-      emit(
-        BeritaUinLoadedState(
-          List.generate(beritaUins.length, (index) {
-            return BeritaUin.fromJson(beritaUins[index]);
-          }),
-        ),
-      );
-      // if (beritaUins.isEmpty) {
-      //   emit(BeritaUinEmptyState());
-      // } else {
-      // }
+      if (beritaUins.isEmpty) {
+        emit(BeritaUinEmptyState());
+      } else {
+        emit(
+          BeritaUinLoadedState(
+            List.generate(beritaUins.length, (index) {
+              return BeritaUin.fromJson(beritaUins[index]);
+            }),
+          ),
+        );
+      }
     } catch (e) {
       emit(BeritaUinErrorState(e.toString()));
     }

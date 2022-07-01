@@ -9,7 +9,6 @@ import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
-import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
 import 'package:ppid_mobile/modules/home/components/carousel.dart';
 import 'package:ppid_mobile/modules/home/components/home_card.dart';
@@ -27,35 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeBloc _homeBloc = HomeBloc();
 
   final int _pageIndex = 0;
-  int _selectedNavbarIndex = 0;
-
-  final List<String> _navbarIconUrls = [
-    "assets/svgs/beranda.svg",
-    "assets/svgs/layanan.svg",
-    "assets/svgs/hubungi_kami.svg",
-    "assets/svgs/informasi.svg",
-    "assets/svgs/tentang_kami.svg",
-  ];
-
-  final List<String> _navbarLabels = [
-    "Beranda",
-    "Layanan",
-    "Hubungi Kami",
-    "Informasi",
-    "Tentang Kami",
-  ];
-
-  final List<String> _homeCardIconUrls = [
-    "assets/svgs/permohonan.svg",
-    "assets/svgs/keberatan.svg",
-    "assets/svgs/pengaduan.svg",
-  ];
-
-  final List<String> _homeCardLabels = [
-    "Permohonan",
-    "Keberatan",
-    "Pengaduan",
-  ];
 
   List<BeritaUin> _beritaUins = [];
 
@@ -76,17 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _buildAppbar(),
       body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavbar(
-        icons: _navbarIconUrls,
-        labels: _navbarLabels,
-      ),
     );
-  }
-
-  _onNavbarItemTapped(int index) {
-    setState(() {
-      _selectedNavbarIndex = index;
-    });
   }
 
   AppBar _buildAppbar() {
@@ -126,8 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 50),
               _buildHomeCard(
-                cardIcons: _homeCardIconUrls,
-                cardLabels: _homeCardLabels,
                 onTap: () {},
               ),
               SizedBox(height: 50),
@@ -179,10 +137,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeCard({
-    required List<String> cardIcons,
-    required List<String> cardLabels,
     Function()? onTap,
   }) {
+    final List<String> homeCardLabels = [
+      "Permohonan",
+      "Keberatan",
+      "Pengaduan",
+    ];
+
+    final List<String> homeCardIconUrls = [
+      "assets/svgs/permohonan.svg",
+      "assets/svgs/keberatan.svg",
+      "assets/svgs/pengaduan.svg",
+    ];
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -191,49 +159,14 @@ class _HomeScreenState extends State<HomeScreen> {
           3,
           (index) {
             return HomeCard(
-              iconUrl: cardIcons[index],
-              title: cardLabels[index],
+              iconUrl: homeCardIconUrls[index],
+              title: homeCardLabels[index],
               description: "Informasi Publik",
               onTap: onTap,
             );
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildBottomNavbar({
-    required List<String> icons,
-    required List<String> labels,
-  }) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      onTap: _onNavbarItemTapped,
-      currentIndex: _selectedNavbarIndex,
-      backgroundColor: Pallete.navy,
-      selectedFontSize: 9,
-      unselectedFontSize: 9,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white,
-      selectedLabelStyle: TextStyle(
-        decoration: TextDecoration.underline,
-        decorationThickness: 2,
-      ),
-      unselectedLabelStyle: TextStyle(
-        color: Colors.white,
-      ),
-      items: List.generate(icons.length, (index) {
-        return BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: SvgPicture.asset(
-              icons[index],
-              width: index == 3 ? 9 : 20,
-            ),
-          ),
-          label: labels[index],
-        );
-      }),
     );
   }
 
