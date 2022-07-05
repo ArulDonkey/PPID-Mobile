@@ -37,7 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       Map<String, dynamic> params = {
         "page": 1,
-        "per_page": 1,
+        "per_page": 5,
       };
 
       Response response = await _homeApiRepository.getBeritaUIN(
@@ -75,7 +75,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(BeritaPpidLoadingState());
     try {
-      Map<String, dynamic> params = {};
+      Map<String, dynamic> params = {
+        "page": 1,
+        "limit": 5,
+      };
 
       Response response = await _homeApiRepository.getBeritaPPID(
         params: params,

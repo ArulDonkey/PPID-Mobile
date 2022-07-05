@@ -7,14 +7,12 @@ import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class NewsListItem extends StatelessWidget {
   String title;
-  String description;
   String date;
   String imageUrl;
   Function()? onTap;
   NewsListItem({
     Key? key,
     required this.title,
-    required this.description,
     required this.date,
     required this.imageUrl,
     this.onTap,
@@ -35,7 +33,7 @@ class NewsListItem extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.17),
+              color: Colors.black.withOpacity(.05),
               offset: Offset(0, 3),
               spreadRadius: .2,
               blurRadius: 5,
@@ -71,12 +69,7 @@ class NewsListItem extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 4),
-                      TextWidget(
-                        description,
-                        fontSize: 12,
-                      ),
-                      SizedBox(height: 4),
+                      SizedBox(height: 16),
                     ],
                   ),
                   Row(
@@ -87,8 +80,12 @@ class NewsListItem extends StatelessWidget {
                         date,
                         fontSize: 12,
                         color: Pallete.disabled,
+                        maxLength: 10,
                       ),
-                      SvgPicture.asset("assets/svgs/double_arrow_right.svg"),
+                      SvgPicture.asset(
+                        "assets/svgs/double_arrow_right.svg",
+                        color: Colors.black,
+                      ),
                     ],
                   ),
                 ],

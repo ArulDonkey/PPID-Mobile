@@ -6,7 +6,8 @@ import 'package:ppid_mobile/configs/route.config.dart';
 import 'package:ppid_mobile/screens/splash_screen.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
+  // await NetworkChecker().execute(InternetConnectionChecker());
 }
 
 class MyApp extends StatelessWidget {

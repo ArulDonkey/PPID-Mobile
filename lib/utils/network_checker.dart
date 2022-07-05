@@ -1,36 +1,38 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, prefer_const_constructors
 
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class NetworkChecker {
-  static var status = DataConnectionStatus;
+  Future<void> execute(
+    InternetConnectionChecker internetConnectionChecker,
+  ) async {
+    bool isConnected = await InternetConnectionChecker().hasConnection;
 
-  NetworkChecker() {
-    DataConnectionChecker().onStatusChange.listen(
-      (status) async {
-        isOnline(status);
+    if (kDebugMode) log(isConnected.toString());
+
+    final StreamSubscription<InternetConnectionStatus> listener =
+        InternetConnectionChecker().onStatusChange.listen(
+      (InternetConnectionStatus status) {
+        switch (status) {
+          case InternetConnectionStatus.connected:
+            Fluttertoast.showToast(msg: "Terhubung");
+            if (kDebugMode) log("terhubung");
+            break;
+          case InternetConnectionStatus.disconnected:
+            Fluttertoast.showToast(msg: "Koneksi terputus");
+            if (kDebugMode) log("terputus");
+            break;
+        }
       },
     );
-  }
 
-  static bool isOnline(DataConnectionStatus status) {
-    if (status == DataConnectionStatus.connected) {
-      Fluttertoast.showToast(
-        msg: "Terhubung kembali ke internet",
-        toastLength: Toast.LENGTH_SHORT,
-      );
-
-      return true;
-    } else if (status == DataConnectionStatus.disconnected) {
-      Fluttertoast.showToast(
-        msg: "Koneksi internet terputus",
-        toastLength: Toast.LENGTH_SHORT,
-      );
-
-      return false;
-    } else {
-      return false;
-    }
+    // close listener after 30 seconds, so the program doesn't run forever
+    await Future<void>.delayed(Duration(seconds: 30));
+    await listener.cancel();
   }
 }

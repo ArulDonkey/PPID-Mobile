@@ -13,8 +13,7 @@ class TextWidget extends StatelessWidget {
   bool? isUnderlined;
   TextAlign? textAlign;
   int? maxLines;
-  bool softWrap;
-  int? maxLen;
+  int? maxLength;
   TextWidget(
     this.text, {
     Key? key,
@@ -27,17 +26,15 @@ class TextWidget extends StatelessWidget {
     this.isUnderlined,
     this.textAlign,
     this.maxLines,
-    this.softWrap = true,
-    this.maxLen,
+    this.maxLength,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      maxLength != null ? text.substring(0, maxLength) : text,
       textAlign: textAlign,
       maxLines: maxLines,
-      softWrap: softWrap,
       style: TextStyle(
         color: color,
         fontSize: fontSize,

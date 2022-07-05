@@ -95,28 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
               index: _pageIndex,
             ),
             SizedBox(height: 50),
-            _buildHomeCard(
-              onTap: () {},
-            ),
+            _buildHomeCard(),
             SizedBox(height: 50),
-            // SizedBox(
-            //   height: 200,
-            //   child: NewsSlider(
-            //     newsTitles: _newsTitles,
-            //     imageUrls: _imageUrls,
-            //     title: "Berita PPID UIN Sunan Gunung Djati Bandung",
-            //     count: 10,
-            //     onTap: () {
-            //       Navigator.pushNamed(context, "news");
-            //     },
-            //   ),
-            // ),
             BlocBuilder<HomeBloc, HomeState>(
               bloc: _beritaPpidBloc,
               builder: (context, state) {
-                if (kDebugMode) {
-                  log("BERITA PPID STATE: $state");
-                }
+                // if (kDebugMode) {
+                log("BERITA PPID STATE: $state");
+                // }
 
                 if (state is HomeInitialState ||
                     state is BeritaPpidLoadingState) {
@@ -131,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _beritaPpids = state.list;
 
                   return SizedBox(
-                    height: 215,
+                    height: 220,
                     child: _buildBeritaPpidList(
                       title: "Berita PPID UIN Sunan Gunung Djati Bandung",
                       list: _beritaPpids,
@@ -169,18 +155,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   _beritaUins = state.list;
 
                   return SizedBox(
-                    height: 215,
+                    height: 220,
                     child: _buildBeritaUinList(
                       title: "Berita UIN Sunan Gunung Djati Bandung",
                       list: _beritaUins,
                     ),
                   );
                 } else if (state is BeritaUinErrorState) {
-                  return Center(
-                    child: TextWidget(state.message),
-                  );
+                  return RefreshComponent(onRefresh: () {
+                    _beritaUinBloc.add(GetBeritaUinEvent());
+                  });
                 } else {
-                  return Container();
+                  return RefreshComponent(onRefresh: () {
+                    _beritaUinBloc.add(GetBeritaUinEvent());
+                  });
                 }
               },
             ),
@@ -191,9 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHomeCard({
-    Function()? onTap,
-  }) {
+  Widget _buildHomeCard() {
     final List<String> homeCardLabels = [
       "Permohonan",
       "Keberatan",
@@ -204,6 +190,12 @@ class _HomeScreenState extends State<HomeScreen> {
       "assets/svgs/permohonan.svg",
       "assets/svgs/keberatan.svg",
       "assets/svgs/pengaduan.svg",
+    ];
+
+    final List<String> navigations = [
+      "application-letter",
+      "application-objection",
+      "application-complaint",
     ];
 
     return Padding(
@@ -217,7 +209,12 @@ class _HomeScreenState extends State<HomeScreen> {
               iconUrl: homeCardIconUrls[index],
               title: homeCardLabels[index],
               description: "Informasi Publik",
-              onTap: onTap,
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  navigations[index],
+                );
+              },
             );
           },
         ),
@@ -228,7 +225,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBeritaUinList({
     required String title,
     required List<BeritaUin> list,
-    Function()? onTap,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,9 +243,21 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
+              var item = list[index];
+
               return NewsItem(
-                imageUrl: list[index].yoastHeadJson!.ogImage![index].url!,
-                title: list[index].title!.rendered!,
+                imageUrl: item.yoastHeadJson!.ogImage![index].url!,
+                title: item.title!.rendered!,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    "news-detail",
+                    arguments: NewsDetailScreenArgument(
+                      slug: item.slug,
+                      type: NewsDetailType.uin,
+                    ),
+                  );
+                },
               );
             },
             separatorBuilder: (context, index) {
@@ -262,8 +270,15 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
-            // onTap: () => log("test"),
-            onTap: onTap,
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                "news-list",
+                arguments: NewsListScreenArgument(
+                  type: NewsListType.uin,
+                ),
+              );
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -312,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    "/news-detail",
+                    "news-detail",
                     arguments: NewsDetailScreenArgument(
                       slug: item.postName,
                       type: NewsDetailType.ppid,
@@ -334,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                "/news-list",
+                "news-list",
                 arguments: NewsListScreenArgument(
                   type: NewsListType.ppid,
                 ),

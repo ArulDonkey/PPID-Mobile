@@ -15,7 +15,7 @@ class _LoadingWidgetState extends State<LoadingWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Center(
         child: SpinKitThreeBounce(
           color: Pallete.blue,

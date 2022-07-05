@@ -36,7 +36,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
 
   final NewsBloc _newsBloc = NewsBloc();
 
-  List<BeritaPpid> _beritaPpids = [];
+  final List<BeritaPpid> _beritaPpids = [];
 
   @override
   void initState() {
@@ -127,13 +127,13 @@ class _NewsListScreenState extends State<NewsListScreen> {
                     itemBuilder: (context, index) {
                       return NewsListItem(
                         title: list[index].postTitle ?? "",
-                        description: "description",
+                        // description: "description",
                         date: (list[index].postDate).toString(),
                         imageUrl: list[index].postBanner!,
                         onTap: () {
                           Navigator.pushNamed(
                             context,
-                            "/news-detail",
+                            "news-detail",
                             arguments: NewsDetailScreenArgument(
                               slug: list[index].postName,
                               type: NewsDetailType.ppid,
