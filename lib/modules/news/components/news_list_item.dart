@@ -68,11 +68,15 @@ class NewsListItem extends StatelessWidget {
                         title,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                      SizedBox(height: 4),
                       TextWidget(
                         description,
                         fontSize: 12,
                       ),
+                      SizedBox(height: 4),
                     ],
                   ),
                   Row(
