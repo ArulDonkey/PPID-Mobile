@@ -32,8 +32,5 @@ class Img extends Equatable {
   }
 
   @override
-  bool get stringify => true;
-
-  @override
   List<Object?> get props => [altText, src, width, height];
 }

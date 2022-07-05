@@ -10,7 +10,7 @@ class NewsSlider extends StatefulWidget {
   int count;
   Function()? onTap;
   List<String> imageUrls;
-  List<Title> newsTitles;
+  List<String> newsTitles;
   NewsSlider({
     Key? key,
     required this.title,
@@ -35,6 +35,7 @@ class _NewsSliderState extends State<NewsSlider> {
           child: TextWidget(
             widget.title,
             fontSize: 12,
+            fontWeight: FontWeight.bold,
           ),
         ),
         // SizedBox(height: 12),
@@ -59,7 +60,6 @@ class _NewsSliderState extends State<NewsSlider> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
-            // onTap: () => log("test"),
             onTap: widget.onTap,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,

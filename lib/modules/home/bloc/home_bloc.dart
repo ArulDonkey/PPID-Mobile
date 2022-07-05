@@ -4,7 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:ppid_mobile/modules/home/api/api_repository.dart';
+import 'package:ppid_mobile/modules/home/api/home_api_repository.dart';
+import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 
 part 'home_event.dart';
@@ -18,8 +19,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   homeEventHandler(HomeEvent event, Emitter<HomeState> emit) async {
+    // if (network.onStatusChange.li) {
+
+    // }
     if (event is GetBeritaUinEvent) {
       await getBeritaUinEventHandler(event, emit);
+    } else if (event is GetBeritaPpidEvent) {
+      await getBeritaPpidEventHandler(event, emit);
     }
   }
 
@@ -31,14 +37,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       Map<String, dynamic> params = {
         "page": 1,
-        "per_page": 5,
+        "per_page": 1,
       };
 
       Response response = await _homeApiRepository.getBeritaUIN(
         params: params,
       );
+
       var beritaUins = response.data;
-      // log(beritaUins.toString());
 
       if (beritaUins.isEmpty) {
         emit(BeritaUinEmptyState());
@@ -46,6 +52,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(
           BeritaUinLoadedState(
             List.generate(beritaUins.length, (index) {
+              // Map<String, dynamic> map = Map<String, dynamic>.from(
+              //   beritaUins[index].map(
+              //     (e) => BeritaUin.fromJson(e),
+              //   ),
+              // );
+
+              // log(map.runtimeType.toString());
               return BeritaUin.fromJson(beritaUins[index]);
             }),
           ),
@@ -53,6 +66,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     } catch (e) {
       emit(BeritaUinErrorState(e.toString()));
+    }
+  }
+
+  getBeritaPpidEventHandler(
+    GetBeritaPpidEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(BeritaPpidLoadingState());
+    try {
+      Map<String, dynamic> params = {};
+
+      Response response = await _homeApiRepository.getBeritaPPID(
+        params: params,
+      );
+
+      var beritaPpids = response.data["data"]["posts"];
+
+      if (beritaPpids.isEmpty) {
+        emit(BeritaPpidEmptyState());
+      } else {
+        emit(
+          BeritaPpidLoadedState(
+            List.generate(beritaPpids.length, (index) {
+              return BeritaPpid.fromJson(
+                beritaPpids[index],
+              );
+            }),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(BeritaPpidErrorState(e.toString()));
     }
   }
 }

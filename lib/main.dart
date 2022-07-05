@@ -2,11 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ppid_mobile/base_screen.dart';
-import 'package:ppid_mobile/modules/news/screens/news_detail_screen.dart';
-import 'package:ppid_mobile/splash_screen.dart';
+import 'package:ppid_mobile/configs/route.config.dart';
+import 'package:ppid_mobile/screens/splash_screen.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -15,14 +14,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final RouteConfig routeConfig = RouteConfig();
+
     return MaterialApp(
       title: 'PPID UIN Sunan Gunung Djati Bandung',
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
-      routes: {
-        "news-detail": (context) => NewsDetailScreen(),
-        "base": (context) => BaseScreen(),
-      },
+      onGenerateRoute: routeConfig.onGenerateRoute,
       theme: ThemeData(
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),

@@ -19,6 +19,7 @@ class NewsItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: Colors.white,
@@ -32,7 +33,6 @@ class NewsItem extends StatelessWidget {
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
@@ -42,16 +42,18 @@ class NewsItem extends StatelessWidget {
               child: Image.network(
                 imageUrl,
                 height: 90,
-                width: 156,
+                width: 200,
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 12),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: TextWidget(
                 title,
                 fontSize: 12,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

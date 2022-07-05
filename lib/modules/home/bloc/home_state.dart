@@ -42,3 +42,36 @@ class BeritaUinErrorState extends HomeState {
   @override
   List<Object?> get props => [message];
 }
+
+class BeritaPpidLoadingState extends HomeState {
+  @override
+  List<Object?> get props => [];
+}
+
+class BeritaPpidNoConnectionState extends HomeState {
+  @override
+  List<Object?> get props => [];
+}
+
+class BeritaPpidEmptyState extends HomeState {
+  @override
+  List<Object?> get props => [];
+}
+
+class BeritaPpidLoadedState extends HomeState {
+  List<BeritaPpid> list;
+
+  BeritaPpidLoadedState(this.list);
+
+  @override
+  List<Object?> get props => [list];
+}
+
+class BeritaPpidErrorState extends HomeState {
+  String message;
+
+  BeritaPpidErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

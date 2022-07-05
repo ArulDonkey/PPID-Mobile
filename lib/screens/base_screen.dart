@@ -58,34 +58,40 @@ class _BaseScreenState extends State<BaseScreen> {
       "Tentang Kami",
     ];
 
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      onTap: _onNavbarItemTapped,
-      currentIndex: _selectedNavbarIndex,
-      backgroundColor: Pallete.navy,
-      selectedFontSize: 9,
-      unselectedFontSize: 9,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white,
-      selectedLabelStyle: TextStyle(
-        decoration: TextDecoration.underline,
-        decorationThickness: 2,
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(16),
+        topRight: Radius.circular(16),
       ),
-      unselectedLabelStyle: TextStyle(
-        color: Colors.white,
-      ),
-      items: List.generate(navbarLabels.length, (index) {
-        return BottomNavigationBarItem(
-          icon: Padding(
-            padding: EdgeInsets.symmetric(vertical: 4.0),
-            child: SvgPicture.asset(
-              navbarIconUrls[index],
-              width: index == 3 ? 9 : 20,
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        onTap: _onNavbarItemTapped,
+        currentIndex: _selectedNavbarIndex,
+        backgroundColor: Pallete.navy,
+        selectedFontSize: 9,
+        unselectedFontSize: 9,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        selectedLabelStyle: TextStyle(
+          decoration: TextDecoration.underline,
+          decorationThickness: 2,
+        ),
+        unselectedLabelStyle: TextStyle(
+          color: Colors.white,
+        ),
+        items: List.generate(navbarLabels.length, (index) {
+          return BottomNavigationBarItem(
+            icon: Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
+              child: SvgPicture.asset(
+                navbarIconUrls[index],
+                width: index == 3 ? 9 : 20,
+              ),
             ),
-          ),
-          label: navbarLabels[index],
-        );
-      }),
+            label: navbarLabels[index],
+          );
+        }),
+      ),
     );
   }
 }

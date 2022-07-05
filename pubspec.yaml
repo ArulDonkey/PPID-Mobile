@@ -41,13 +41,13 @@ dependencies:
   dio: ^4.0.6
   flutter_bloc: ^8.0.1
   webview_flutter: ^3.0.4
-  build_runner: ^2.1.11
   equatable: ^2.0.3
   json_annotation: ^4.5.0
+  build_runner: ^2.1.11
   json_serializable: ^6.2.0
-  uicomponent:
-    git:
-      url: https://github.com/beeerlian/uicomponent.git
+  fluttertoast: ^8.0.9
+  data_connection_checker: ^0.3.4
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   flutter_test:

@@ -14,10 +14,13 @@ class LoadingWidget extends StatefulWidget {
 class _LoadingWidgetState extends State<LoadingWidget> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SpinKitThreeBounce(
-        color: Pallete.blue,
-        size: 20,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Center(
+        child: SpinKitThreeBounce(
+          color: Pallete.blue,
+          size: 20,
+        ),
       ),
     );
   }
