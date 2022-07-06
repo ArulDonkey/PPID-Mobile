@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ppid_mobile/components/circular_loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 
@@ -44,12 +45,25 @@ class NewsListItem extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                imageUrl,
-                width: 120,
-                height: 90,
-                fit: BoxFit.cover,
-              ),
+              child: imageUrl == ""
+                  ? Image.asset(
+                      "assets/images/image_placeholder.png",
+                      width: 120,
+                      height: 90,
+                    )
+                  : Image.network(
+                      imageUrl,
+                      width: 120,
+                      height: 90,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loading) {
+                        if (loading == null) {
+                          return child;
+                        }
+
+                        return CircularLoadingWidget();
+                      },
+                    ),
             ),
             SizedBox(width: 10),
             Flexible(

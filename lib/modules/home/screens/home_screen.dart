@@ -10,17 +10,12 @@ import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
-import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
 import 'package:ppid_mobile/modules/home/components/carousel.dart';
 import 'package:ppid_mobile/modules/home/components/home_card.dart';
-import 'package:ppid_mobile/modules/home/components/news_item.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
-import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.dart';
-import 'package:ppid_mobile/modules/news/arguments/news_list_screen_argument.dart';
-import 'package:ppid_mobile/modules/news/screens/news_detail_screen.dart';
-import 'package:ppid_mobile/modules/news/screens/news_list_screen.dart';
+import 'package:ppid_mobile/modules/news/components/news_horizontal_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -97,81 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 50),
             _buildHomeCard(),
             SizedBox(height: 50),
-            BlocBuilder<HomeBloc, HomeState>(
-              bloc: _beritaPpidBloc,
-              builder: (context, state) {
-                // if (kDebugMode) {
-                log("BERITA PPID STATE: $state");
-                // }
-
-                if (state is HomeInitialState ||
-                    state is BeritaPpidLoadingState) {
-                  return LoadingWidget();
-                } else if (state is BeritaPpidNoConnectionState) {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaPpidBloc.add(GetBeritaPpidEvent());
-                  });
-                } else if (state is BeritaPpidEmptyState) {
-                  return Text(state.toString());
-                } else if (state is BeritaPpidLoadedState) {
-                  _beritaPpids = state.list;
-
-                  return SizedBox(
-                    height: 220,
-                    child: _buildBeritaPpidList(
-                      title: "Berita PPID UIN Sunan Gunung Djati Bandung",
-                      list: _beritaPpids,
-                    ),
-                  );
-                } else if (state is BeritaUinErrorState) {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaPpidBloc.add(GetBeritaPpidEvent());
-                  });
-                } else {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaPpidBloc.add(GetBeritaPpidEvent());
-                  });
-                }
-              },
-            ),
+            _buildBeritaPpidList(_beritaPpids),
             SizedBox(height: 24),
-            BlocBuilder<HomeBloc, HomeState>(
-              bloc: _beritaUinBloc,
-              builder: (context, state) {
-                if (kDebugMode) {
-                  log("BERITA UIN STATE: $state");
-                }
-
-                if (state is HomeInitialState ||
-                    state is BeritaUinLoadingState) {
-                  return LoadingWidget();
-                } else if (state is BeritaPpidNoConnectionState) {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaUinBloc.add(GetBeritaUinEvent());
-                  });
-                } else if (state is BeritaUinEmptyState) {
-                  return Text(state.toString());
-                } else if (state is BeritaUinLoadedState) {
-                  _beritaUins = state.list;
-
-                  return SizedBox(
-                    height: 220,
-                    child: _buildBeritaUinList(
-                      title: "Berita UIN Sunan Gunung Djati Bandung",
-                      list: _beritaUins,
-                    ),
-                  );
-                } else if (state is BeritaUinErrorState) {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaUinBloc.add(GetBeritaUinEvent());
-                  });
-                } else {
-                  return RefreshComponent(onRefresh: () {
-                    _beritaUinBloc.add(GetBeritaUinEvent());
-                  });
-                }
-              },
-            ),
+            _buildBeritaUinList(_beritaUins),
           ],
           // ),
         ),
@@ -222,155 +145,83 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBeritaUinList({
-    required String title,
-    required List<BeritaUin> list,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: TextWidget(
-            title,
-            fontSize: 12,
-          ),
-        ),
-        // SizedBox(height: 12),
-        Flexible(
-          child: ListView.separated(
-            // shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              var item = list[index];
+  Widget _buildBeritaUinList(List<BeritaUin> list) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      bloc: _beritaUinBloc,
+      builder: (context, state) {
+        if (kDebugMode) {
+          log("BERITA PPID STATE: $state");
+        }
 
-              return NewsItem(
-                imageUrl: item.yoastHeadJson!.ogImage![index].url!,
-                title: item.title!.rendered!,
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    "news-detail",
-                    arguments: NewsDetailScreenArgument(
-                      slug: item.slug,
-                      type: NewsDetailType.uin,
-                    ),
-                  );
-                },
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(width: 12);
-            },
-            itemCount: list.length,
-          ),
-        ),
-        // SizedBox(height: 12),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "news-list",
-                arguments: NewsListScreenArgument(
-                  type: NewsListType.uin,
-                ),
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextWidget(
-                  "Lihat semua",
-                  fontSize: 12,
-                ),
-                SizedBox(width: 6),
-                SvgPicture.asset(
-                  "assets/svgs/double_arrow_right.svg",
-                ),
-              ],
+        if (state is HomeInitialState || state is BeritaUinLoadingState) {
+          return LoadingWidget();
+        } else if (state is BeritaUinNoConnectionState) {
+          return RefreshComponent(onRefresh: () {
+            _beritaUinBloc.add(GetBeritaUinEvent());
+          });
+        } else if (state is BeritaUinEmptyState) {
+          return Text(state.toString());
+        } else if (state is BeritaUinLoadedState) {
+          _beritaUins = state.list;
+
+          return SizedBox(
+            height: 220,
+            child: NewsHorizontalList(
+              title: "Berita UIN Sunan Gunung Djati Bandung",
+              list: _beritaUins,
+              type: NewsHorizontalListType.uin,
             ),
-          ),
-        ),
-      ],
+          );
+        } else if (state is BeritaUinErrorState) {
+          return RefreshComponent(onRefresh: () {
+            _beritaUinBloc.add(GetBeritaUinEvent());
+          });
+        } else {
+          return RefreshComponent(onRefresh: () {
+            _beritaUinBloc.add(GetBeritaUinEvent());
+          });
+        }
+      },
     );
   }
 
-  Widget _buildBeritaPpidList({
-    required String title,
-    required List<BeritaPpid> list,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: TextWidget(
-            title,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        // SizedBox(height: 12),
-        Flexible(
-          child: ListView.separated(
-            // shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              var item = list[index];
-              return NewsItem(
-                imageUrl: item.postBanner ?? "",
-                title: item.postTitle ?? "",
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    "news-detail",
-                    arguments: NewsDetailScreenArgument(
-                      slug: item.postName,
-                      type: NewsDetailType.ppid,
-                    ),
-                  );
-                },
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(width: 12);
-            },
-            itemCount: list.length,
-          ),
-        ),
-        // SizedBox(height: 12),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "news-list",
-                arguments: NewsListScreenArgument(
-                  type: NewsListType.ppid,
-                ),
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextWidget(
-                  "Lihat semua",
-                  fontSize: 12,
-                ),
-                SizedBox(width: 6),
-                SvgPicture.asset(
-                  "assets/svgs/double_arrow_right.svg",
-                ),
-              ],
+  Widget _buildBeritaPpidList(List<BeritaPpid> list) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      bloc: _beritaPpidBloc,
+      builder: (context, state) {
+        if (kDebugMode) {
+          log("BERITA PPID STATE: $state");
+        }
+
+        if (state is HomeInitialState || state is BeritaPpidLoadingState) {
+          return LoadingWidget();
+        } else if (state is BeritaPpidNoConnectionState) {
+          return RefreshComponent(onRefresh: () {
+            _beritaPpidBloc.add(GetBeritaPpidEvent());
+          });
+        } else if (state is BeritaPpidEmptyState) {
+          return Text(state.toString());
+        } else if (state is BeritaPpidLoadedState) {
+          _beritaPpids = state.list;
+
+          return SizedBox(
+            height: 220,
+            child: NewsHorizontalList(
+              title: "Berita PPID UIN Sunan Gunung Djati Bandung",
+              list: _beritaPpids,
+              type: NewsHorizontalListType.ppid,
             ),
-          ),
-        ),
-      ],
+          );
+        } else if (state is BeritaPpidErrorState) {
+          return RefreshComponent(onRefresh: () {
+            _beritaPpidBloc.add(GetBeritaPpidEvent());
+          });
+        } else {
+          return RefreshComponent(onRefresh: () {
+            _beritaPpidBloc.add(GetBeritaPpidEvent());
+          });
+        }
+      },
     );
   }
 }

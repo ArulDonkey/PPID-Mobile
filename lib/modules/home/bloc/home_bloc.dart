@@ -1,5 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:ppid_mobile/modules/home/api/home_api_repository.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
+import 'package:ppid_mobile/modules/home/models/berita_uin/title.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -19,9 +22,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   homeEventHandler(HomeEvent event, Emitter<HomeState> emit) async {
-    // if (network.onStatusChange.li) {
-
-    // }
     if (event is GetBeritaUinEvent) {
       await getBeritaUinEventHandler(event, emit);
     } else if (event is GetBeritaPpidEvent) {
@@ -44,26 +44,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         params: params,
       );
 
-      var beritaUins = response.data;
+      List beritaUins = response.data;
+      List<BeritaUin> itemList = [];
+
+      for (int i = 0; i < beritaUins.length; i++) {
+        var item = beritaUins[i];
+
+        itemList.add(BeritaUin(
+          id: item["id"],
+          date: item["date"],
+          title: Title(rendered: item["title"]["rendered"]),
+          slug: item["slug"],
+          jetpackFeaturedMediaUrl: item["jetpack_featured_media_url"],
+        ));
+      }
 
       if (beritaUins.isEmpty) {
         emit(BeritaUinEmptyState());
       } else {
         emit(
-          BeritaUinLoadedState(
-            List.generate(beritaUins.length, (index) {
-              // Map<String, dynamic> map = Map<String, dynamic>.from(
-              //   beritaUins[index].map(
-              //     (e) => BeritaUin.fromJson(e),
-              //   ),
-              // );
-
-              // log(map.runtimeType.toString());
-              return BeritaUin.fromJson(beritaUins[index]);
-            }),
-          ),
+          BeritaUinLoadedState(itemList),
         );
       }
+      log(itemList.length.toString());
     } catch (e) {
       emit(BeritaUinErrorState(e.toString()));
     }
@@ -92,9 +95,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(
           BeritaPpidLoadedState(
             List.generate(beritaPpids.length, (index) {
-              return BeritaPpid.fromJson(
-                beritaPpids[index],
-              );
+              return BeritaPpid.fromJson(beritaPpids[index]);
             }),
           ),
         );

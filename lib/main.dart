@@ -7,11 +7,23 @@ import 'package:ppid_mobile/screens/splash_screen.dart';
 
 void main() async {
   runApp(MyApp());
-  // await NetworkChecker().execute(InternetConnectionChecker());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  // final NetworkChecker _networkChecker = NetworkChecker();
+
+  @override
+  void initState() {
+    // _networkChecker.checkConnection();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

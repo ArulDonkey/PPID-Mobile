@@ -4,24 +4,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 
-class LoadingWidget extends StatefulWidget {
+class CircularLoadingWidget extends StatefulWidget {
   double? size;
-  LoadingWidget({
+  double? verticalPadding;
+  CircularLoadingWidget({
     Key? key,
     this.size = 20,
+    this.verticalPadding = 16,
   }) : super(key: key);
 
   @override
-  State<LoadingWidget> createState() => _LoadingWidgetState();
+  State<CircularLoadingWidget> createState() => _CircularLoadingWidgetState();
 }
 
-class _LoadingWidgetState extends State<LoadingWidget> {
+class _CircularLoadingWidgetState extends State<CircularLoadingWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(
+        vertical: widget.verticalPadding ?? 16.0,
+      ),
       child: Center(
-        child: SpinKitThreeBounce(
+        child: SpinKitCircle(
           color: Pallete.blue,
           size: widget.size ?? 20,
         ),

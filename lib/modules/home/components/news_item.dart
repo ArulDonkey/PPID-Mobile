@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:ppid_mobile/components/circular_loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 
 class NewsItem extends StatelessWidget {
@@ -39,12 +40,27 @@ class NewsItem extends StatelessWidget {
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               ),
-              child: Image.network(
-                imageUrl,
-                height: 90,
-                width: 200,
-                fit: BoxFit.cover,
-              ),
+              child: imageUrl == ""
+                  ? Image.asset(
+                      "assets/images/image_placeholder.png",
+                      height: 90,
+                      width: 200,
+                    )
+                  : Image.network(
+                      imageUrl,
+                      height: 90,
+                      width: 200,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loading) {
+                        if (loading == null) {
+                          return child;
+                        }
+
+                        return CircularLoadingWidget(
+                          verticalPadding: 32,
+                        );
+                      },
+                    ),
             ),
             SizedBox(height: 12),
             Padding(

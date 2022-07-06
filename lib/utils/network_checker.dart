@@ -3,36 +3,62 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:provider/provider.dart';
 
 class NetworkChecker {
-  Future<void> execute(
-    InternetConnectionChecker internetConnectionChecker,
-  ) async {
-    bool isConnected = await InternetConnectionChecker().hasConnection;
+  StreamController<ConnectivityResult> connectionController =
+      StreamController<ConnectivityResult>();
 
-    if (kDebugMode) log(isConnected.toString());
+  NetworkChecker() {
+    Connectivity().onConnectivityChanged.listen((event) {
+      connectionController.add(event);
+    });
+  }
 
-    final StreamSubscription<InternetConnectionStatus> listener =
-        InternetConnectionChecker().onStatusChange.listen(
-      (InternetConnectionStatus status) {
-        switch (status) {
-          case InternetConnectionStatus.connected:
-            Fluttertoast.showToast(msg: "Terhubung");
-            if (kDebugMode) log("terhubung");
-            break;
-          case InternetConnectionStatus.disconnected:
-            Fluttertoast.showToast(msg: "Koneksi terputus");
-            if (kDebugMode) log("terputus");
-            break;
-        }
-      },
-    );
+  String getConnectionValue(var connectivityResult) {
+    String status = '';
+    switch (connectivityResult) {
+      case ConnectivityResult.mobile:
+        status = 'Mobile';
+        Fluttertoast.showToast(
+          msg: "Connected",
+          toastLength: Toast.LENGTH_SHORT,
+        );
+        break;
+      case ConnectivityResult.wifi:
+        status = 'Wi-Fi';
+        Fluttertoast.showToast(
+          msg: "Connected",
+          toastLength: Toast.LENGTH_SHORT,
+        );
+        break;
+      case ConnectivityResult.none:
+        status = 'None';
+        Fluttertoast.showToast(
+          msg: "Not connected",
+          toastLength: Toast.LENGTH_SHORT,
+        );
+        break;
+      default:
+        status = 'None';
+        Fluttertoast.showToast(
+          msg: "Not connected",
+          toastLength: Toast.LENGTH_SHORT,
+        );
+        break;
+    }
 
-    // close listener after 30 seconds, so the program doesn't run forever
-    await Future<void>.delayed(Duration(seconds: 30));
-    await listener.cancel();
+    log(status);
+
+    return status;
+  }
+
+  String checkConnection() {
+    var connectivityResult = Provider.of<ConnectivityResult>;
+    var connectionStatus = getConnectionValue(connectivityResult);
+
+    return connectionStatus;
   }
 }

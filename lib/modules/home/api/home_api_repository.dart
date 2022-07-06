@@ -12,9 +12,6 @@ class HomeApiRepository {
       Response response = await _dio.get(
         "https://uinsgd.ac.id/wp-json/wp/v2/posts",
         queryParameters: params,
-        options: Options(
-          responseType: ResponseType.json,
-        ),
       );
 
       return response;
