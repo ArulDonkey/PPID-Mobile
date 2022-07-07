@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -61,14 +63,12 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       List beritaUins = response.data;
       List<BeritaUin> itemList = [];
 
-      for (int i = 0; i < beritaUins.length; i++) {
-        var item = beritaUins[i];
-
+      for (var item in beritaUins) {
         itemList.add(BeritaUin(
           id: item["id"],
           date: item["date"],
-          title: Title(rendered: item["title"]["rendered"]),
           slug: item["slug"],
+          title: Title(rendered: item["title"]["rendered"]),
           jetpackFeaturedMediaUrl: item["jetpack_featured_media_url"],
         ));
       }

@@ -61,12 +61,12 @@ class _HomeScreenState extends State<HomeScreen> {
       backButton: false,
       title: Image.asset(
         "assets/images/ppid_logo.png",
-        width: 60,
+        width: 55,
       ),
       actions: [
         IconButton(
           onPressed: () {},
-          splashRadius: 30,
+          splashRadius: 25,
           icon: SvgPicture.asset("assets/svgs/notification.svg"),
           tooltip: "Notifikasi",
         ),
