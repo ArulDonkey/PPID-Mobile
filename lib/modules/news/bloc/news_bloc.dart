@@ -23,17 +23,14 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   }
 
   newsEventHandler(NewsEvent event, Emitter<NewsState> emit) async {
-    final bool isOnline = await _networkChecker.isOnline();
-
-    // _networkChecker.init();
     if (event is GetBeritaPpidEvent) {
-      if (isOnline) {
+      if (_networkChecker.isOnline) {
         await getBeritaPpidEventHandler(event, emit);
       } else {
         emit(BeritaPpidNoConnectionState());
       }
     } else if (event is GetBeritaUinEvent) {
-      if (isOnline) {
+      if (_networkChecker.isOnline) {
         await getBeritaUinEventHandler(event, emit);
       } else {
         emit(BeritaUinNoConnectionState());

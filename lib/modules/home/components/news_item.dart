@@ -61,6 +61,16 @@ class NewsItem extends StatelessWidget {
                           child: CircularLoadingWidget(),
                         );
                       },
+                      errorBuilder: (context, obj, st) {
+                        return SizedBox(
+                          height: 90,
+                          child: Image.asset(
+                            "assets/images/unloaded_image.png",
+                            width: 25,
+                            height: 25,
+                          ),
+                        );
+                      },
                     ),
             ),
             SizedBox(height: 12),

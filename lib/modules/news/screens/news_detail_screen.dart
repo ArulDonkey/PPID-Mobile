@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
+import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.dart';
+import 'package:ppid_mobile/utils/network_checker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -26,6 +28,8 @@ class NewsDetailScreen extends StatefulWidget {
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
   late String _baseUrl;
+  bool _isLoading = true;
+  final NetworkChecker _networkChecker = NetworkChecker.instance;
 
   @override
   void initState() {
@@ -68,9 +72,29 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 
   Widget _buildBody() {
-    return WebView(
-      initialUrl: "$_baseUrl/${widget.argument!.slug}",
-      javascriptMode: JavascriptMode.unrestricted,
+    return Stack(
+      children: [
+        WebView(
+          initialUrl: "$_baseUrl/${widget.argument!.slug}",
+          javascriptMode: JavascriptMode.unrestricted,
+          onProgress: (_) {
+            setState(() {
+              _isLoading = true;
+            });
+          },
+          onPageFinished: (_) {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+          onWebResourceError: (_) {
+            setState(() {
+              _isLoading = false;
+            });
+          },
+        ),
+        _isLoading ? LoadingWidget() : Container(),
+      ],
     );
   }
 

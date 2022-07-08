@@ -22,16 +22,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   homeEventHandler(HomeEvent event, Emitter<HomeState> emit) async {
-    final bool isOnline = await _networkChecker.isOnline();
-
     if (event is GetBeritaUinEvent) {
-      if (isOnline) {
+      if (_networkChecker.isOnline) {
         await getBeritaUinEventHandler(event, emit);
       } else {
         emit(BeritaUinNoConnectionState());
       }
     } else if (event is GetBeritaPpidEvent) {
-      if (isOnline) {
+      if (_networkChecker.isOnline) {
         await getBeritaPpidEventHandler(event, emit);
       } else {
         emit(BeritaPpidNoConnectionState());

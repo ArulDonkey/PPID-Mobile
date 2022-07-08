@@ -9,6 +9,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class NetworkChecker {
   static final NetworkChecker _instance = NetworkChecker();
   static NetworkChecker get instance => _instance;
+  bool isOnline = false;
 
   Connectivity connectivity = Connectivity();
   ConnectivityResult connectivityResult = ConnectivityResult.none;
@@ -17,14 +18,12 @@ class NetworkChecker {
 
   void init() async {
     connectivityResult = await connectivity.checkConnectivity();
-    // isOnline();
     connectivity.onConnectivityChanged.listen((_) {
-      isOnline();
+      checkConnection();
     });
   }
 
-  Future<bool> isOnline() async {
-    bool isOnline = false;
+  Future<bool> checkConnection() async {
     try {
       final result = await InternetAddress.lookup('example.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
