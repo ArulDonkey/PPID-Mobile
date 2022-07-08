@@ -9,22 +9,35 @@ import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/title.dart';
 import 'package:ppid_mobile/modules/news/news_api_repository.dart';
+import 'package:ppid_mobile/utils/network_checker.dart';
 
 part 'news_event.dart';
 part 'news_state.dart';
 
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final NewsApiRepository _newsApiRepository = NewsApiRepository();
+  final NetworkChecker _networkChecker = NetworkChecker.instance;
 
   NewsBloc() : super(NewsInitialState()) {
     on<NewsEvent>(newsEventHandler);
   }
 
   newsEventHandler(NewsEvent event, Emitter<NewsState> emit) async {
+    final bool isOnline = await _networkChecker.isOnline();
+
+    // _networkChecker.init();
     if (event is GetBeritaPpidEvent) {
-      await getBeritaPpidEventHandler(event, emit);
+      if (isOnline) {
+        await getBeritaPpidEventHandler(event, emit);
+      } else {
+        emit(BeritaPpidNoConnectionState());
+      }
     } else if (event is GetBeritaUinEvent) {
-      await getBeritaUinEventHandler(event, emit);
+      if (isOnline) {
+        await getBeritaUinEventHandler(event, emit);
+      } else {
+        emit(BeritaUinNoConnectionState());
+      }
     }
   }
 

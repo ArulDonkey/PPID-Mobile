@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 
 class NoConnectionScreen extends StatelessWidget {
@@ -17,21 +18,23 @@ class NoConnectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          svgUrl != null ? SvgPicture.asset(svgUrl!) : Container(),
-          SizedBox(height: 4),
-          TextWidget(
-            description ?? "",
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 4),
-          ElevatedButton(
-            onPressed: onRefresh,
-            child: TextWidget("Muat ulang"),
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            svgUrl != null ? SvgPicture.asset(svgUrl!) : Container(),
+            SizedBox(height: 4),
+            TextWidget(
+              description ?? "",
+              textAlign: TextAlign.center,
+              color: Colors.grey,
+            ),
+            SizedBox(height: 4),
+            RefreshComponent(onRefresh: onRefresh),
+          ],
+        ),
       ),
     );
   }

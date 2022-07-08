@@ -6,11 +6,13 @@ import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class CircularLoadingWidget extends StatefulWidget {
   double? size;
-  double? verticalPadding;
+  double verticalPadding;
+  double horizontalPadding;
   CircularLoadingWidget({
     Key? key,
     this.size = 20,
     this.verticalPadding = 16,
+    this.horizontalPadding = 16,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,8 @@ class _CircularLoadingWidgetState extends State<CircularLoadingWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        vertical: widget.verticalPadding ?? 16.0,
+        vertical: widget.verticalPadding,
+        horizontal: widget.horizontalPadding,
       ),
       child: Center(
         child: SpinKitCircle(

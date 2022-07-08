@@ -1,7 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -10,22 +8,34 @@ import 'package:ppid_mobile/modules/home/api/home_api_repository.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/title.dart';
+import 'package:ppid_mobile/utils/network_checker.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeApiRepository _homeApiRepository = HomeApiRepository();
+  final NetworkChecker _networkChecker = NetworkChecker.instance;
 
   HomeBloc() : super(HomeInitialState()) {
     on<HomeEvent>(homeEventHandler);
   }
 
   homeEventHandler(HomeEvent event, Emitter<HomeState> emit) async {
+    final bool isOnline = await _networkChecker.isOnline();
+
     if (event is GetBeritaUinEvent) {
-      await getBeritaUinEventHandler(event, emit);
+      if (isOnline) {
+        await getBeritaUinEventHandler(event, emit);
+      } else {
+        emit(BeritaUinNoConnectionState());
+      }
     } else if (event is GetBeritaPpidEvent) {
-      await getBeritaPpidEventHandler(event, emit);
+      if (isOnline) {
+        await getBeritaPpidEventHandler(event, emit);
+      } else {
+        emit(BeritaPpidNoConnectionState());
+      }
     }
   }
 
@@ -66,7 +76,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           BeritaUinLoadedState(itemList),
         );
       }
-      log(itemList.length.toString());
     } catch (e) {
       emit(BeritaUinErrorState(e.toString()));
     }

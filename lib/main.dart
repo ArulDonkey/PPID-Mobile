@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/configs/route.config.dart';
 import 'package:ppid_mobile/screens/splash_screen.dart';
+import 'package:ppid_mobile/utils/network_checker.dart';
 
 void main() async {
   runApp(MyApp());
@@ -17,12 +18,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // final NetworkChecker _networkChecker = NetworkChecker();
+  final NetworkChecker _networkChecker = NetworkChecker.instance;
 
   @override
   void initState() {
-    // _networkChecker.checkConnection();
+    _networkChecker.init();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _networkChecker.dispose();
+    super.dispose();
   }
 
   @override

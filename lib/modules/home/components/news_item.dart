@@ -56,8 +56,9 @@ class NewsItem extends StatelessWidget {
                           return child;
                         }
 
-                        return CircularLoadingWidget(
-                          verticalPadding: 32,
+                        return SizedBox(
+                          height: 90,
+                          child: CircularLoadingWidget(),
                         );
                       },
                     ),

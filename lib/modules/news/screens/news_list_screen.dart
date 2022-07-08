@@ -95,9 +95,14 @@ class _NewsListScreenState extends State<NewsListScreen> {
         if (state is NewsInitialState || state is BeritaPpidLoadingState) {
           return LoadingWidget();
         } else if (state is BeritaPpidNoConnectionState) {
-          return NoConnectionScreen(onRefresh: refresh);
+          return NoConnectionScreen(
+            onRefresh: refresh,
+            description: "Perangkat anda tidak terhubung ke internet",
+          );
         } else if (state is BeritaPpidEmptyState) {
-          return TextWidget("text");
+          return Center(
+            child: TextWidget("text"),
+          );
         } else if (state is BeritaPpidLoadedState) {
           list = state.list;
 
@@ -169,7 +174,10 @@ class _NewsListScreenState extends State<NewsListScreen> {
         if (state is NewsInitialState || state is BeritaUinLoadingState) {
           return LoadingWidget();
         } else if (state is BeritaUinNoConnectionState) {
-          return NoConnectionScreen(onRefresh: refresh);
+          return NoConnectionScreen(
+            onRefresh: refresh,
+            description: "Perangkat anda tidak terhubung ke internet",
+          ); 
         } else if (state is BeritaUinEmptyState) {
           return TextWidget("text");
         } else if (state is BeritaUinLoadedState) {

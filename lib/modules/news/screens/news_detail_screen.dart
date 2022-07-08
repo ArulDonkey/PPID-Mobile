@@ -59,6 +59,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           icon: Icon(
             Icons.share_outlined,
             color: Colors.black,
+            size: 22,
           ),
           splashRadius: 25,
         ),
@@ -83,7 +84,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     }
 
     final String message =
-        "Cek inforrmasi baru dari $type: \n $_baseUrl/${widget.argument!.slug}";
+        "Cek inforrmasi terbaru dari $type: \n\n $_baseUrl/${widget.argument!.slug}";
 
     await Share.share(message);
   }

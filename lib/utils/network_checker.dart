@@ -2,63 +2,57 @@
 
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
 class NetworkChecker {
-  StreamController<ConnectivityResult> connectionController =
-      StreamController<ConnectivityResult>();
+  static final NetworkChecker _instance = NetworkChecker();
+  static NetworkChecker get instance => _instance;
 
-  NetworkChecker() {
-    Connectivity().onConnectivityChanged.listen((event) {
-      connectionController.add(event);
+  Connectivity connectivity = Connectivity();
+  ConnectivityResult connectivityResult = ConnectivityResult.none;
+  StreamController streamController = StreamController();
+  Stream get stream => streamController.stream;
+
+  void init() async {
+    connectivityResult = await connectivity.checkConnectivity();
+    // isOnline();
+    connectivity.onConnectivityChanged.listen((_) {
+      isOnline();
     });
   }
 
-  String getConnectionValue(var connectivityResult) {
-    String status = '';
-    switch (connectivityResult) {
-      case ConnectivityResult.mobile:
-        status = 'Mobile';
-        Fluttertoast.showToast(
-          msg: "Connected",
-          toastLength: Toast.LENGTH_SHORT,
-        );
-        break;
-      case ConnectivityResult.wifi:
-        status = 'Wi-Fi';
-        Fluttertoast.showToast(
-          msg: "Connected",
-          toastLength: Toast.LENGTH_SHORT,
-        );
-        break;
-      case ConnectivityResult.none:
-        status = 'None';
-        Fluttertoast.showToast(
-          msg: "Not connected",
-          toastLength: Toast.LENGTH_SHORT,
-        );
-        break;
-      default:
-        status = 'None';
-        Fluttertoast.showToast(
-          msg: "Not connected",
-          toastLength: Toast.LENGTH_SHORT,
-        );
-        break;
+  Future<bool> isOnline() async {
+    bool isOnline = false;
+    try {
+      final result = await InternetAddress.lookup('example.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        isOnline = true;
+        // Fluttertoast.showToast(
+        //   msg: "Terhubung",
+        //   toastLength: Toast.LENGTH_SHORT,
+        // );
+      } else {
+        isOnline = false;
+        // Fluttertoast.showToast(
+        //   msg: "Terputus",
+        //   toastLength: Toast.LENGTH_SHORT,
+        // );
+      }
+    } on SocketException catch (_) {
+      isOnline = false;
+      // Fluttertoast.showToast(
+      //   msg: "Terputus",
+      //   toastLength: Toast.LENGTH_SHORT,
+      // );
     }
 
-    log(status);
+    log("NETWORK STATUS: $isOnline");
+    // streamController.sink.add({result: isOnline});
 
-    return status;
+    return isOnline;
   }
 
-  String checkConnection() {
-    var connectivityResult = Provider.of<ConnectivityResult>;
-    var connectionStatus = getConnectionValue(connectivityResult);
-
-    return connectionStatus;
-  }
+  void dispose() => streamController.close();
 }

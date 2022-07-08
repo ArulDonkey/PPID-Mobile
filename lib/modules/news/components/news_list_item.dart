@@ -61,7 +61,11 @@ class NewsListItem extends StatelessWidget {
                           return child;
                         }
 
-                        return CircularLoadingWidget();
+                        return SizedBox(
+                          width: 120,
+                          height: 90,
+                          child: CircularLoadingWidget(),
+                        );
                       },
                     ),
             ),
