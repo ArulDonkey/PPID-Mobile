@@ -10,7 +10,8 @@ class ApplicationComplaintScreen extends StatefulWidget {
       _ApplicationComplaintScreenState();
 }
 
-class _ApplicationComplaintScreenState extends State<ApplicationComplaintScreen> {
+class _ApplicationComplaintScreenState
+    extends State<ApplicationComplaintScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

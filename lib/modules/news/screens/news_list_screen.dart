@@ -53,6 +53,12 @@ class _NewsListScreenState extends State<NewsListScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _newsBloc.close();
+    super.dispose();
+  }
+
   void refresh() {
     if (widget.argument!.type == NewsListType.ppid) {
       _newsBloc.add(GetBeritaPpidEvent());
@@ -72,10 +78,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
   AppBar _buildAppbar() {
     return customAppBar(
       context: context,
-      title: Image.asset(
-        "assets/images/ppid_logo.png",
-        width: 60,
-      ),
+      showLogo: true,
       centerTitle: true,
     );
   }
@@ -177,7 +180,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
           return NoConnectionScreen(
             onRefresh: refresh,
             description: "Perangkat anda tidak terhubung ke internet",
-          ); 
+          );
         } else if (state is BeritaUinEmptyState) {
           return TextWidget("text");
         } else if (state is BeritaUinLoadedState) {

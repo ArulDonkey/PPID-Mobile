@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:ppid_mobile/configs/api.config.dart';
 
 class NewsApiRepository {
   final _dio = Dio();
+  final String _baseUrl = ApiConfig.baseUrl;
 
   Future<Response> getBeritaUIN({
     Map<String, dynamic>? params,
@@ -29,7 +31,7 @@ class NewsApiRepository {
   }) async {
     try {
       Response response = await _dio.get(
-        "https://ppid.uinsgd.tech/api/posts",
+        "$_baseUrl/posts",
         queryParameters: params,
       );
 

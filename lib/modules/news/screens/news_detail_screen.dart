@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.dart';
-import 'package:ppid_mobile/utils/network_checker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -29,7 +28,6 @@ class NewsDetailScreen extends StatefulWidget {
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
   late String _baseUrl;
   bool _isLoading = true;
-  final NetworkChecker _networkChecker = NetworkChecker.instance;
 
   @override
   void initState() {
@@ -57,6 +55,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   AppBar _buildAppbar() {
     return customAppBar(
       context: context,
+      showLogo: false,
       actions: [
         IconButton(
           onPressed: share,

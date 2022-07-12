@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_complaint_screen.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_letter_screen.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_objection_screen.dart';
+import 'package:ppid_mobile/modules/information/arguments/information_detail_screen_argument.dart';
+import 'package:ppid_mobile/modules/information/arguments/information_list_screen_argument.dart';
+import 'package:ppid_mobile/modules/information/screens/information_detail_screen.dart';
+import 'package:ppid_mobile/modules/information/screens/information_list_screen.dart';
 import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.dart';
 import 'package:ppid_mobile/modules/news/arguments/news_list_screen_argument.dart';
 import 'package:ppid_mobile/modules/news/screens/news_detail_screen.dart';
@@ -47,6 +51,20 @@ class RouteConfig {
         return _buildRoute(
           settings,
           ApplicationComplaintScreen(),
+        );
+      case "information-list":
+        return _buildRoute(
+          settings,
+          InformationListScreen(
+            argument: settings.arguments as InformationListScreenArgument,
+          ),
+        );
+      case "information-detail":
+        return _buildRoute(
+          settings,
+          InformationDetailScreen(
+            argument: settings.arguments as InformationDetailScreenArgument,
+          ),
         );
 
       default:

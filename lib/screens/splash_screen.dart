@@ -28,10 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BackgroundedContainer(
-        width: double.infinity,
-        height: double.infinity,
         child: Stack(
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
               child: Image.asset("assets/images/ppid_logo.png"),

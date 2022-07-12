@@ -32,7 +32,8 @@ class _CarouselState extends State<Carousel> {
             );
           },
           options: CarouselOptions(
-            viewportFraction: .68,
+            viewportFraction: .70,
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
             autoPlay: true,
             enlargeCenterPage: true,
             enableInfiniteScroll: true,

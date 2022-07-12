@@ -4,20 +4,16 @@ import 'package:flutter/material.dart';
 
 class BackgroundedContainer extends StatelessWidget {
   Widget? child;
-  double? width;
-  double? height;
   BackgroundedContainer({
     Key? key,
     this.child,
-    this.height,
-    this.width,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
+      width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/images/background.png"),

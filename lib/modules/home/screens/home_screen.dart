@@ -59,10 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return customAppBar(
       context: context,
       backButton: false,
-      title: Image.asset(
-        "assets/images/ppid_logo.png",
-        width: 55,
-      ),
+      showLogo: true,
+      centerTitle: false,
       actions: [
         IconButton(
           onPressed: () {},

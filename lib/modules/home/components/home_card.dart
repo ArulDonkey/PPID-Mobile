@@ -28,8 +28,8 @@ class HomeCard extends StatelessWidget {
           _buildWhiteContainer(),
           Positioned(
             top: -23,
-            left: 20,
-            right: 20,
+            left: 22,
+            right: 22,
             child: _buildBlueContainer(),
           ),
         ],
@@ -62,11 +62,11 @@ class HomeCard extends StatelessWidget {
               TextWidget(
                 title,
                 fontWeight: FontWeight.w700,
-                fontSize: 11,
+                fontSize: 10,
               ),
               TextWidget(
                 description,
-                fontSize: 11,
+                fontSize: 10,
               ),
             ],
           ),
@@ -87,7 +87,7 @@ class HomeCard extends StatelessWidget {
 
   Widget _buildBlueContainer() {
     return Container(
-      width: 55,
+      // width: 55,
       height: 55,
       decoration: BoxDecoration(
         color: Colors.blue,
