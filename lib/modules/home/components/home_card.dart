@@ -50,7 +50,7 @@ class HomeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(.1),
+                color: Pallete.componentShadow,
                 offset: Offset(0, 10),
                 spreadRadius: .1,
                 blurRadius: 5,

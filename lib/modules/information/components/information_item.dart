@@ -84,7 +84,7 @@ class InformationItem extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.17),
+            color: Pallete.componentShadow,
             offset: Offset(0, 3),
             spreadRadius: .2,
             blurRadius: 5,
@@ -118,7 +118,7 @@ class InformationItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.17),
+              color: Pallete.componentShadow,
               offset: Offset(0, 5),
               spreadRadius: .2,
               blurRadius: 5,

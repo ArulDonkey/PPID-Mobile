@@ -34,7 +34,7 @@ class NewsListItem extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.05),
+              color: Pallete.componentShadow,
               offset: Offset(0, 3),
               spreadRadius: .2,
               blurRadius: 5,

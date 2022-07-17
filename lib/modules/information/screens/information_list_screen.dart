@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -83,58 +86,15 @@ class _InformationListScreenState extends State<InformationListScreen> {
 
   Widget _buildBody() {
     return BackgroundedContainer(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          refresh();
-        },
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-            vertical: 24,
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: SvgPicture.asset("assets/svgs/informasi_publik.svg"),
-                  ),
-                  SizedBox(width: 16),
-                  Flexible(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TextWidget(
-                          "Informasi Publik",
-                          fontWeight: FontWeight.bold,
-                        ),
-                        TextWidget(
-                          title,
-                          fontSize: 12,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 24),
-              _buildInformationList(_publicInformations),
-            ],
-          ),
-        ),
-      ),
+      child: _buildInformationList(),
     );
   }
 
-  Widget _buildInformationList(List<PublicInformation> list) {
+  Widget _buildInformationList() {
     return BlocBuilder<PublicInformationBloc, PublicInformationState>(
       bloc: _publicInformationBloc,
       builder: (context, state) {
-        // if (kDebugMode) log(state.toString());
+        if (kDebugMode) log(state.toString());
 
         if (state is PublicInformationInitialState ||
             state is PublicInformationLoadingState) {
@@ -148,85 +108,75 @@ class _InformationListScreenState extends State<InformationListScreen> {
         } else if (state is PublicInformationLoadedState) {
           _publicInformations = state.list;
 
-          return ListView.separated(
-            shrinkWrap: true,
-            primary: false,
-            itemBuilder: (context, index) {
-              var subInformation = _publicInformations[index].subInfoPub;
-
-              // log("SUB INFO TYPE INDEX $index: ${subInformation.runtimeType}");
-
-              if (subInformation.runtimeType == List<dynamic>) {
-                return Column(
-                  children: [
-                    InformationItem(
-                      type: InformationItemType.secondary,
-                      content: _publicInformations[index].namaInfoPub!,
-                      secondaryNumber: "${index + 1}. ",
-                      onTap: () {
-                        var url = _publicInformations[index].linkInfoPub;
-
-                        if (url != "#") {
-                          Navigator.pushNamed(
-                            context,
-                            "information-detail",
-                            arguments: InformationDetailScreenArgument(
-                              url: url,
+          return RefreshIndicator(
+            onRefresh: () async {
+              refresh();
+            },
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                vertical: 24,
+                horizontal: 16,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: SvgPicture.asset(
+                            "assets/svgs/informasi_publik.svg"),
+                      ),
+                      SizedBox(width: 16),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextWidget(
+                              "Informasi Publik",
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        }
-                      },
-                    ),
-                    Builder(
-                      builder: (context) {
-                        if (subInformation.runtimeType == List<dynamic>) {
-                          for (int i = 0; i < subInformation.length; i++) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 16),
-                                ListView.separated(
-                                  primary: false,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return InformationItem(
-                                      type: InformationItemType.secondary,
-                                      content: subInformation[index]
-                                          ["nama_sub_info_pub"],
-                                      secondaryNumber: "-",
-                                      onTap: () {
-                                        var url = _publicInformations[index]
-                                            .linkInfoPub;
+                            TextWidget(
+                              title,
+                              fontSize: 12,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  _buildList(),
+                ],
+              ),
+            ),
+          );
+        } else if (state is PublicInformationErrorState) {
+          return RefreshComponent(onRefresh: refresh);
+        } else {
+          return RefreshComponent(onRefresh: refresh);
+        }
+      },
+    );
+  }
 
-                                        if (url != "#") {
-                                          Navigator.pushNamed(
-                                            context,
-                                            "information-detail",
-                                            arguments:
-                                                InformationDetailScreenArgument(
-                                              url: url,
-                                            ),
-                                          );
-                                        }
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(height: 16),
-                                  itemCount: subInformation.length,
-                                ),
-                              ],
-                            );
-                          }
-                        }
+  Widget _buildList() {
+    return ListView.separated(
+      shrinkWrap: true,
+      primary: false,
+      itemBuilder: (context, index) {
+        var subInformation = _publicInformations[index].subInfoPub;
 
-                        return Container();
-                      },
-                    ),
-                  ],
-                );
-              }
+        // log("SUB INFO TYPE INDEX $index: ${subInformation.runtimeType}");
 
-              return InformationItem(
+        if (subInformation.runtimeType == List<dynamic>) {
+          return Column(
+            children: [
+              InformationItem(
                 type: InformationItemType.secondary,
                 content: _publicInformations[index].namaInfoPub!,
                 secondaryNumber: "${index + 1}. ",
@@ -243,25 +193,85 @@ class _InformationListScreenState extends State<InformationListScreen> {
                     );
                   }
                 },
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(height: 16);
-            },
-            itemCount: _publicInformations.length,
+              ),
+              Builder(
+                builder: (context) {
+                  if (subInformation.runtimeType == List<dynamic>) {
+                    for (int i = 0; i < subInformation.length; i++) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 16),
+                          ListView.separated(
+                            primary: false,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InformationItem(
+                                type: InformationItemType.secondary,
+                                content: subInformation[index]
+                                    ["nama_sub_info_pub"],
+                                secondaryNumber: "-",
+                                onTap: () {
+                                  var url = subInformation[index]
+                                      ["link_sub_info_pub"];
+
+                                  if (url != "#") {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "information-detail",
+                                      arguments:
+                                          InformationDetailScreenArgument(
+                                        url: url,
+                                      ),
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 16),
+                            itemCount: subInformation.length,
+                          ),
+                        ],
+                      );
+                    }
+                  }
+
+                  return Container();
+                },
+              ),
+            ],
           );
-        } else if (state is PublicInformationErrorState) {
-          return RefreshComponent(onRefresh: refresh);
-        } else {
-          return RefreshComponent(onRefresh: refresh);
         }
+
+        return InformationItem(
+          type: InformationItemType.secondary,
+          content: _publicInformations[index].namaInfoPub!,
+          secondaryNumber: "${index + 1}. ",
+          onTap: () {
+            var url = _publicInformations[index].linkInfoPub;
+
+            if (url != "#") {
+              Navigator.pushNamed(
+                context,
+                "information-detail",
+                arguments: InformationDetailScreenArgument(
+                  url: url,
+                ),
+              );
+            }
+          },
+        );
       },
+      separatorBuilder: (context, index) {
+        return SizedBox(height: 16);
+      },
+      itemCount: _publicInformations.length,
     );
   }
 
-  String loopChar() {
-    String char = "a";
+  // String loopChar() {
+  //   String char = "a";
 
-    return String.fromCharCode(char.codeUnitAt(0) + 1);
-  }
+  //   return String.fromCharCode(char.codeUnitAt(0) + 1);
+  // }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Pallete {
   static const Color navy = Color(0xFF122948);
@@ -7,4 +7,5 @@ class Pallete {
   static const Color yellow = Color(0xFFFBCB0A);
   static const Color disabled = Color(0xFFDBDBDB);
   static const Color bw = Color(0xFFF9FCFE);
+  static Color componentShadow = Colors.black.withOpacity(.07);
 }

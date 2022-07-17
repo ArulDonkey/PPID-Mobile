@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/circular_loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
+import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class NewsItem extends StatelessWidget {
   String imageUrl;
@@ -26,7 +27,7 @@ class NewsItem extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.17),
+              color: Pallete.componentShadow,
               offset: Offset(0, 5),
               spreadRadius: .2,
               blurRadius: 5,

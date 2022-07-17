@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,6 +58,22 @@ class _BaseScreenState extends State<BaseScreen> {
       "Tentang Kami",
     ];
 
+    // return TitledBottomNavigationBar(
+    //   onTap: _onNavbarItemTapped,
+    //   items: List.generate(navbarLabels.length, (index) {
+    //     return TitledNavigationBarItem(
+    //       icon: Padding(
+    //         padding: EdgeInsets.symmetric(vertical: 4.0),
+    //         child: SvgPicture.asset(
+    //           navbarIconUrls[index],
+    //           width: index == 3 ? 9 : 20,
+    //         ),
+    //       ),
+    //       label: navbarLabels[index],
+    //     );
+    //   }),
+    // );
+
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -75,6 +91,12 @@ class _BaseScreenState extends State<BaseScreen> {
         selectedLabelStyle: TextStyle(
           decoration: TextDecoration.underline,
           decorationThickness: 2,
+          // shadows: [
+          //   Shadow(
+          //     color: Colors.red,
+          //     offset: Offset(0, -5),
+          //   ),
+          // ],
         ),
         unselectedLabelStyle: TextStyle(
           color: Colors.white,
