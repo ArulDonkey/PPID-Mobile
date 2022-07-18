@@ -7,5 +7,6 @@ class Pallete {
   static const Color yellow = Color(0xFFFBCB0A);
   static const Color disabled = Color(0xFFDBDBDB);
   static const Color bw = Color(0xFFF9FCFE);
-  static Color componentShadow = Colors.black.withOpacity(.07);
+  static Color componentShadow = const Color(0xFF7090B0).withOpacity(.2);
+  static const Color grey = Color(0xFFE8E9ED);
 }

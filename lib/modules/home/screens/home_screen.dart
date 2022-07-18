@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
+import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
 import 'package:ppid_mobile/modules/home/components/carousel.dart';
@@ -79,22 +80,27 @@ class _HomeScreenState extends State<HomeScreen> {
           _beritaUinBloc.add(GetBeritaUinEvent());
           _beritaPpidBloc.add(GetBeritaPpidEvent());
         },
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(
           children: [
-            Carousel(
-              // imageUrls: _carouselImageUrls,
-              index: _pageIndex,
+            PrimaryTextField(),
+            ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(vertical: 20),
+              children: [
+                Carousel(
+                  // imageUrls: _carouselImageUrls,
+                  index: _pageIndex,
+                ),
+                SizedBox(height: 50),
+                _buildHomeCard(),
+                SizedBox(height: 50),
+                _buildBeritaPpidList(_beritaPpids),
+                SizedBox(height: 24),
+                _buildBeritaUinList(_beritaUins),
+              ],
+              // ),
             ),
-            SizedBox(height: 50),
-            _buildHomeCard(),
-            SizedBox(height: 50),
-            _buildBeritaPpidList(_beritaPpids),
-            SizedBox(height: 24),
-            _buildBeritaUinList(_beritaUins),
           ],
-          // ),
         ),
       ),
     );

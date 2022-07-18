@@ -205,26 +205,29 @@ class _InformationListScreenState extends State<InformationListScreen> {
                             primary: false,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return InformationItem(
-                                type: InformationItemType.secondary,
-                                content: subInformation[index]
-                                    ["nama_sub_info_pub"],
-                                secondaryNumber: "-",
-                                onTap: () {
-                                  var url = subInformation[index]
-                                      ["link_sub_info_pub"];
+                              return Padding(
+                                padding: EdgeInsets.only(left: 20.0),
+                                child: InformationItem(
+                                  type: InformationItemType.secondary,
+                                  content: subInformation[index]
+                                      ["nama_sub_info_pub"],
+                                  secondaryNumber: "-",
+                                  onTap: () {
+                                    var url = subInformation[index]
+                                        ["link_sub_info_pub"];
 
-                                  if (url != "#") {
-                                    Navigator.pushNamed(
-                                      context,
-                                      "information-detail",
-                                      arguments:
-                                          InformationDetailScreenArgument(
-                                        url: url,
-                                      ),
-                                    );
-                                  }
-                                },
+                                    if (url != "#") {
+                                      Navigator.pushNamed(
+                                        context,
+                                        "information-detail",
+                                        arguments:
+                                            InformationDetailScreenArgument(
+                                          url: url,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
                               );
                             },
                             separatorBuilder: (context, index) =>
