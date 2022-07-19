@@ -9,6 +9,8 @@ class PrimaryButton extends StatefulWidget {
   Color? backgroundColor;
   EdgeInsetsGeometry? contentPadding;
   double? width;
+  double? borderRadius;
+  Size? mininumSize;
 
   PrimaryButton({
     Key? key,
@@ -17,6 +19,7 @@ class PrimaryButton extends StatefulWidget {
     this.backgroundColor,
     this.contentPadding,
     this.width,
+    this.borderRadius,
   }) : super(key: key);
 
   @override
@@ -37,7 +40,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           padding: MaterialStateProperty.all(widget.contentPadding),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 10),
             ),
           ),
         ),

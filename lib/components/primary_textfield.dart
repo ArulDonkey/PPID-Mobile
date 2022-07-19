@@ -14,6 +14,9 @@ class PrimaryTextField extends StatefulWidget {
   int? maxLength;
   String? Function(String?)? validator;
   Widget? suffixIcon;
+  bool? readOnly;
+  bool numberOnly;
+
   PrimaryTextField({
     Key? key,
     this.controller,
@@ -25,6 +28,9 @@ class PrimaryTextField extends StatefulWidget {
     this.maxLines,
     this.validator,
     this.suffixIcon,
+    this.readOnly,
+    this.maxLength,
+    this.numberOnly = false,
   }) : super(key: key);
 
   @override
@@ -43,16 +49,25 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
       child: TextFormField(
         controller: widget.controller,
         initialValue: widget.initialValue,
+        style: TextStyle(
+          fontSize: 12,
+        ),
         decoration: InputDecoration(
           icon: widget.icon,
           hintText: widget.hintText,
           border: InputBorder.none,
           suffixIcon: widget.suffixIcon,
+          hintStyle: TextStyle(
+            fontSize: 12,
+          ),
         ),
+        keyboardType:
+            widget.numberOnly ? TextInputType.phone : TextInputType.text,
         obscureText: widget.isPassword ?? false,
         minLines: widget.minLines,
         maxLines: widget.maxLines,
         maxLength: widget.maxLength,
+        readOnly: widget.readOnly ?? false,
         validator: widget.validator,
       ),
     );

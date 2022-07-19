@@ -9,7 +9,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
-import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
 import 'package:ppid_mobile/modules/home/components/carousel.dart';
@@ -17,6 +16,7 @@ import 'package:ppid_mobile/modules/home/components/home_card.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/news/components/news_horizontal_list.dart';
+import 'package:ppid_mobile/screens/detele_later_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -64,7 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
       centerTitle: false,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DeleteLaterScreen(),
+              ),
+            );
+          },
           splashRadius: 25,
           icon: SvgPicture.asset("assets/svgs/notification.svg"),
           tooltip: "Notifikasi",
@@ -80,27 +87,22 @@ class _HomeScreenState extends State<HomeScreen> {
           _beritaUinBloc.add(GetBeritaUinEvent());
           _beritaPpidBloc.add(GetBeritaPpidEvent());
         },
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.symmetric(vertical: 20),
           children: [
-            PrimaryTextField(),
-            ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.symmetric(vertical: 20),
-              children: [
-                Carousel(
-                  // imageUrls: _carouselImageUrls,
-                  index: _pageIndex,
-                ),
-                SizedBox(height: 50),
-                _buildHomeCard(),
-                SizedBox(height: 50),
-                _buildBeritaPpidList(_beritaPpids),
-                SizedBox(height: 24),
-                _buildBeritaUinList(_beritaUins),
-              ],
-              // ),
+            Carousel(
+              // imageUrls: _carouselImageUrls,
+              index: _pageIndex,
             ),
+            SizedBox(height: 50),
+            _buildHomeCard(),
+            SizedBox(height: 50),
+            _buildBeritaPpidList(_beritaPpids),
+            SizedBox(height: 24),
+            _buildBeritaUinList(_beritaUins),
           ],
+          // ),
         ),
       ),
     );
