@@ -151,7 +151,7 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.pushNamed(context, "sign-in");
+                                  Navigator.pushReplacementNamed(context, "sign-in");
                                 },
                             ),
                           ],

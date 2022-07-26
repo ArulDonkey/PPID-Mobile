@@ -9,4 +9,5 @@ class Pallete {
   static const Color bw = Color(0xFFF9FCFE);
   static Color componentShadow = const Color(0xFF7090B0).withOpacity(.2);
   static const Color grey = Color(0xFFE8E9ED);
+  static const Color darkGrey = Color(0xFFB1B4C4);
 }

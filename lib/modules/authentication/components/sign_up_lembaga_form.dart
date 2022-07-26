@@ -79,7 +79,8 @@ class SignUpLembagaForm extends StatelessWidget {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.pushNamed(context, "sign-in");
+                                  Navigator.pushReplacementNamed(
+                                      context, "sign-in");
                                 },
                             ),
                           ],
