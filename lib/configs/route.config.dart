@@ -14,6 +14,9 @@ import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.d
 import 'package:ppid_mobile/modules/news/arguments/news_list_screen_argument.dart';
 import 'package:ppid_mobile/modules/news/screens/news_detail_screen.dart';
 import 'package:ppid_mobile/modules/news/screens/news_list_screen.dart';
+import 'package:ppid_mobile/modules/service/screens/report_abuse_screen.dart';
+import 'package:ppid_mobile/modules/service/screens/request_complaint_procedure_screen.dart';
+import 'package:ppid_mobile/modules/service/screens/request_information_procedure_screen.dart';
 import 'package:ppid_mobile/screens/base_screen.dart';
 import 'package:ppid_mobile/screens/not_found_screen.dart';
 
@@ -77,6 +80,21 @@ class RouteConfig {
         return _buildRoute(
           settings,
           SignUpScreen(),
+        );
+      case "request-information-procedure":
+        return _buildRoute(
+          settings,
+          RequestInformationProcedureScreen(),
+        );
+      case "request-complaint-procedure":
+        return _buildRoute(
+          settings,
+          RequestComplaintProcedureScreen(),
+        );
+      case "report-abuse":
+        return _buildRoute(
+          settings,
+          ReportAbuseScreen(),
         );
 
       default:

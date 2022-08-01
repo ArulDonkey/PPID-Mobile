@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
-import 'package:ppid_mobile/components/loading_widget.dart';
+import 'package:ppid_mobile/components/error_screen.dart';
+import 'package:ppid_mobile/components/loading_screen.dart';
 import 'package:ppid_mobile/components/no_connection_screen.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
@@ -95,12 +99,15 @@ class _NewsListScreenState extends State<NewsListScreen> {
     return BlocBuilder<NewsBloc, NewsState>(
       bloc: _newsBloc,
       builder: (context, state) {
+        if (kDebugMode) log("$state");
+
         if (state is NewsInitialState || state is BeritaPpidLoadingState) {
-          return LoadingWidget();
+          // return LoadingWidget();
+          return LoadingScreen();
         } else if (state is BeritaPpidNoConnectionState) {
           return NoConnectionScreen(
             onRefresh: refresh,
-            description: "Perangkat anda tidak terhubung ke internet",
+            // description: "Perangkat anda tidak terhubung ke internet",
           );
         } else if (state is BeritaPpidEmptyState) {
           return Center(
@@ -162,9 +169,9 @@ class _NewsListScreenState extends State<NewsListScreen> {
             ),
           );
         } else if (state is BeritaPpidErrorState) {
-          return RefreshComponent(onRefresh: refresh);
+          return ErrorScreen(onRefresh: refresh);
         } else {
-          return RefreshComponent(onRefresh: refresh);
+          return ErrorScreen(onRefresh: refresh);
         }
       },
     );
@@ -175,11 +182,12 @@ class _NewsListScreenState extends State<NewsListScreen> {
       bloc: _newsBloc,
       builder: (context, state) {
         if (state is NewsInitialState || state is BeritaUinLoadingState) {
-          return LoadingWidget();
+          // return LoadingWidget();
+          return LoadingScreen();
         } else if (state is BeritaUinNoConnectionState) {
           return NoConnectionScreen(
             onRefresh: refresh,
-            description: "Perangkat anda tidak terhubung ke internet",
+            // description: "Perangkat anda tidak terhubung ke internet",
           );
         } else if (state is BeritaUinEmptyState) {
           return TextWidget("text");

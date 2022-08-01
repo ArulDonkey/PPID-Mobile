@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class LoadingWidget extends StatefulWidget {
   double? size;
@@ -22,7 +21,7 @@ class _LoadingWidgetState extends State<LoadingWidget> {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Center(
         child: SpinKitThreeBounce(
-          color: Pallete.blue,
+          color: Colors.black,
           size: widget.size ?? 20,
         ),
       ),

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, no_leading_underscores_for_local_identifiers, prefer_const_literals_to_create_immutables
 
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +94,7 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                         );
 
                         if (result != null) {
-                          File file = File(result.files.single.path!);
+                          // File file = File(result.files.single.path!);
                           PlatformFile fileInfo = result.files.first;
 
                           _controllers[index].text = fileInfo.name;
@@ -151,7 +149,8 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.pushReplacementNamed(context, "sign-in");
+                                  Navigator.pushReplacementNamed(
+                                      context, "sign-in");
                                 },
                             ),
                           ],

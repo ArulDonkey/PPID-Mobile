@@ -12,14 +12,14 @@ class RefreshComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Center(
-        child: IconButton(
-          onPressed: onRefresh,
-          icon: Icon(
-            Icons.refresh,
-            size: 30,
-          ),
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: GestureDetector(
+        onTap: onRefresh,
+        // borderRadius: BorderRadius.circular(60),
+        child: Image.asset(
+          "assets/images/refresh.png",
+          width: 30,
+          height: 30,
         ),
       ),
     );

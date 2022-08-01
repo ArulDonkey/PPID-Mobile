@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'auth_bloc.dart';
 
 abstract class AuthEvent extends Equatable {
@@ -5,4 +7,17 @@ abstract class AuthEvent extends Equatable {
 
   @override
   List<Object> get props => [];
+}
+
+class SignUpEvent extends AuthEvent {
+  Map<String, dynamic> body;
+
+  SignUpEvent(this.body);
+}
+
+class SignInEvent extends AuthEvent {
+  String email;
+  String password;
+
+  SignInEvent(this.email, this.password);
 }

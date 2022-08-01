@@ -59,6 +59,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       }
     } catch (e) {
       emit(BeritaPpidErrorState(e.toString()));
+      // emit(BeritaPpidNoConnectionState());
     }
   }
 
@@ -93,6 +94,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     } catch (e) {
       log(e.toString());
       emit(BeritaUinErrorState(e.toString()));
+      // emit(BeritaUinNoConnectionState());
     }
   }
 }

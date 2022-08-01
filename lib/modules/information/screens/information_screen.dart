@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
-import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/information/arguments/information_list_screen_argument.dart';
@@ -111,7 +110,6 @@ class _InformationScreenState extends State<InformationScreen> {
               separatorBuilder: (context, index) => SizedBox(height: 24),
               itemCount: containerContents.length,
             ),
-            
           ],
         ),
       ),
