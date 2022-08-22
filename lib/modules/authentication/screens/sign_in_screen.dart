@@ -1,14 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
+import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/modules/authentication/bloc/auth_bloc.dart';
+import 'package:ppid_mobile/utils/network_checker.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -20,11 +28,21 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final NetworkChecker _networkChecker = NetworkChecker();
+
+  final AuthBloc _signInBloc = AuthBloc();
+
+  @override
+  void initState() {
+    log(_networkChecker.isOnline.toString());
+    super.initState();
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _signInBloc.close();
     super.dispose();
   }
 
@@ -112,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: TextWidget(
-            "Selamat datang!",
+            "Selamat Datang!",
             fontWeight: FontWeight.bold,
             fontSize: 18,
           ),
@@ -145,6 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(height: 8),
                   PrimaryTextField(
                     controller: _emailController,
+                    maxLines: 1,
                   ),
                 ],
               ),
@@ -159,7 +178,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   SizedBox(height: 8),
                   PrimaryTextField(
-                    controller: _emailController,
+                    controller: _passwordController,
+                    isPassword: true,
+                    maxLines: 1,
                   ),
                 ],
               ),
@@ -168,18 +189,53 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         SizedBox(height: 32),
         Center(
-          child: PrimaryButton(
-            onTap: () {},
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: 48,
-              vertical: 10,
-            ),
-            child: TextWidget(
-              "Masuk",
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+          child: BlocConsumer<AuthBloc, AuthState>(
+            bloc: _signInBloc,
+            builder: (context, state) {
+              if (kDebugMode) log(state.toString());
+
+              if (state is AuthInitialState) {
+                return _buildSignInButton();
+              } else if (state is SignInLoadingState) {
+                return SizedBox(
+                  width: 150,
+                  child: PrimaryButton(
+                    onTap: () {},
+                    child: LoadingWidget(
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              } else {
+                return _buildSignInButton();
+              }
+            },
+            listener: (context, state) {
+              if (kDebugMode) log(state.toString());
+
+              if (state is SignInErrorState) {
+                Fluttertoast.showToast(
+                  msg: "Terjadi kesalahan, silahkan coba lagi",
+                  toastLength: Toast.LENGTH_SHORT,
+                );
+              }
+            },
+            // child: PrimaryButton(
+            //   onTap: () {
+            //     // log("email: ${_emailController.text}\npassword: ${_passwordController.text}");
+            //   },
+            //   contentPadding: EdgeInsets.symmetric(
+            //     horizontal: 48,
+            //     vertical: 10,
+            //   ),
+            //   child: TextWidget(
+            //     "Masuk",
+            //     color: Colors.white,
+            //     fontSize: 16,
+            //     fontWeight: FontWeight.bold,
+            //   ),
+            // ),
           ),
         ),
         SizedBox(height: 50),
@@ -217,6 +273,31 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return PrimaryButton(
+      onTap: () {
+        if (_emailController.text == "" || _passwordController.text == "") {
+          Fluttertoast.showToast(msg: "Data tidak boleh kosong");
+        } else {
+          _signInBloc.add(SignInEvent(
+            _emailController.text,
+            _passwordController.text,
+          ));
+        }
+      },
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: 48,
+        vertical: 10,
+      ),
+      child: TextWidget(
+        "Masuk",
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

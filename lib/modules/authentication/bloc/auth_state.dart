@@ -33,7 +33,11 @@ class SignUpErrorState extends AuthState {
 
 class SignInSuccessState extends AuthState {}
 
-class SignInFailedState extends AuthState {}
+class SignInFailedState extends AuthState {
+  String message;
+
+  SignInFailedState(this.message);
+}
 
 class SignInLoadingState extends AuthState {}
 
