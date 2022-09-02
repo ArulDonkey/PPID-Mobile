@@ -1,10 +1,12 @@
+// ignore_for_file: depend_on_referenced_packages
+
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
 import 'package:ppid_mobile/modules/authentication/api/auth_api_repository.dart';
-import 'package:ppid_mobile/utils/network_checker.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -19,8 +21,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   authEventHandler(AuthEvent event, Emitter<AuthState> emit) async {
     // if (_networkChecker.isOnline) {
-    if (event is SignUpEvent) {
-      await signUpEventHandler(event, emit);
+    if (event is SignUpIndividuEvent) {
+      await signUpIndividuEventHandler(event, emit);
     } else if (event is SignInEvent) {
       await signInEventHandler(event, emit);
     }
@@ -29,10 +31,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // }
   }
 
-  signUpEventHandler(SignUpEvent event, Emitter<AuthState> emit) async {
-    emit(SignUpLoadingState());
-    try {} catch (e) {
-      emit(SignUpErrorState(e.toString()));
+  signUpIndividuEventHandler(
+      SignUpIndividuEvent event, Emitter<AuthState> emit) async {
+    emit(SignUpIndividuLoadingState());
+    try {
+      // var file = File(path)
+      Map<String, dynamic> body = {
+        "level": "INDIVIDU",
+        "ktp": event.ktp,
+        "nmr_ktp": event.nik,
+        "username": event.email,
+        "nama": event.name,
+        "nmr_hp": event.phoneNumber,
+        "alamat": event.address,
+        "password": event.password,
+        "confirm_password": event.confirmPassword,
+      };
+
+      http.Response response = await _authApiRepository.signUp(
+        body: body,
+      );
+
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
+
+      log(responseBody.toString());
+    } catch (e) {
+      log("$e");
+      emit(SignUpIndividuErrorState(e.toString()));
     }
   }
 
@@ -44,22 +69,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         "password": event.password,
       };
 
-      Response response = await _authApiRepository.signIn(
+      http.Response response = await _authApiRepository.signIn(
         body: body,
       );
 
-      log(response.statusCode.toString());
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
 
-      // if (response.statusCode != 401) {
-      //   emit(SignInSuccessState());
-      // } else {
-      //   String message = response.data["data"]["message"];
-      //   emit(SignInFailedState(message));
-      // }
-
-      log(response.toString());
+      if (response.statusCode == 200) {
+        emit(SignInSuccessState());
+      } else {
+        String message = responseBody["data"]["message"];
+        emit(SignInFailedState(message));
+      }
     } catch (e) {
-      log(e.toString());
+      // log(e.toString());
       emit(SignInErrorState(e.toString()));
     }
   }

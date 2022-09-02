@@ -18,7 +18,7 @@ class HomeApiRepository {
 
       return response;
     } on DioError catch (e) {
-      log(e.toString());
+      log("$e");
       return e.response!.data;
     }
   }
@@ -34,7 +34,7 @@ class HomeApiRepository {
 
       return response;
     } on DioError catch (e) {
-      log(e.toString());
+      log("$e");
 
       return e.response!.data;
     }

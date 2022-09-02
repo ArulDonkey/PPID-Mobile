@@ -92,7 +92,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         );
       }
     } catch (e) {
-      log(e.toString());
+      log("$e");
       emit(BeritaUinErrorState(e.toString()));
       // emit(BeritaUinNoConnectionState());
     }

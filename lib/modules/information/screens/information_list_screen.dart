@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -94,7 +91,7 @@ class _InformationListScreenState extends State<InformationListScreen> {
     return BlocBuilder<PublicInformationBloc, PublicInformationState>(
       bloc: _publicInformationBloc,
       builder: (context, state) {
-        if (kDebugMode) log(state.toString());
+        // if (kDebugMode) log(state.toString());
 
         if (state is PublicInformationInitialState ||
             state is PublicInformationLoadingState) {

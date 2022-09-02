@@ -9,10 +9,26 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SignUpEvent extends AuthEvent {
-  Map<String, dynamic> body;
+class SignUpIndividuEvent extends AuthEvent {
+  dynamic ktp;
+  String nik;
+  String email;
+  String name;
+  String phoneNumber;
+  String address;
+  String password;
+  String confirmPassword;
 
-  SignUpEvent(this.body);
+  SignUpIndividuEvent(
+    this.ktp,
+    this.nik,
+    this.email,
+    this.name,
+    this.phoneNumber,
+    this.address,
+    this.password,
+    this.confirmPassword,
+  );
 }
 
 class SignInEvent extends AuthEvent {

@@ -16,7 +16,6 @@ import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/authentication/bloc/auth_bloc.dart';
-import 'package:ppid_mobile/utils/network_checker.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -28,13 +27,11 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final NetworkChecker _networkChecker = NetworkChecker();
 
   final AuthBloc _signInBloc = AuthBloc();
 
   @override
   void initState() {
-    log(_networkChecker.isOnline.toString());
     super.initState();
   }
 
@@ -192,7 +189,7 @@ class _SignInScreenState extends State<SignInScreen> {
           child: BlocConsumer<AuthBloc, AuthState>(
             bloc: _signInBloc,
             builder: (context, state) {
-              if (kDebugMode) log(state.toString());
+              if (kDebugMode) log("$state");
 
               if (state is AuthInitialState) {
                 return _buildSignInButton();
@@ -212,11 +209,18 @@ class _SignInScreenState extends State<SignInScreen> {
               }
             },
             listener: (context, state) {
-              if (kDebugMode) log(state.toString());
+              if (kDebugMode) log("$state");
 
               if (state is SignInErrorState) {
                 Fluttertoast.showToast(
                   msg: "Terjadi kesalahan, silahkan coba lagi",
+                  toastLength: Toast.LENGTH_SHORT,
+                );
+              }
+
+              if (state is SignInFailedState) {
+                Fluttertoast.showToast(
+                  msg: state.message,
                   toastLength: Toast.LENGTH_SHORT,
                 );
               }

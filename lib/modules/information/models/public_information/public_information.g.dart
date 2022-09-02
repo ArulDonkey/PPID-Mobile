@@ -12,9 +12,7 @@ PublicInformation _$PublicInformationFromJson(Map<String, dynamic> json) =>
       tipeInfoPub: json['tipe_info_pub'] as String?,
       namaInfoPub: json['nama_info_pub'] as String?,
       linkInfoPub: json['link_info_pub'] as String?,
-      subInfoPub: (json['sub_info_pub'] as dynamic)
-          ?.map((e) => SubInfoPub.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      subInfoPub: json['sub_info_pub'],
     );
 
 Map<String, dynamic> _$PublicInformationToJson(PublicInformation instance) =>

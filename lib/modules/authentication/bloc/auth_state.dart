@@ -19,16 +19,16 @@ class AuthErrorState extends AuthState {
   AuthErrorState(this.message);
 }
 
-class SignUpSuccessState extends AuthState {}
+class SignUpIndividuSuccessState extends AuthState {}
 
-class SignUpFailedState extends AuthState {}
+class SignUpIndividuFailedState extends AuthState {}
 
-class SignUpLoadingState extends AuthState {}
+class SignUpIndividuLoadingState extends AuthState {}
 
-class SignUpErrorState extends AuthState {
+class SignUpIndividuErrorState extends AuthState {
   String message;
 
-  SignUpErrorState(this.message);
+  SignUpIndividuErrorState(this.message);
 }
 
 class SignInSuccessState extends AuthState {}

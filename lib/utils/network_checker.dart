@@ -1,7 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, prefer_const_constructors
 
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -47,7 +46,7 @@ class NetworkChecker {
       // );
     }
 
-    log("NETWORK STATUS: $isOnline");
+    // log("NETWORK STATUS: $isOnline");
     // streamController.sink.add({result: isOnline});
 
     return isOnline;

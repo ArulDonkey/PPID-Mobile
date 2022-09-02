@@ -21,7 +21,7 @@ class NewsApiRepository {
 
       return response;
     } on DioError catch (e) {
-      log(e.toString());
+      log("$e");
       return e.response!.data;
     }
   }
@@ -37,7 +37,7 @@ class NewsApiRepository {
 
       return response;
     } on DioError catch (e) {
-      log(e.toString());
+      log("$e");
 
       return e.response!.data;
     }

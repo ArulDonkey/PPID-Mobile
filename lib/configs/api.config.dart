@@ -1,3 +1,3 @@
 class ApiConfig {
-  static const String baseUrl = "https://ppid.uinsgd.tech/api";
+  static const String baseUrl = "https://ppid.uinsgd.ac.id/api";
 }

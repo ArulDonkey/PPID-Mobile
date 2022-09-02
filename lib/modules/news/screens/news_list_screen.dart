@@ -1,8 +1,5 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
@@ -99,7 +96,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
     return BlocBuilder<NewsBloc, NewsState>(
       bloc: _newsBloc,
       builder: (context, state) {
-        if (kDebugMode) log("$state");
+        // if (kDebugMode) log("$state");
 
         if (state is NewsInitialState || state is BeritaPpidLoadingState) {
           // return LoadingWidget();

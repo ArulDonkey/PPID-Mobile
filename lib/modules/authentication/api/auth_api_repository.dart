@@ -1,36 +1,36 @@
-import 'dart:developer';
+// ignore_for_file: depend_on_referenced_packages
 
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:ppid_mobile/configs/api.config.dart';
 
 class AuthApiRepository {
-  final Dio _dio = Dio();
   final String _baseUrl = ApiConfig.baseUrl;
 
-  Future<Response> signUp({body}) async {
-    Response response = await _dio.post(
-      "$_baseUrl/auth/register",
-      data: FormData.fromMap(body),
-    );
+  Future<http.Response> signUp({body}) async {
+    try {
+      final Uri uri = Uri.parse("$_baseUrl/auth/register");
+      http.Response response = await http.post(
+        uri,
+        body: body,
+      );
 
-    return response;
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  Future<Response> signIn({body}) async {
-    Response response = await _dio.post(
-      "$_baseUrl/auth/login",
-      data: FormData.fromMap(body),
-      options: Options(
-        headers: {
-          "Accept": "application/json",
-        },
-        // contentType: "application/x-www-form-urlencoded",
-        // contentType: "application/form-data",
-      ),
-    );
+  Future<http.Response> signIn({body}) async {
+    try {
+      final Uri uri = Uri.parse("$_baseUrl/auth/login");
+      http.Response response = await http.post(
+        uri,
+        body: body,
+      );
 
-    log("BODY: ${body.toString()}");
-
-    return response;
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
