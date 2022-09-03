@@ -10,7 +10,7 @@ abstract class AuthEvent extends Equatable {
 }
 
 class SignUpIndividuEvent extends AuthEvent {
-  dynamic ktp;
+  dynamic filePath;
   String nik;
   String email;
   String name;
@@ -20,7 +20,7 @@ class SignUpIndividuEvent extends AuthEvent {
   String confirmPassword;
 
   SignUpIndividuEvent(
-    this.ktp,
+    this.filePath,
     this.nik,
     this.email,
     this.name,

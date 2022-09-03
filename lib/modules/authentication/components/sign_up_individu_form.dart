@@ -59,6 +59,14 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
   ];
 
   @override
+  void initState() {
+    for (var element in _controllers) {
+      element.text = "";
+    }
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _signUpBloc.close();
     super.dispose();
@@ -96,9 +104,8 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                   ? null
                   : PrimaryButton(
                       onTap: () async {
-                        uploadFile(index);
+                        selectFile(index);
                       },
-                      // borderRadius: 0,
                       backgroundColor: Pallete.blue,
                       child: TextWidget(
                         "Unggah",
@@ -184,7 +191,7 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
       onTap: () {
         _signUpBloc.add(
           SignUpIndividuEvent(
-            _fileResult!,
+            _fileResult!.path,
             _nikController.text,
             _emailController.text,
             _nameController.text,
@@ -208,19 +215,17 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
     );
   }
 
-  uploadFile(int index) async {
+  selectFile(int index) async {
     FilePickerResult? filePicker = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ["jpg", "jpeg", "png", "pdf"],
     );
 
-    if (_fileResult != null) {
-      _fileResult = File(filePicker!.files.single.path!);
-      // log(_fileResult!.path);
-      PlatformFile fileInfo = filePicker.files.first;
+    _fileResult = File(filePicker!.files.single.path!);
 
+    if (_fileResult != null) {
+      PlatformFile fileInfo = filePicker.files.first;
       _controllers[index].text = fileInfo.name;
     }
-    // FilePicker file = await FilePicker.
   }
 }

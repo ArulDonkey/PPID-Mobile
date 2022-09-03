@@ -7,7 +7,7 @@ import 'package:ppid_mobile/modules/about/screens/about_screen.dart';
 import 'package:ppid_mobile/modules/call_center/screens/call_center_screen.dart';
 import 'package:ppid_mobile/modules/home/screens/home_screen.dart';
 import 'package:ppid_mobile/modules/information/screens/information_screen.dart';
-import 'package:ppid_mobile/screens/delete_later_screen_2.dart';
+import 'package:ppid_mobile/modules/service/screens/service_screen.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -21,8 +21,8 @@ class _BaseScreenState extends State<BaseScreen> {
 
   final List<Widget> _navbarPages = [
     HomeScreen(),
-    DeleteLaterScreen2(),
-    // ServiceScreen(),
+    // DeleteLaterScreen2(),
+    ServiceScreen(),
     CallCenterScreen(),
     InformationScreen(),
     AboutScreen(),

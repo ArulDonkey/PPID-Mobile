@@ -38,7 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // var file = File(path)
       Map<String, dynamic> body = {
         "level": "INDIVIDU",
-        "ktp": event.ktp,
+        "ktp": event.filePath,
         "nmr_ktp": event.nik,
         "username": event.email,
         "nama": event.name,
@@ -50,6 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       http.Response response = await _authApiRepository.signUp(
         body: body,
+        // filePath: event.filePath,
       );
 
       Map<String, dynamic> responseBody = jsonDecode(response.body);

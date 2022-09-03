@@ -94,10 +94,12 @@ class InformationItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TextWidget(
-            content,
-            fontSize: 10,
-            maxLines: 2,
+          Flexible(
+            child: TextWidget(
+              content,
+              fontSize: 10,
+              maxLines: 2,
+            ),
           ),
           SvgPicture.asset(
             "assets/svgs/chevron_right.svg",

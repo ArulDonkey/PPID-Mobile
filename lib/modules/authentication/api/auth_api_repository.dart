@@ -6,13 +6,24 @@ import 'package:ppid_mobile/configs/api.config.dart';
 class AuthApiRepository {
   final String _baseUrl = ApiConfig.baseUrl;
 
-  Future<http.Response> signUp({body}) async {
+  Future<http.Response> signUp({body, filePath}) async {
     try {
       final Uri uri = Uri.parse("$_baseUrl/auth/register");
+      // var request = http.MultipartRequest("POST", uri);
+      // request.files.add(http.MultipartFile.fromBytes(
+      //   "ktp",
+      //   await File.fromUri(filePath).readAsBytes(),
+      // ));
       http.Response response = await http.post(
         uri,
         body: body,
       );
+
+      // request.send().then((response) {
+      //   if (response.statusCode == 200) {
+      //     log("File uploaded");
+      //   }
+      // });
 
       return response;
     } catch (e) {
