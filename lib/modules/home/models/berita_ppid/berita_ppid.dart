@@ -7,8 +7,8 @@ part 'berita_ppid.g.dart';
 class BeritaPpid extends Equatable {
   @JsonKey(name: 'id_post')
   final String? idPost;
-  @JsonKey(name: 'id_kategori')
-  final String? idKategori;
+  @JsonKey(name: 'ids_kategori')
+  final String? idsKategori;
   final String? kategori;
   @JsonKey(name: 'post_name')
   final String? postName;
@@ -37,7 +37,7 @@ class BeritaPpid extends Equatable {
 
   const BeritaPpid({
     this.idPost,
-    this.idKategori,
+    this.idsKategori,
     this.kategori,
     this.postName,
     this.postTitle,
@@ -61,7 +61,7 @@ class BeritaPpid extends Equatable {
 
   BeritaPpid copyWith({
     String? idPost,
-    String? idKategori,
+    String? idsKategori,
     String? kategori,
     String? postName,
     String? postTitle,
@@ -78,7 +78,7 @@ class BeritaPpid extends Equatable {
   }) {
     return BeritaPpid(
       idPost: idPost ?? this.idPost,
-      idKategori: idKategori ?? this.idKategori,
+      idsKategori: idsKategori ?? this.idsKategori,
       kategori: kategori ?? this.kategori,
       postName: postName ?? this.postName,
       postTitle: postTitle ?? this.postTitle,
@@ -99,7 +99,7 @@ class BeritaPpid extends Equatable {
   List<Object?> get props {
     return [
       idPost,
-      idKategori,
+      idsKategori,
       kategori,
       postName,
       postTitle,

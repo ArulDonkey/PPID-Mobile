@@ -46,7 +46,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     try {
       Response response = await _newsApiRepository.getBeritaPPID();
 
-      var beritaPpids = response.data["data"]["posts"];
+      var beritaPpids = response.data["data"]["data"];
 
       if (beritaPpids.isEmpty) {
         emit(BeritaPpidEmptyState());

@@ -94,7 +94,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         params: params,
       );
 
-      var beritaPpids = response.data["data"]["posts"];
+      var beritaPpids = response.data["data"]["data"];
 
       if (beritaPpids.isEmpty) {
         emit(BeritaPpidEmptyState());

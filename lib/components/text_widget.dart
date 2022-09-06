@@ -14,6 +14,7 @@ class TextWidget extends StatelessWidget {
   TextAlign? textAlign;
   int? maxLines;
   int? maxLength;
+  FontStyle? fontStyle;
   TextWidget(
     this.text, {
     Key? key,
@@ -27,6 +28,7 @@ class TextWidget extends StatelessWidget {
     this.textAlign,
     this.maxLines,
     this.maxLength,
+    this.fontStyle,
   }) : super(key: key);
 
   @override
@@ -42,6 +44,7 @@ class TextWidget extends StatelessWidget {
         decoration: decoration,
         fontFamily: fontFamily,
         overflow: overflow,
+        fontStyle: fontStyle,
       ),
     );
   }

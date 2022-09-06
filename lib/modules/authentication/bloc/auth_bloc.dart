@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // var file = File(path)
       Map<String, dynamic> body = {
         "level": "INDIVIDU",
-        "ktp": event.filePath,
+        "ktp": File(event.filePath),
         "nmr_ktp": event.nik,
         "username": event.email,
         "nama": event.name,
@@ -57,7 +58,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       log(responseBody.toString());
     } catch (e) {
-      log("$e");
       emit(SignUpIndividuErrorState(e.toString()));
     }
   }
@@ -79,11 +79,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (response.statusCode == 200) {
         emit(SignInSuccessState());
       } else {
-        String message = responseBody["data"]["message"];
+        String message = responseBody["message"];
         emit(SignInFailedState(message));
       }
     } catch (e) {
-      // log(e.toString());
       emit(SignInErrorState(e.toString()));
     }
   }

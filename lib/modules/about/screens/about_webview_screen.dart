@@ -1,44 +1,31 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: must_be_immutable, unnecessary_string_interpolations, prefer_const_constructors
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
-import 'package:ppid_mobile/modules/news/arguments/news_detail_screen_argument.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-enum NewsDetailType {
-  uin,
-  ppid,
-}
-
-class NewsDetailScreen extends StatefulWidget {
-  NewsDetailScreenArgument? argument;
-  NewsDetailScreen({
+class AboutWebviewScreen extends StatefulWidget {
+  AboutWebviewScreenArgument? argument;
+  AboutWebviewScreen({
     Key? key,
     this.argument,
   }) : super(key: key);
 
   @override
-  State<NewsDetailScreen> createState() => _NewsDetailScreenState();
+  State<AboutWebviewScreen> createState() => _AboutWebviewScreenState();
 }
 
-class _NewsDetailScreenState extends State<NewsDetailScreen> {
-  late String _baseUrl;
+class _AboutWebviewScreenState extends State<AboutWebviewScreen> {
   bool _isLoading = true;
 
   @override
   void initState() {
     if (Platform.isAndroid) {
       WebView.platform = AndroidWebView();
-    }
-
-    if (widget.argument!.type == NewsDetailType.uin) {
-      _baseUrl = "https://uinsgd.ac.id";
-    } else {
-      _baseUrl = "https://ppid.uinsgd.ac.id/post";
     }
 
     super.initState();
@@ -56,17 +43,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return customAppBar(
       context: context,
       showLogo: false,
-      actions: [
-        IconButton(
-          onPressed: share,
-          icon: Icon(
-            Icons.share_outlined,
-            color: Colors.black,
-            size: 22,
-          ),
-          splashRadius: 25,
-        ),
-      ],
     );
   }
 
@@ -74,7 +50,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Stack(
       children: [
         WebView(
-          initialUrl: "$_baseUrl/${widget.argument!.slug}",
+          initialUrl: "${widget.argument!.url}",
           javascriptMode: JavascriptMode.unrestricted,
           onProgress: (_) {
             setState(() {
@@ -98,17 +74,9 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 
   share() async {
-    late String type;
+    // final String message =
+    //     "Cek inforrmasi terbaru dari $type: \n\n $_baseUrl/${widget.argument!.slug}";
 
-    if (widget.argument!.type == NewsDetailType.ppid) {
-      type = "PPID Uin Sunan Gunung Djati Bandung";
-    } else {
-      type = "UIN Sunan Gunung Djati Bandung";
-    }
-
-    final String message =
-        "Cek informasi terbaru dari $type: \n\n $_baseUrl/${widget.argument!.slug}";
-
-    await Share.share(message);
+    // await Share.share(message);
   }
 }

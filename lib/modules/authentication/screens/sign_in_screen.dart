@@ -224,6 +224,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   toastLength: Toast.LENGTH_SHORT,
                 );
               }
+
+              if (state is SignInSuccessState) {
+                Fluttertoast.showToast(
+                  msg: "Logged in",
+                  toastLength: Toast.LENGTH_SHORT,
+                );
+              }
             },
             // child: PrimaryButton(
             //   onTap: () {

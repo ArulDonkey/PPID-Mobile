@@ -1,6 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
+import 'package:ppid_mobile/modules/about/screens/about_webview_screen.dart';
+import 'package:ppid_mobile/modules/about/screens/notice_screen.dart';
+import 'package:ppid_mobile/modules/about/screens/ppid_profile_screen.dart';
+import 'package:ppid_mobile/modules/about/screens/regulation_screen.dart';
+import 'package:ppid_mobile/modules/about/screens/visi_misi_screen.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_complaint_screen.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_letter_screen.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_objection_screen.dart';
@@ -95,6 +101,33 @@ class RouteConfig {
         return _buildRoute(
           settings,
           ReportAbuseScreen(),
+        );
+      case "ppid-profile":
+        return _buildRoute(
+          settings,
+          PpidProfileScreen(),
+        );
+      case "notice":
+        return _buildRoute(
+          settings,
+          NoticeScreen(),
+        );
+      case "visi-misi":
+        return _buildRoute(
+          settings,
+          VisiMisiScreen(),
+        );
+      case "about-webview":
+        return _buildRoute(
+          settings,
+          AboutWebviewScreen(
+            argument: settings.arguments as AboutWebviewScreenArgument,
+          ),
+        );
+      case "regulation":
+        return _buildRoute(
+          settings,
+          RegulationScreen(),
         );
 
       default:

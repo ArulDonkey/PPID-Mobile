@@ -8,7 +8,7 @@ part of 'berita_ppid.dart';
 
 BeritaPpid _$BeritaPpidFromJson(Map<String, dynamic> json) => BeritaPpid(
       idPost: json['id_post'] as String?,
-      idKategori: json['id_kategori'] as String?,
+      idsKategori: json['ids_kategori'] as String?,
       kategori: json['kategori'] as String?,
       postName: json['post_name'] as String?,
       postTitle: json['post_title'] as String?,
@@ -33,7 +33,7 @@ BeritaPpid _$BeritaPpidFromJson(Map<String, dynamic> json) => BeritaPpid(
 Map<String, dynamic> _$BeritaPpidToJson(BeritaPpid instance) =>
     <String, dynamic>{
       'id_post': instance.idPost,
-      'id_kategori': instance.idKategori,
+      'ids_kategori': instance.idsKategori,
       'kategori': instance.kategori,
       'post_name': instance.postName,
       'post_title': instance.postTitle,
