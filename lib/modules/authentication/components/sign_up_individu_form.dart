@@ -121,9 +121,7 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                       // _buildButton(),
                       BlocConsumer<AuthBloc, AuthState>(
                         bloc: _signUpBloc,
-                        listener: (context, state) {
-                          // TODO: implement listener
-                        },
+                        listener: (context, state) {},
                         builder: (context, state) {
                           if (kDebugMode) log("$state");
 
