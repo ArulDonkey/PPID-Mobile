@@ -21,14 +21,15 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
 
   final List<String> misiContents = [
     "Mengelola informasi dan dokumentasi berdasarkan Undang Undang Nomor 14 Tahun 2018",
-    "Mengelola informasi dan dokumentasi berdasarkan Undang Undang Nomor 14 Tahun 2018",
-    "Mengelola informasi dan dokumentasi berdasarkan Undang Undang Nomor 14 Tahun 2018",
+    "Memberikan layanan informasi dan dokumentasi secara profesional, adil, transparan dan akuntabel",
+    "Mendukung visi dan misi Universitas Islam Negeri Sunan Gunung Djati Bandung",
   ];
 
   final List<String> tujuanContents = [
+    "Memberikan pelayanan informasi dan dokumentasi yang prima",
     "Memberikan kemudahan kepada publik dalam mendapatkan informasi yang diperlukan dengan murah dan sederhana",
-    "Memberikan kemudahan kepada publik dalam mendapatkan informasi yang diperlukan dengan murah dan sederhana",
-    "Memberikan kemudahan kepada publik dalam mendapatkan informasi yang diperlukan dengan murah dan sederhana",
+    "Menyediakan dan memberikan informasi publik yang dikuasai secara akurat, benar dan tidak menyesatkan",
+    "Menyiapkan petugas informasi yang berdedikasi dan siap melayani",
   ];
 
   final List<Color> numberColors = [
@@ -239,7 +240,7 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
           options: CarouselOptions(
             viewportFraction: 1,
             // autoPlay: true,
-            enableInfiniteScroll: true,
+            enableInfiniteScroll: true, 
             onPageChanged: (index, reason) {
               setState(() {
                 if (type == "misi") {
@@ -253,7 +254,7 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
         ),
         SizedBox(height: 8),
         CarouselIndicator(
-          count: 3,
+          count: type == "misi" ? misiContents.length : tujuanContents.length,
           width: 8,
           height: 8,
           index: type == "misi" ? i : j,

@@ -87,7 +87,7 @@ class HomeCard extends StatelessWidget {
 
   Widget _buildBlueContainer() {
     return Container(
-      // width: 55,
+      width: 55,
       height: 55,
       decoration: BoxDecoration(
         color: Colors.blue,
