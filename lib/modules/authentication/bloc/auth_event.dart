@@ -9,26 +9,54 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SignUpIndividuEvent extends AuthEvent {
-  dynamic filePath;
-  String nik;
-  String email;
+class SignUpLembagaEvent extends AuthEvent {
+  String ktpPath;
+  String skPath;
+  String adartPath;
+  String skNegaraPath;
   String name;
-  String phoneNumber;
-  String address;
+  String email;
   String password;
   String confirmPassword;
+  String nik;
+  String phoneNumber;
+  String address;
 
-  SignUpIndividuEvent(
-    this.filePath,
-    this.nik,
-    this.email,
-    this.name,
-    this.phoneNumber,
-    this.address,
-    this.password,
-    this.confirmPassword,
-  );
+  SignUpLembagaEvent({
+    required this.ktpPath,
+    required this.skPath,
+    required this.adartPath,
+    required this.skNegaraPath,
+    required this.nik,
+    required this.email,
+    required this.name,
+    required this.phoneNumber,
+    required this.address,
+    required this.password,
+    required this.confirmPassword,
+  });
+}
+
+class SignUpIndividuEvent extends AuthEvent {
+  String filePath;
+  String name;
+  String email;
+  String password;
+  String confirmPassword;
+  String nik;
+  String phoneNumber;
+  String address;
+
+  SignUpIndividuEvent({
+    required this.filePath,
+    required this.nik,
+    required this.email,
+    required this.name,
+    required this.phoneNumber,
+    required this.address,
+    required this.password,
+    required this.confirmPassword,
+  });
 }
 
 class SignInEvent extends AuthEvent {

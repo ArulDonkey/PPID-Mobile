@@ -7,6 +7,7 @@ import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 
 class ReportAbuseScreen extends StatefulWidget {
   const ReportAbuseScreen({Key? key}) : super(key: key);
@@ -54,7 +55,12 @@ class _ReportAbuseScreenState extends State<ReportAbuseScreen> {
                 Expanded(
                   child: PrimaryButton(
                     onTap: () {
-                      // Navigator.pushNamed(context, "application-objection");
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        'base',
+                        arguments: BaseScreenArgument(index: 2),
+                        (route) => false,
+                      );
                     },
                     contentPadding: EdgeInsets.all(8),
                     backgroundColor: Pallete.lightGreen,

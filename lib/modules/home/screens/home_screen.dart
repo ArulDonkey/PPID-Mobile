@@ -16,7 +16,6 @@ import 'package:ppid_mobile/modules/home/components/home_card.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/news/components/news_horizontal_list.dart';
-import 'package:ppid_mobile/screens/detele_later_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
   final HomeBloc _beritaPpidBloc = HomeBloc();
 
   final int _pageIndex = 0;
+
+  final List<String> _imageUrls = [
+    'assets/images/slider1.png',
+    'assets/images/slider2.png',
+    'assets/images/slider3.png'
+  ];
 
   List<BeritaUin> _beritaUins = [];
   List<BeritaPpid> _beritaPpids = [];
@@ -65,12 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DeleteLaterScreen(),
-              ),
-            );
+            Navigator.pushNamed(context, 'under-construction');
           },
           splashRadius: 25,
           icon: SvgPicture.asset("assets/svgs/notification.svg"),
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.symmetric(vertical: 20),
           children: [
             Carousel(
-              // imageUrls: _carouselImageUrls,
+              imageUrls: _imageUrls,
               index: _pageIndex,
             ),
             SizedBox(height: 50),

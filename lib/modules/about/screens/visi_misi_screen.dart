@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -110,9 +112,7 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
           padding: EdgeInsets.symmetric(
             vertical: 16,
           ),
-          child: _buildSlider(
-            type: "misi",
-          ),
+          child: _buildSlider(type: 1),
         ),
       ],
     );
@@ -136,9 +136,7 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
           padding: EdgeInsets.symmetric(
             vertical: 16,
           ),
-          child: _buildSlider(
-            type: "tujuan",
-          ),
+          child: _buildSlider(),
         ),
       ],
     );
@@ -196,7 +194,7 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(60),
+              shape: BoxShape.circle,
               color: numberColor,
             ),
             child: Center(
@@ -219,19 +217,17 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
     );
   }
 
-  Widget _buildSlider({required String type}) {
+  Widget _buildSlider({int? type}) {
     return Column(
       children: [
         CarouselSlider.builder(
-          itemCount:
-              type == "misi" ? misiContents.length : tujuanContents.length,
+          itemCount: type != null ? misiContents.length : tujuanContents.length,
           itemBuilder: (context, index, pageViewIndex) {
+            // log(tujuanContents[index]);
             return Container(
               margin: EdgeInsets.all(8),
               child: _buildMisiContainer(
-                text: type == "misi"
-                    ? misiContents[index]
-                    : tujuanContents[index],
+                text: type == 1 ? misiContents[index] : tujuanContents[index],
                 numberColor: numberColors[index],
                 number: index + 1,
               ),
@@ -239,25 +235,26 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
           },
           options: CarouselOptions(
             viewportFraction: 1,
-            // autoPlay: true,
-            enableInfiniteScroll: true, 
+            enableInfiniteScroll: true,
             onPageChanged: (index, reason) {
               setState(() {
-                if (type == "misi") {
+                if (type == 1) {
                   i = index;
                 } else {
                   j = index;
                 }
               });
+
+              log('$j');
             },
           ),
         ),
         SizedBox(height: 8),
         CarouselIndicator(
-          count: type == "misi" ? misiContents.length : tujuanContents.length,
+          count: type == 1 ? misiContents.length : tujuanContents.length,
           width: 8,
           height: 8,
-          index: type == "misi" ? i : j,
+          index: type == 1 ? i : j,
           activeColor: Pallete.blue,
           color: Pallete.disabled,
         ),

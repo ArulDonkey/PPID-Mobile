@@ -16,6 +16,7 @@ import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/authentication/bloc/auth_bloc.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -232,21 +233,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 );
               }
             },
-            // child: PrimaryButton(
-            //   onTap: () {
-            //     // log("email: ${_emailController.text}\npassword: ${_passwordController.text}");
-            //   },
-            //   contentPadding: EdgeInsets.symmetric(
-            //     horizontal: 48,
-            //     vertical: 10,
-            //   ),
-            //   child: TextWidget(
-            //     "Masuk",
-            //     color: Colors.white,
-            //     fontSize: 16,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            // ),
           ),
         ),
         SizedBox(height: 50),
@@ -297,6 +283,13 @@ class _SignInScreenState extends State<SignInScreen> {
             _emailController.text,
             _passwordController.text,
           ));
+
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            'base',
+            arguments: BaseScreenArgument(index: 0),
+            (route) => false,
+          );
         }
       },
       contentPadding: EdgeInsets.symmetric(

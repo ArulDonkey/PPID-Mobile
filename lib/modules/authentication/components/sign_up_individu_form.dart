@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
@@ -15,6 +16,13 @@ import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/authentication/bloc/auth_bloc.dart';
+
+class SignUpIndividuForm extends StatefulWidget {
+  const SignUpIndividuForm({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpIndividuForm> createState() => _SignUpIndividuFormState();
+}
 
 final TextEditingController _fileKtpController = TextEditingController();
 final TextEditingController _nikController = TextEditingController();
@@ -25,13 +33,6 @@ final TextEditingController _addressController = TextEditingController();
 final TextEditingController _passwordController = TextEditingController();
 final TextEditingController _confirmPasswordController =
     TextEditingController();
-
-class SignUpIndividuForm extends StatefulWidget {
-  const SignUpIndividuForm({Key? key}) : super(key: key);
-
-  @override
-  State<SignUpIndividuForm> createState() => _SignUpIndividuFormState();
-}
 
 class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
   final AuthBloc _signUpBloc = AuthBloc();
@@ -60,8 +61,8 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
 
   @override
   void initState() {
-    for (var element in _controllers) {
-      element.text = "";
+    for (var item in _controllers) {
+      item.text = '';
     }
     super.initState();
   }
@@ -102,15 +103,27 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
               readOnly: index > 0 ? false : true,
               suffixIcon: index > 0
                   ? null
-                  : PrimaryButton(
+                  : GestureDetector(
                       onTap: () async {
                         selectFile(index);
                       },
-                      backgroundColor: Pallete.blue,
-                      child: TextWidget(
-                        "Unggah",
-                        fontSize: 10,
-                        color: Colors.white,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 14,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(60),
+                            color: Pallete.blue,
+                          ),
+                          child: TextWidget(
+                            "Unggah",
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
             ),
@@ -118,10 +131,23 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                 ? Column(
                     children: [
                       SizedBox(height: 36),
-                      // _buildButton(),
                       BlocConsumer<AuthBloc, AuthState>(
                         bloc: _signUpBloc,
-                        listener: (context, state) {},
+                        listener: (context, state) {
+                          if (state is SignUpIndividuSuccessState) {
+                            Fluttertoast.showToast(
+                              msg: 'Sign up success',
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                          }
+
+                          if (state is SignUpIndividuFailedState) {
+                            Fluttertoast.showToast(
+                              msg: state.message,
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                          }
+                        },
                         builder: (context, state) {
                           if (kDebugMode) log("$state");
 
@@ -186,17 +212,17 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
 
   Widget _buildButton() {
     return PrimaryButton(
-      onTap: () {
+      onTap: () async {
         _signUpBloc.add(
           SignUpIndividuEvent(
-            _fileResult!.path,
-            _nikController.text,
-            _emailController.text,
-            _nameController.text,
-            _phoneController.text,
-            _addressController.text,
-            _passwordController.text,
-            _confirmPasswordController.text,
+            filePath: _fileResult!.path,
+            nik: _nikController.text,
+            email: _emailController.text,
+            name: _nameController.text,
+            phoneNumber: _phoneController.text,
+            address: _addressController.text,
+            password: _passwordController.text,
+            confirmPassword: _confirmPasswordController.text,
           ),
         );
       },
@@ -220,9 +246,9 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
     );
 
     _fileResult = File(filePicker!.files.single.path!);
+    PlatformFile fileInfo = filePicker.files.first;
 
     if (_fileResult != null) {
-      PlatformFile fileInfo = filePicker.files.first;
       _controllers[index].text = fileInfo.name;
     }
   }

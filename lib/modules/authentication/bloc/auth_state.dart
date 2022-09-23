@@ -21,7 +21,11 @@ class AuthErrorState extends AuthState {
 
 class SignUpIndividuSuccessState extends AuthState {}
 
-class SignUpIndividuFailedState extends AuthState {}
+class SignUpIndividuFailedState extends AuthState {
+  String message;
+
+  SignUpIndividuFailedState(this.message);
+}
 
 class SignUpIndividuLoadingState extends AuthState {}
 
@@ -29,6 +33,22 @@ class SignUpIndividuErrorState extends AuthState {
   String message;
 
   SignUpIndividuErrorState(this.message);
+}
+
+class SignUpLembagaSuccessState extends AuthState {}
+
+class SignUpLembagaFailedState extends AuthState {
+  String message;
+
+  SignUpLembagaFailedState(this.message);
+}
+
+class SignUpLembagaLoadingState extends AuthState {}
+
+class SignUpLembagaErrorState extends AuthState {
+  String message;
+
+  SignUpLembagaErrorState(this.message);
 }
 
 class SignInSuccessState extends AuthState {}

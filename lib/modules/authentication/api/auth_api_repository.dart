@@ -6,24 +6,34 @@ import 'package:ppid_mobile/configs/api.config.dart';
 class AuthApiRepository {
   final String _baseUrl = ApiConfig.baseUrl;
 
-  Future<http.Response> signUp({body, filePath}) async {
+  Future<http.Response> signUpLembaga(
+      {body, fileKtp, fileSk, fileAdArt, fileSkNegara}) async {
     try {
       final Uri uri = Uri.parse("$_baseUrl/auth/register");
-      // var request = http.MultipartRequest("POST", uri);
-      // request.files.add(http.MultipartFile.fromBytes(
-      //   "ktp",
-      //   await File.fromUri(filePath).readAsBytes(),
-      // ));
-      http.Response response = await http.post(
-        uri,
-        body: body,
-      );
+      var request = http.MultipartRequest('POST', uri);
+      request.fields.addAll(body);
+      request.files.add(await http.MultipartFile.fromPath('ktp', fileKtp));
+      request.files.add(await http.MultipartFile.fromPath('sk', fileSk));
+      request.files.add(await http.MultipartFile.fromPath('adart', fileAdArt));
+      request.files
+          .add(await http.MultipartFile.fromPath('sk_negara', fileSkNegara));
+      var sendRequest = await request.send();
+      var response = await http.Response.fromStream(sendRequest);
 
-      // request.send().then((response) {
-      //   if (response.statusCode == 200) {
-      //     log("File uploaded");
-      //   }
-      // });
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<http.Response> signUpIndividu({body, file}) async {
+    try {
+      final Uri uri = Uri.parse("$_baseUrl/auth/register");
+      var request = http.MultipartRequest('POST', uri);
+      request.fields.addAll(body);
+      request.files.add(await http.MultipartFile.fromPath('ktp', file));
+      var sendRequest = await request.send();
+      var response = await http.Response.fromStream(sendRequest);
 
       return response;
     } catch (e) {

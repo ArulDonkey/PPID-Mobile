@@ -24,7 +24,9 @@ import 'package:ppid_mobile/modules/service/screens/report_abuse_screen.dart';
 import 'package:ppid_mobile/modules/service/screens/request_complaint_procedure_screen.dart';
 import 'package:ppid_mobile/modules/service/screens/request_information_procedure_screen.dart';
 import 'package:ppid_mobile/screens/base_screen.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 import 'package:ppid_mobile/screens/not_found_screen.dart';
+import 'package:ppid_mobile/screens/under_construction_screen.dart';
 
 class RouteConfig {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -32,7 +34,9 @@ class RouteConfig {
       case "base":
         return _buildRoute(
           settings,
-          BaseScreen(),
+          BaseScreen(
+            argument: settings.arguments as BaseScreenArgument,
+          ),
         );
       case "news-detail":
         return _buildRoute(
@@ -129,11 +133,12 @@ class RouteConfig {
           settings,
           RegulationScreen(),
         );
+      case 'under-construction':
+        return _buildRoute(settings, UnderConstructionScreen());
 
       default:
+        return _buildRoute(settings, NotFoundScreen());
     }
-
-    return _buildRoute(settings, NotFoundScreen());
   }
 
   MaterialPageRoute _buildRoute(RouteSettings settings, Widget builder) {

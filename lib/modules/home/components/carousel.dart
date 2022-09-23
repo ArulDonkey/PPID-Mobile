@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 
 class Carousel extends StatefulWidget {
-  // List<String> imageUrls;
+  List<String> imageUrls;
   int? index;
   Carousel({
     Key? key,
-    // required this.imageUrls,
+    required this.imageUrls,
     this.index,
   }) : super(key: key);
 
@@ -22,18 +22,24 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         CarouselSlider.builder(
-          itemCount: 3,
+          itemCount: widget.imageUrls.length,
           itemBuilder: (context, index, pageViewIndex) {
-            return Image.asset(
-              "assets/images/carousel_dummy.png",
-              fit: BoxFit.cover,
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Image.asset(
+                widget.imageUrls[index],
+                // fit: BoxFit.fitHeight,
+              ),
             );
           },
           options: CarouselOptions(
-            viewportFraction: .70,
-            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            // viewportFraction: .8,
+            enlargeStrategy: CenterPageEnlargeStrategy.scale,
             autoPlay: true,
             enlargeCenterPage: true,
             enableInfiniteScroll: true,
@@ -46,7 +52,7 @@ class _CarouselState extends State<Carousel> {
         ),
         // SizedBox(height: 10),
         CarouselIndicator(
-          count: 3,
+          count: widget.imageUrls.length,
           index: widget.index,
           activeColor: Pallete.blue,
           color: Pallete.disabled,

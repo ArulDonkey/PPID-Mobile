@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,16 +8,21 @@ import 'package:ppid_mobile/modules/call_center/screens/call_center_screen.dart'
 import 'package:ppid_mobile/modules/home/screens/home_screen.dart';
 import 'package:ppid_mobile/modules/information/screens/information_screen.dart';
 import 'package:ppid_mobile/modules/service/screens/service_screen.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+  BaseScreenArgument? argument;
+  BaseScreen({
+    Key? key,
+    this.argument,
+  }) : super(key: key);
 
   @override
   State<BaseScreen> createState() => _BaseScreenState();
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _selectedNavbarIndex = 0;
+  late int _selectedNavbarIndex;
 
   final List<Widget> _navbarPages = [
     HomeScreen(),
@@ -32,6 +37,16 @@ class _BaseScreenState extends State<BaseScreen> {
     setState(() {
       _selectedNavbarIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    if (widget.argument!.index != null) {
+      _selectedNavbarIndex = widget.argument!.index!;
+    } else {
+      _selectedNavbarIndex = 0;
+    }
+    super.initState();
   }
 
   @override
