@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/screens/base_screen_argument.dart';
+import 'package:ppid_mobile/screens/onboarding_screen.dart';
 import 'package:ppid_mobile/utils/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,12 +27,10 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
       Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(
+        Navigator.pushReplacement(
           context,
-          "base",
-          arguments: BaseScreenArgument(
-            index: 0,
-          ),
+          MaterialPageRoute(
+              builder: (BuildContext context) => OnboardingScreen()),
         );
       },
     );
