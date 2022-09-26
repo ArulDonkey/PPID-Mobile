@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,13 +21,13 @@ class CallCenterScreen extends StatefulWidget {
 }
 
 class _CallCenterScreenState extends State<CallCenterScreen> {
-  final PpidSharedPreferences _sharedPreferences = PpidSharedPreferences();
+  final PpidSharedPreferences _preferences = PpidSharedPreferences();
   User? _user;
 
   @override
   void initState() {
     // WidgetsBinding.instance.addPersistentFrameCallback((_) async {
-    getuserInfo();
+    getCurrentUser();
     // });
     super.initState();
   }
@@ -65,8 +66,14 @@ class _CallCenterScreenState extends State<CallCenterScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            _user != null ? Container() : _buildFirstContainer(),
-            SizedBox(height: 40),
+            _user != null
+                ? Container()
+                : Column(
+                    children: [
+                      _buildFirstContainer(),
+                      SizedBox(height: 40),
+                    ],
+                  ),
             _buildSecondContainer(),
             SizedBox(height: 24),
           ],
@@ -311,10 +318,14 @@ class _CallCenterScreenState extends State<CallCenterScreen> {
     );
   }
 
-  getuserInfo() async {
-    var map = await _sharedPreferences.getCurrentUserValue();
+  void getCurrentUser() async {
+    var user = await _preferences.getCurrentUserValue();
     setState(() {
-      _user = User.fromJson(jsonDecode(map));
+      if (user != null) {
+        var map = jsonDecode(user);
+        _user = User.fromJson(map);
+        log('$_user');
+      }
     });
   }
 }

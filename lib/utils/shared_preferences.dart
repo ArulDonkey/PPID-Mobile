@@ -13,7 +13,7 @@ class PpidSharedPreferences {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var isFirstLaunch = sharedPreferences.getBool("isFirstLaunch");
 
-    return isFirstLaunch;
+    return isFirstLaunch ?? true;
   }
 
   setCurrentUserValue(User user) async {
@@ -26,5 +26,10 @@ class PpidSharedPreferences {
     var currentUser = sharedPreferences.getString('user');
 
     return currentUser;
+  }
+
+  removeCurrentUserValue() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove('user');
   }
 }

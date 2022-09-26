@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
@@ -10,12 +11,15 @@ import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
+import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/modules/authentication/models/user/user.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
 import 'package:ppid_mobile/modules/home/components/carousel.dart';
 import 'package:ppid_mobile/modules/home/components/home_card.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/news/components/news_horizontal_list.dart';
+import 'package:ppid_mobile/utils/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,8 +29,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PpidSharedPreferences _preferences = PpidSharedPreferences();
+  final HomeBloc _homeBloc = HomeBloc();
   final HomeBloc _beritaUinBloc = HomeBloc();
   final HomeBloc _beritaPpidBloc = HomeBloc();
+  User? _user;
 
   final int _pageIndex = 0;
 
@@ -41,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _homeBloc.add(SetToInitEvent());
+    getCurrentUser();
     _beritaUinBloc.add(GetBeritaUinEvent());
     _beritaPpidBloc.add(GetBeritaPpidEvent());
     super.initState();
@@ -50,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _beritaUinBloc.close();
     _beritaPpidBloc.close();
+    _homeBloc.close();
     super.dispose();
   }
 
@@ -66,16 +76,33 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       backButton: false,
       showLogo: true,
-      centerTitle: false,
+      // centerTitle: false,
+      leading: _user != null
+          ? Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Container(
+                // width: 20,
+                // height: 20,
+                decoration: BoxDecoration(
+                  color: Pallete.blue,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            )
+          : Container(),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, 'under-construction');
-          },
-          splashRadius: 25,
-          icon: SvgPicture.asset("assets/svgs/notification.svg"),
-          tooltip: "Notifikasi",
-        ),
+        _user != null
+            ? IconButton(
+                onPressed: () {
+                  logout();
+                  Navigator.pushReplacementNamed(context, 'splash');
+                },
+                splashRadius: 25,
+                icon: SvgPicture.asset("assets/svgs/logout.svg"),
+                tooltip: "Notifikasi",
+              )
+            : Container(),
+        SizedBox(width: 14),
       ],
     );
   }
@@ -84,6 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BackgroundedContainer(
       child: RefreshIndicator(
         onRefresh: () async {
+          _homeBloc.add(SetToInitEvent());
           _beritaUinBloc.add(GetBeritaUinEvent());
           _beritaPpidBloc.add(GetBeritaPpidEvent());
         },
@@ -97,12 +125,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 50),
             _buildHomeCard(),
-            SizedBox(height: 50),
+            SizedBox(height: 40),
             _buildBeritaPpidList(_beritaPpids),
             SizedBox(height: 24),
             _buildBeritaUinList(_beritaUins),
           ],
-          // ),
         ),
       ),
     );
@@ -132,17 +159,24 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(
-          3,
+          homeCardLabels.length,
           (index) {
             return HomeCard(
               iconUrl: homeCardIconUrls[index],
               title: homeCardLabels[index],
               description: "Informasi Publik",
               onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  navigations[index],
-                );
+                if (_user != null) {
+                  Navigator.pushNamed(
+                    context,
+                    navigations[index],
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    'sign-in',
+                  );
+                }
               },
             );
           },
@@ -229,5 +263,20 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
     );
+  }
+
+  void getCurrentUser() async {
+    var user = await _preferences.getCurrentUserValue();
+    setState(() {
+      if (user != null) {
+        var map = jsonDecode(user);
+        _user = User.fromJson(map);
+        log('$_user');
+      }
+    });
+  }
+
+  void logout() async {
+    _preferences.removeCurrentUserValue();
   }
 }

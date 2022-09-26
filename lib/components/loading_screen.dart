@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -15,12 +15,7 @@ class LoadingScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset("assets/images/loading.png"),
-          SizedBox(height: 28),
-          SpinKitThreeBounce(
-            color: Colors.black,
-            size: 20,
-          ),
-          SizedBox(height: 8),
+          LoadingWidget(size: 50),
           TextWidget("Tunggu sebentar"),
         ],
       ),

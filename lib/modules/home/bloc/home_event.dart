@@ -12,3 +12,8 @@ class GetBeritaPpidEvent extends HomeEvent {
   @override
   List<Object?> get props => [];
 }
+
+class SetToInitEvent extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}

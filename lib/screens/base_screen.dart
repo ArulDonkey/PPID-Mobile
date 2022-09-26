@@ -74,22 +74,6 @@ class _BaseScreenState extends State<BaseScreen> {
       "Tentang Kami",
     ];
 
-    // return TitledBottomNavigationBar(
-    //   onTap: _onNavbarItemTapped,
-    //   items: List.generate(navbarLabels.length, (index) {
-    //     return TitledNavigationBarItem(
-    //       icon: Padding(
-    //         padding: EdgeInsets.symmetric(vertical: 4.0),
-    //         child: SvgPicture.asset(
-    //           navbarIconUrls[index],
-    //           width: index == 3 ? 9 : 20,
-    //         ),
-    //       ),
-    //       label: navbarLabels[index],
-    //     );
-    //   }),
-    // );
-
     return ClipRRect(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16),
@@ -104,27 +88,37 @@ class _BaseScreenState extends State<BaseScreen> {
         unselectedFontSize: 9,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
-        selectedLabelStyle: TextStyle(
-          decoration: TextDecoration.underline,
-          decorationThickness: 2,
-          // shadows: [
-          //   Shadow(
-          //     color: Colors.red,
-          //     offset: Offset(0, -5),
-          //   ),
-          // ],
-        ),
-        unselectedLabelStyle: TextStyle(
-          color: Colors.white,
-        ),
         items: List.generate(navbarLabels.length, (index) {
           return BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.symmetric(vertical: 4.0),
-              child: SvgPicture.asset(
-                navbarIconUrls[index],
-                width: index == 3 ? 9 : 20,
-              ),
+              child: index == _selectedNavbarIndex
+                  ? Column(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 2,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(60),
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: index == 3 ? 7 : 8),
+                        SvgPicture.asset(
+                          navbarIconUrls[index],
+                          width: index == 3 ? 9 : 20,
+                          color: Colors.white,
+                        ),
+                      ],
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(top: index == 3 ? 9 : 10),
+                      child: SvgPicture.asset(
+                        navbarIconUrls[index],
+                        width: index == 3 ? 9 : 20,
+                        color: Colors.white,
+                      ),
+                    ),
             ),
             label: navbarLabels[index],
           );

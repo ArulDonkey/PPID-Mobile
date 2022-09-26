@@ -6,11 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
-import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/primary_textfield.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
@@ -88,7 +88,6 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(vertical: 32),
@@ -109,6 +108,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Container(
       padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
       width: double.infinity,
+      height: MediaQuery.of(context).size.height / 1.3,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
@@ -123,6 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget _buildForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(height: 16),
         Padding(
@@ -133,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
             fontSize: 18,
           ),
         ),
-        SizedBox(height: 4),
+        // SizedBox(height: 4),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: TextWidget(
@@ -142,7 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
             color: Pallete.disabled,
           ),
         ),
-        SizedBox(height: 20),
+        // SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: 16,
@@ -195,14 +196,13 @@ class _SignInScreenState extends State<SignInScreen> {
               if (state is AuthInitialState) {
                 return _buildSignInButton();
               } else if (state is SignInLoadingState) {
-                return SizedBox(
+                return PrimaryButton(
                   width: 150,
-                  child: PrimaryButton(
-                    onTap: () {},
-                    child: LoadingWidget(
-                      size: 12,
-                      color: Colors.white,
-                    ),
+                  onTap: () {},
+                  contentPadding: EdgeInsets.symmetric(vertical: 12),
+                  child: SpinKitThreeBounce(
+                    color: Colors.white,
+                    size: 20,
                   ),
                 );
               } else {
@@ -227,9 +227,15 @@ class _SignInScreenState extends State<SignInScreen> {
               }
 
               if (state is SignInSuccessState) {
-                Fluttertoast.showToast(
-                  msg: "Logged in",
-                  toastLength: Toast.LENGTH_SHORT,
+                // Fluttertoast.showToast(
+                //   msg: "Logged in",
+                //   toastLength: Toast.LENGTH_SHORT,
+                // );
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  'base',
+                  arguments: BaseScreenArgument(index: 0),
+                  (route) => false,
                 );
               }
             },
@@ -269,13 +275,14 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
         ),
+        SizedBox(height: 16),
       ],
     );
   }
 
   Widget _buildSignInButton() {
     return PrimaryButton(
-      onTap: () {
+      onTap: () async {
         if (_emailController.text == "" || _passwordController.text == "") {
           Fluttertoast.showToast(msg: "Data tidak boleh kosong");
         } else {
@@ -283,13 +290,6 @@ class _SignInScreenState extends State<SignInScreen> {
             _emailController.text,
             _passwordController.text,
           ));
-
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            'base',
-            arguments: BaseScreenArgument(index: 0),
-            (route) => false,
-          );
         }
       },
       contentPadding: EdgeInsets.symmetric(

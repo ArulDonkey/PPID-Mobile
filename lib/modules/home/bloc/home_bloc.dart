@@ -34,6 +34,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       } else {
         emit(BeritaPpidNoConnectionState());
       }
+    } else if (event is SetToInitEvent) {
+      emit(HomeInitialState());
     }
   }
 

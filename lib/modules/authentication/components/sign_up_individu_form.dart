@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
@@ -154,14 +155,14 @@ class _SignUpIndividuFormState extends State<SignUpIndividuForm> {
                           if (state is AuthInitialState) {
                             return _buildButton();
                           } else if (state is SignUpIndividuLoadingState) {
-                            return SizedBox(
+                            return PrimaryButton(
                               width: 150,
-                              child: PrimaryButton(
-                                onTap: () {},
-                                child: LoadingWidget(
-                                  size: 12,
-                                  color: Colors.white,
-                                ),
+                              onTap: () {},
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 12),
+                              child: SpinKitThreeBounce(
+                                color: Colors.white,
+                                size: 20,
                               ),
                             );
                           } else {

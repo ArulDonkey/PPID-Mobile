@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 import 'package:ppid_mobile/screens/onboarding/data.dart';
 import 'package:ppid_mobile/screens/onboarding/size_config.dart';
-import 'package:ppid_mobile/screens/signup_signin.dart';
+import 'package:ppid_mobile/utils/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0;
   final _pageController = PageController(initialPage: 0);
+  final PpidSharedPreferences _preferences = PpidSharedPreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +144,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ? MyTextButton(
                 buttonName: 'Mulai',
                 onPressed: () {
-                  Navigator.push(
+                  _preferences.setFirstLaunchValue(false);
+                  Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(builder: ((context) => signup_signin())),
+                    'base',
+                    arguments: BaseScreenArgument(index: 0),
                   );
                 },
                 bgColor: Color.fromARGB(255, 27, 33, 58),

@@ -26,11 +26,14 @@ import 'package:ppid_mobile/modules/service/screens/request_information_procedur
 import 'package:ppid_mobile/screens/base_screen.dart';
 import 'package:ppid_mobile/screens/base_screen_argument.dart';
 import 'package:ppid_mobile/screens/not_found_screen.dart';
+import 'package:ppid_mobile/screens/splash_screen.dart';
 import 'package:ppid_mobile/screens/under_construction_screen.dart';
 
 class RouteConfig {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case 'splash':
+        return _buildRoute(settings, SplashScreen());
       case "base":
         return _buildRoute(
           settings,

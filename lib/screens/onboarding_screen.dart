@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
-import 'package:ppid_mobile/screens/base_screen.dart';
-import 'package:ppid_mobile/screens/onboarding/data.dart';
+import 'package:ppid_mobile/screens/base_screen_argument.dart';
 import 'package:ppid_mobile/screens/onboarding/onboarding_page.dart';
 import 'package:ppid_mobile/screens/onboarding/size_config.dart';
+import 'package:ppid_mobile/utils/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -15,6 +15,8 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final PpidSharedPreferences _preferences = PpidSharedPreferences();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -69,9 +71,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     OnBoardNavBtn(
                       name: 'Lewati',
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        _preferences.setFirstLaunchValue(false);
+                        Navigator.pushReplacementNamed(
                           context,
-                          MaterialPageRoute(builder: (context) => BaseScreen()),
+                          'base',
+                          arguments: BaseScreenArgument(index: 0),
                         );
                       },
                     ),
