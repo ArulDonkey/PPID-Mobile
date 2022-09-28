@@ -241,7 +241,7 @@ class _SignInScreenState extends State<SignInScreen> {
             },
           ),
         ),
-        SizedBox(height: 50),
+        SizedBox(height: 40),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
           child: Center(

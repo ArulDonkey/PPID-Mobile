@@ -10,7 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
+import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
+import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/authentication/models/user/user.dart';
 import 'package:ppid_mobile/modules/home/bloc/home_bloc.dart';
@@ -95,11 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ? IconButton(
                 onPressed: () {
                   logout();
-                  Navigator.pushReplacementNamed(context, 'splash');
+                  // Navigator.pushReplacementNamed(context, 'splash');
                 },
                 splashRadius: 25,
                 icon: SvgPicture.asset("assets/svgs/logout.svg"),
-                tooltip: "Notifikasi",
+                tooltip: "Keluar",
               )
             : Container(),
         SizedBox(width: 14),
@@ -172,10 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     navigations[index],
                   );
                 } else {
-                  Navigator.pushNamed(
-                    context,
-                    'sign-in',
-                  );
+                  login();
                 }
               },
             );
@@ -189,9 +188,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<HomeBloc, HomeState>(
       bloc: _beritaUinBloc,
       builder: (context, state) {
-        // if (kDebugMode) {
-        //   log("BERITA PPID STATE: $state");
-        // }
+        if (kDebugMode) {
+          log("BERITA UIN STATE: $state");
+        }
 
         if (state is HomeInitialState || state is BeritaUinLoadingState) {
           return LoadingWidget();
@@ -276,7 +275,127 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void logout() async {
-    _preferences.removeCurrentUserValue();
+  void login() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 32,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextWidget(
+                    'Untuk melanjutkan anda harus masuk terlebih dahulu',
+                    textAlign: TextAlign.center,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 16),
+                  PrimaryButton(
+                    backgroundColor: Pallete.blue,
+                    width: double.infinity,
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, 'sign-in');
+                    },
+                    child: TextWidget(
+                      'Masuk',
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void logout() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 16,
+                horizontal: 32,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextWidget(
+                    'Anda yakin ingin keluar?',
+                    textAlign: TextAlign.center,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PrimaryButton(
+                          elevation: 0,
+                          borderRadius: 60,
+                          backgroundColor: Colors.white,
+                          width: double.infinity,
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 16,
+                          ),
+                          child: TextWidget('Tidak'),
+                        ),
+                      ),
+                      SizedBox(width: 32),
+                      Expanded(
+                        child: PrimaryButton(
+                          elevation: 0,
+                          borderRadius: 60,
+                          backgroundColor: Pallete.red,
+                          width: double.infinity,
+                          onTap: () {
+                            Navigator.pop(context);
+                            _preferences.removeCurrentUserValue();
+                            Navigator.pushReplacementNamed(context, 'splash');
+                          },
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 16,
+                          ),
+                          child: TextWidget(
+                            'Ya',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

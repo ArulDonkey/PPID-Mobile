@@ -11,6 +11,7 @@ class PrimaryButton extends StatefulWidget {
   double? width;
   double? borderRadius;
   Size? mininumSize;
+  double? elevation;
 
   PrimaryButton({
     Key? key,
@@ -20,6 +21,7 @@ class PrimaryButton extends StatefulWidget {
     this.contentPadding,
     this.width,
     this.borderRadius,
+    this.elevation,
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
       child: ElevatedButton(
         onPressed: widget.onTap,
         style: ButtonStyle(
+          elevation: MaterialStateProperty.all(widget.elevation),
           backgroundColor: MaterialStateProperty.all(
             widget.backgroundColor ?? Pallete.navy,
           ),
