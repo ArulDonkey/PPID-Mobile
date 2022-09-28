@@ -25,19 +25,20 @@ class _VisiMisiScreenState extends State<VisiMisiScreen> {
     "Mengelola informasi dan dokumentasi berdasarkan Undang Undang Nomor 14 Tahun 2018",
     "Memberikan layanan informasi dan dokumentasi secara profesional, adil, transparan dan akuntabel",
     "Mendukung visi dan misi Universitas Islam Negeri Sunan Gunung Djati Bandung",
+    "Menyiapkan petugas informasi yang berdedikasi dan siap melayani",
   ];
 
   final List<String> tujuanContents = [
     "Memberikan pelayanan informasi dan dokumentasi yang prima",
     "Memberikan kemudahan kepada publik dalam mendapatkan informasi yang diperlukan dengan murah dan sederhana",
     "Menyediakan dan memberikan informasi publik yang dikuasai secara akurat, benar dan tidak menyesatkan",
-    "Menyiapkan petugas informasi yang berdedikasi dan siap melayani",
   ];
 
   final List<Color> numberColors = [
     Pallete.yellow,
     Pallete.lightGreen,
     Pallete.blue,
+    Pallete.yellow,
   ];
 
   @override

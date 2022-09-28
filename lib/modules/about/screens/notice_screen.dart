@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
+import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class NoticeScreen extends StatefulWidget {
 class _NoticeScreenState extends State<NoticeScreen> {
   final String _description =
       "“Dengan ini, kami menyatakan sanggup menyelenggarakan informasi publik sesuai standar yang telah diterapkan, dan apabila tidak menepati janji kami siap menerima sanksi sesuai peraturan perundang-undangan yang berlaku”";
+  final String _urls = 'https://ppid.uinsgd.ac.id/maklumat';
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +78,30 @@ class _NoticeScreenState extends State<NoticeScreen> {
                 TextWidget("Prof. Dr. H. Mahmud, M.Si, CSEE"),
               ],
             ),
+            _buildButton(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildButton() {
+    return Center(
+      child: TextButton(
+        child: Text(
+          'cek detail',
+          style: TextStyle(
+            fontStyle: FontStyle.italic,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            'about-webview',
+            arguments: AboutWebviewScreenArgument(_urls),
+          );
+        },
       ),
     );
   }
