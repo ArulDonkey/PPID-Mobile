@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,6 +22,8 @@ enum InformationListType {
   type1,
   type2,
   type3,
+  type4,
+  type5,
 }
 
 class InformationListScreen extends StatefulWidget {
@@ -47,9 +52,15 @@ class _InformationListScreenState extends State<InformationListScreen> {
     } else if (widget.argument!.type == InformationListType.type2) {
       title = "Informasi Wajib Tersedia Setiap Saat";
       type = 2;
-    } else {
+    } else if (widget.argument!.type == InformationListType.type3) {
       title = "Informasi Wajib Diumumkan Serta Merta";
       type = 3;
+    } else if (widget.argument!.type == InformationListType.type4) {
+      title = "Daftar Informasi yang Dikecualikan";
+      type = 4;
+    } else {
+      title = "Berita Penanganan Covid";
+      type = 5;
     }
 
     refresh();
@@ -91,7 +102,7 @@ class _InformationListScreenState extends State<InformationListScreen> {
     return BlocBuilder<PublicInformationBloc, PublicInformationState>(
       bloc: _publicInformationBloc,
       builder: (context, state) {
-        // if (kDebugMode) log(state.toString());
+        if (kDebugMode) log(state.toString());
 
         if (state is PublicInformationInitialState ||
             state is PublicInformationLoadingState) {

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
@@ -51,7 +51,9 @@ class _InformationScreenState extends State<InformationScreen> {
       "Informasi Wajib Berkala",
       "Informasi Wajib Tersedia Setiap Saat",
       "Informasi Wajib Diumumkan Serta Merta",
+      'Daftar Informasi Yang Dikecualikan',
       "Berita Terbaru",
+      'Berita Penanganan Covid',
     ];
 
     return BackgroundedContainer(
@@ -87,7 +89,7 @@ class _InformationScreenState extends State<InformationScreen> {
                   numberPrimary: index + 1,
                   primaryContainerColor: containerColors[i++],
                   onTap: () {
-                    if (index == 3) {
+                    if (index == 4) {
                       Navigator.pushNamed(
                         context,
                         "news-list",
@@ -96,11 +98,17 @@ class _InformationScreenState extends State<InformationScreen> {
                         ),
                       );
                     } else {
+                      var x;
+
+                      if (index == 5) {
+                        x = 4;
+                      }
+
                       Navigator.pushNamed(
                         context,
                         "information-list",
                         arguments: InformationListScreenArgument(
-                          type: InformationListType.values[index],
+                          type: InformationListType.values[x ?? index],
                         ),
                       );
                     }
