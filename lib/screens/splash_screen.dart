@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
-import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/screens/base_screen.dart';
 import 'package:ppid_mobile/screens/base_screen_argument.dart';
 import 'package:ppid_mobile/screens/onboarding_screen.dart';
@@ -59,6 +56,5 @@ class _SplashScreenState extends State<SplashScreen> {
   isFirstLauch() async {
     var x = await _prefs.getFirstLaunchValue();
     _isFirstLaunch = x;
-    log('$_isFirstLaunch');
   }
 }

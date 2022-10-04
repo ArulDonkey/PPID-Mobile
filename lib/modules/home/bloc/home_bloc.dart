@@ -8,7 +8,9 @@ import 'package:ppid_mobile/modules/home/api/home_api_repository.dart';
 import 'package:ppid_mobile/modules/home/models/berita_ppid/berita_ppid.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/berita_uin.dart';
 import 'package:ppid_mobile/modules/home/models/berita_uin/title.dart';
+import 'package:ppid_mobile/modules/home/models/home_berita.dart';
 import 'package:ppid_mobile/utils/network_checker.dart';
+import 'package:ppid_mobile/utils/shared_preferences.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -16,6 +18,8 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeApiRepository _homeApiRepository = HomeApiRepository();
   final NetworkChecker _networkChecker = NetworkChecker.instance;
+  final PpidSharedPreferences _preferences = PpidSharedPreferences();
+  final HomeBerita _homeBerita = HomeBerita();
 
   HomeBloc() : super(HomeInitialState()) {
     on<HomeEvent>(homeEventHandler);
@@ -72,9 +76,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (beritaUins.isEmpty) {
         emit(BeritaUinEmptyState());
       } else {
-        emit(
-          BeritaUinLoadedState(itemList),
-        );
+        _homeBerita.setUin(itemList);
+        emit(BeritaUinLoadedState(itemList));
       }
     } catch (e) {
       emit(BeritaUinErrorState(e.toString()));
@@ -97,17 +100,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
 
       var beritaPpids = response.data["data"]["data"];
+      var list = List.generate(beritaPpids.length, (index) {
+        return BeritaPpid.fromJson(beritaPpids[index]);
+      });
+      // _preferences.saveBeritaPpids(list);
 
       if (beritaPpids.isEmpty) {
         emit(BeritaPpidEmptyState());
       } else {
-        emit(
-          BeritaPpidLoadedState(
-            List.generate(beritaPpids.length, (index) {
-              return BeritaPpid.fromJson(beritaPpids[index]);
-            }),
-          ),
-        );
+        _homeBerita.setPpid(list);
+        emit(BeritaPpidLoadedState(list));
       }
     } catch (e) {
       emit(BeritaPpidErrorState(e.toString()));

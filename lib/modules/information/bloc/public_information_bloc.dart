@@ -42,7 +42,7 @@ class PublicInformationBloc
     emit(PublicInformationLoadingState());
     try {
       Map<String, dynamic> params = {
-        "tipe_info_pub": event.type,
+        "ids_tipe_info_pub": event.type,
       };
 
       Response response =
@@ -50,14 +50,14 @@ class PublicInformationBloc
         params: params,
       );
 
-      var informations = response.data["data"]["informasi_publik"];
+      var informations = response.data["data"]["data"];
 
       List<PublicInformation> list = [];
 
       for (var information in informations) {
         list.add(PublicInformation(
           idInfoPub: information["id_info_pub"],
-          tipeInfoPub: information["tipe_info_pub"],
+          idsTipeInfoPub: information["ids_tipe_info_pub"],
           namaInfoPub: information["nama_info_pub"],
           linkInfoPub: information["link_info_pub"],
           subInfoPub: information["sub_info_pub"],

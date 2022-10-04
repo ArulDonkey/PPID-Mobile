@@ -9,8 +9,8 @@ part 'public_information.g.dart';
 class PublicInformation extends Equatable {
   @JsonKey(name: 'id_info_pub')
   final String? idInfoPub;
-  @JsonKey(name: 'tipe_info_pub')
-  final String? tipeInfoPub;
+  @JsonKey(name: 'ids_tipe_info_pub')
+  final String? idsTipeInfoPub;
   @JsonKey(name: 'nama_info_pub')
   final String? namaInfoPub;
   @JsonKey(name: 'link_info_pub')
@@ -20,7 +20,7 @@ class PublicInformation extends Equatable {
 
   const PublicInformation({
     this.idInfoPub,
-    this.tipeInfoPub,
+    this.idsTipeInfoPub,
     this.namaInfoPub,
     this.linkInfoPub,
     this.subInfoPub,
@@ -34,14 +34,14 @@ class PublicInformation extends Equatable {
 
   PublicInformation copyWith({
     String? idInfoPub,
-    String? tipeInfoPub,
+    String? idsTipeInfoPub,
     String? namaInfoPub,
     String? linkInfoPub,
     List<SubInfoPub>? subInfoPub,
   }) {
     return PublicInformation(
       idInfoPub: idInfoPub ?? this.idInfoPub,
-      tipeInfoPub: tipeInfoPub ?? this.tipeInfoPub,
+      idsTipeInfoPub: idsTipeInfoPub ?? this.idsTipeInfoPub,
       namaInfoPub: namaInfoPub ?? this.namaInfoPub,
       linkInfoPub: linkInfoPub ?? this.linkInfoPub,
       subInfoPub: subInfoPub ?? this.subInfoPub,
@@ -52,7 +52,7 @@ class PublicInformation extends Equatable {
   List<Object?> get props {
     return [
       idInfoPub,
-      tipeInfoPub,
+      idsTipeInfoPub,
       namaInfoPub,
       linkInfoPub,
       subInfoPub,

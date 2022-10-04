@@ -7,6 +7,7 @@ import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
 import 'package:ppid_mobile/screens/base_screen_argument.dart';
 
 class ReportAbuseScreen extends StatefulWidget {
@@ -63,31 +64,21 @@ class _ReportAbuseScreenState extends State<ReportAbuseScreen> {
                       );
                     },
                     contentPadding: EdgeInsets.all(8),
-                    backgroundColor: Pallete.lightGreen,
-                    child: TextWidget(
-                      "Ajukan Pengaduan melalui Kontak PPID",
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      textAlign: TextAlign.center,
-                    ),
+                    backgroundColor: Pallete.blue,
+                    child: SvgPicture.asset('assets/svgs/kontak_ppid.svg'),
                   ),
                 ),
                 SizedBox(width: 8),
                 Expanded(
                   child: PrimaryButton(
                     onTap: () {
-                      // Navigator.pushNamed(context, "application-objection");
+                      Navigator.pushNamed(context, 'about-webview',
+                          arguments: AboutWebviewScreenArgument(
+                              'https://www.lapor.go.id/'));
                     },
                     contentPadding: EdgeInsets.all(8),
-                    backgroundColor: Pallete.lightGreen,
-                    child: TextWidget(
-                      "Ajukan Pengaduan melalui Portal lapor.go.id",
-                      color: Colors.white,
-                      fontSize: 12,
-                      textAlign: TextAlign.center,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    backgroundColor: Pallete.blue,
+                    child: SvgPicture.asset('assets/svgs/lapor.svg'),
                   ),
                 ),
               ],
