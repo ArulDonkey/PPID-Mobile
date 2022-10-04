@@ -89,37 +89,85 @@ class _SignUpScreenState extends State<SignUpScreen>
     );
   }
 
-  Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 32),
-            child: TextWidget(
+  Widget _buildSliverAppbar() {
+    return SliverAppBar(
+      backgroundColor: Colors.transparent,
+      leading: Container(),
+      toolbarHeight: 220,
+      centerTitle: true,
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: EdgeInsets.only(top: 45),
+        title: Column(
+          children: [
+            TextWidget(
               "Daftar",
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
-          ),
-          _buildContainer(),
-        ],
+            SizedBox(height: 24),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(0, 32, 0, 0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 16),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: TextWidget(
+                        "Selamat datang!",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: TextWidget(
+                        "Silahkan daftar untuk melanjutkan",
+                        fontSize: 12,
+                        color: Pallete.disabled,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        centerTitle: true,
       ),
+    );
+  }
+
+  Widget _buildBody() {
+    return NestedScrollView(
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        return [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: _buildSliverAppbar(),
+          ),
+        ];
+      },
+      body: _buildContainer(),
     );
   }
 
   Widget _buildContainer() {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 24, 0, 0),
       width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-        color: Colors.white,
-      ),
+      color: Colors.white,
       child: _buildForm(),
     );
   }
@@ -128,33 +176,14 @@ class _SignUpScreenState extends State<SignUpScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 16),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: TextWidget(
-            "Selamat datang!",
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-        ),
-        SizedBox(height: 4),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: TextWidget(
-            "Silahkan daftar untuk melanjutkan",
-            fontSize: 12,
-            color: Pallete.disabled,
-          ),
-        ),
-        SizedBox(height: 36),
         TabBar(
           tabs: _tabs,
           controller: _tabController,
           indicatorColor: Colors.black,
+          indicatorWeight: 1,
           indicatorSize: TabBarIndicatorSize.label,
         ),
-        SizedBox(
-          height: 540,
+        Expanded(
           child: TabBarView(
             controller: _tabController,
             children: _tabViews,

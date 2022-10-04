@@ -39,7 +39,7 @@ class InformationListScreen extends StatefulWidget {
 
 class _InformationListScreenState extends State<InformationListScreen> {
   late String title;
-  int type = 0;
+  late int type;
   final PublicInformationBloc _publicInformationBloc = PublicInformationBloc();
 
   List<PublicInformation> _publicInformations = [];
@@ -48,19 +48,19 @@ class _InformationListScreenState extends State<InformationListScreen> {
   void initState() {
     if (widget.argument!.type == InformationListType.type1) {
       title = "Informasi Wajib Berkala";
-      type = 1;
+      type = 1661783928317;
     } else if (widget.argument!.type == InformationListType.type2) {
       title = "Informasi Wajib Tersedia Setiap Saat";
-      type = 2;
+      type = 1661783959079;
     } else if (widget.argument!.type == InformationListType.type3) {
       title = "Informasi Wajib Diumumkan Serta Merta";
-      type = 3;
+      type = 1661783985654;
     } else if (widget.argument!.type == InformationListType.type4) {
       title = "Daftar Informasi yang Dikecualikan";
-      type = 4;
+      type = 1663424587901;
     } else {
       title = "Berita Penanganan Covid";
-      type = 5;
+      type = 1661783985654;
     }
 
     refresh();

@@ -15,8 +15,23 @@ class PublicInformationApiRepository {
       );
 
       return response;
-    } on DioError catch (e) {
-      return e.response!.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> getInformationPublicType({
+    Map<String, dynamic>? params,
+  }) async {
+    try {
+      Response response = await _dio.get(
+        '$_baseUrl/tipe-informasi-publik',
+        queryParameters: params,
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
     }
   }
 }
