@@ -532,7 +532,6 @@ class LaunchButton extends StatelessWidget {
         icon: SvgPicture.asset(
           svg,
           height: 30,
-          color: Colors.blue,
         ),
       ),
     );
