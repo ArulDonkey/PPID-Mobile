@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
-import 'package:ppid_mobile/components/loading_widget.dart';
+import 'package:ppid_mobile/components/loading_screen.dart';
 import 'package:ppid_mobile/components/no_connection_screen.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
@@ -106,7 +106,7 @@ class _InformationListScreenState extends State<InformationListScreen> {
 
         if (state is PublicInformationInitialState ||
             state is PublicInformationLoadingState) {
-          return LoadingWidget();
+          return LoadingScreen();
         } else if (state is PublicInformationNoConnectionState) {
           return NoConnectionScreen(
             onRefresh: refresh,

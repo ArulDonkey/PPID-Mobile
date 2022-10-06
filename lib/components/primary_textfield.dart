@@ -53,6 +53,9 @@ class _PrimaryTextFieldState extends State<PrimaryTextField> {
           fontSize: 12,
         ),
         decoration: InputDecoration(
+          contentPadding: widget.suffixIcon != null
+              ? EdgeInsets.symmetric(vertical: 16)
+              : null,
           icon: widget.icon,
           hintText: widget.hintText,
           border: InputBorder.none,

@@ -1,6 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe, prefer_const_constructors
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -8,11 +9,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class NetworkChecker {
   static final NetworkChecker _instance = NetworkChecker();
   static NetworkChecker get instance => _instance;
-  bool isOnline = false;
+  bool isOnline = true;
 
   Connectivity connectivity = Connectivity();
   ConnectivityResult connectivityResult = ConnectivityResult.none;
   StreamController streamController = StreamController();
+
   Stream get stream => streamController.stream;
 
   void init() async {
@@ -28,26 +30,31 @@ class NetworkChecker {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         isOnline = true;
         // Fluttertoast.showToast(
-        //   msg: "Terhubung",
+        //   msg: "Terhubung ke internet",
         //   toastLength: Toast.LENGTH_SHORT,
         // );
       } else {
         isOnline = false;
         // Fluttertoast.showToast(
-        //   msg: "Terputus",
+        //   msg: "Tidak terhubung ke internet",
         //   toastLength: Toast.LENGTH_SHORT,
         // );
       }
     } on SocketException catch (_) {
       isOnline = false;
       // Fluttertoast.showToast(
-      //   msg: "Terputus",
+      //   msg: "Tidak terhubung ke internet",
+      //   toastLength: Toast.LENGTH_SHORT,
+      // );
+    } catch (_) {
+      isOnline = false;
+      // Fluttertoast.showToast(
+      //   msg: "Tidak terhubung ke internet",
       //   toastLength: Toast.LENGTH_SHORT,
       // );
     }
 
-    // log("NETWORK STATUS: $isOnline");
-    // streamController.sink.add({result: isOnline});
+    log("NETWORK STATUS: $isOnline");
 
     return isOnline;
   }

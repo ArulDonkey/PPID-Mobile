@@ -67,6 +67,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(SignUpIndividuFailedState(message));
       }
     } catch (e) {
+      log('$e');
       emit(SignUpIndividuErrorState(e.toString()));
     }
   }
@@ -126,6 +127,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       Map<String, dynamic> responseData = jsonDecode(response.body);
       log('$responseData');
+
+      if (response.statusCode == 200) {
+        emit(SignUpLembagaSuccessState());
+      } else {
+        String message = responseData['message'];
+        emit(SignUpLembagaFailedState(message));
+      }
     } catch (e) {
       log('$e');
       emit(SignUpLembagaErrorState('$e'));

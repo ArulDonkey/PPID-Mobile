@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return BlocBuilder<HomeBloc, HomeState>(
         bloc: _beritaUinBloc,
         builder: (context, state) {
-          // if (kDebugMode) log("BERITA UIN STATE: $state");
+          if (kDebugMode) log("BERITA UIN STATE: $state");
 
           if (state is HomeInitialState || state is BeritaUinLoadingState) {
             return LoadingWidget();

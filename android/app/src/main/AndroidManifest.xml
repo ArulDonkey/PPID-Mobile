@@ -2,9 +2,9 @@
     package="com.example.ppid_mobile">
 <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="ppid_mobile"
+        android:label="PPID UIN Bandung"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ppid_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
