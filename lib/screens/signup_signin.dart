@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';

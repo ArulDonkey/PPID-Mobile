@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_final_fields, unused_field
 
 import 'package:carousel_indicator/carousel_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
