@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    _networkChecker.dispose();
+    // _networkChecker.dispose();
     super.dispose();
   }
 

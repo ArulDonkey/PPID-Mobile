@@ -9,7 +9,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 class NetworkChecker {
   static final NetworkChecker _instance = NetworkChecker();
   static NetworkChecker get instance => _instance;
-  bool isOnline = true;
+  bool isOnline = false;
 
   Connectivity connectivity = Connectivity();
   ConnectivityResult connectivityResult = ConnectivityResult.none;
@@ -24,37 +24,25 @@ class NetworkChecker {
     });
   }
 
-  Future<bool> checkConnection() async {
+  checkConnection() async {
+    final result = await InternetAddress.lookup('example.com');
+    var  connResult = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     try {
-      final result = await InternetAddress.lookup('example.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        isOnline = true;
-        // Fluttertoast.showToast(
-        //   msg: "Terhubung ke internet",
-        //   toastLength: Toast.LENGTH_SHORT,
-        // );
+      if (connResult) {
+        isOnline = connResult;
       } else {
-        isOnline = false;
-        // Fluttertoast.showToast(
-        //   msg: "Tidak terhubung ke internet",
-        //   toastLength: Toast.LENGTH_SHORT,
-        // );
+        isOnline = connResult;
       }
-    } on SocketException catch (_) {
-      isOnline = false;
-      // Fluttertoast.showToast(
-      //   msg: "Tidak terhubung ke internet",
-      //   toastLength: Toast.LENGTH_SHORT,
-      // );
-    } catch (_) {
-      isOnline = false;
-      // Fluttertoast.showToast(
-      //   msg: "Tidak terhubung ke internet",
-      //   toastLength: Toast.LENGTH_SHORT,
-      // );
+    } on SocketException catch (e) {
+      log('$e');
+      isOnline = connResult;
     }
 
-    log("NETWORK STATUS: $isOnline");
+    isOnline = connResult;
+
+    log("NETWORK STATUS: $connResult");
+    log('RESULT: $connResult');
+    // log('CONNECTIVITY RESULT: $connectivityResult');
 
     return isOnline;
   }
