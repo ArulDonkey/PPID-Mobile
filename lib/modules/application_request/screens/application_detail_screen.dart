@@ -1,26 +1,25 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
+import 'package:ppid_mobile/modules/application_request/arguments/application_letter_argument.dart';
 
-class PermohonanDiajukan extends StatefulWidget {
-  const PermohonanDiajukan({Key? key}) : super(key: key);
+class ApplicationDetailScreen extends StatefulWidget {
+  ApplicationLetterArgument argument;
+  ApplicationDetailScreen({
+    Key? key,
+    required this.argument,
+  }) : super(key: key);
 
   @override
-  State<PermohonanDiajukan> createState() => _PermohonanDiajukanState();
+  State<ApplicationDetailScreen> createState() =>
+      _ApplicationDetailScreenState();
 }
 
-class _PermohonanDiajukanState extends State<PermohonanDiajukan> {
-  final List<String> _status = [
-    'Diajukan',
-    'Ditindaklanjuti',
-    'Diterima',
-    'Ditolak'
-  ];
-
+class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,10 +44,9 @@ class _PermohonanDiajukanState extends State<PermohonanDiajukan> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildDetailContainer(
-              date: '01/11/2022',
-              detail:
-                  'Pengajuan informasi beasiswa untuk mahasiswa semester akhir',
-              purpose: 'Untuk Pengajuan Beasiswa',
+              date: widget.argument.applicationLetter.dateCreated.toString(),
+              detail: widget.argument.applicationLetter.rincian ?? '',
+              purpose: widget.argument.applicationLetter.tujuan ?? '',
             ),
             Padding(
               padding: EdgeInsets.only(top: 24, bottom: 8),
@@ -57,11 +55,9 @@ class _PermohonanDiajukanState extends State<PermohonanDiajukan> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            _buildStatusContainer(status: 'Ditolak'),
-            // _buildStatusContainer(
-            //   type: 2,
-            //   status: 'Ditolak',
-            // ),
+            _buildStatusContainer(
+              status: widget.argument.applicationLetter.statusPermohonan ?? '',
+            ),
           ],
         ),
       ),

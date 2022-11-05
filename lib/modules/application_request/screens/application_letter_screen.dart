@@ -1,14 +1,21 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
+import 'package:ppid_mobile/components/loading_widget.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
-import 'package:ppid_mobile/modules/application_request/component/permohonan/diajukan.dart';
+import 'package:ppid_mobile/modules/application_request/arguments/application_letter_argument.dart';
+import 'package:ppid_mobile/modules/application_request/bloc/application_letter_bloc.dart';
 import 'package:ppid_mobile/modules/application_request/component/permohonan/ditindak_lanjuti.dart';
+import 'package:ppid_mobile/modules/application_request/models/application_letter.dart';
+import 'package:ppid_mobile/modules/application_request/screens/application_detail_screen.dart';
 
 class ApplicationLetterScreen extends StatefulWidget {
   const ApplicationLetterScreen({Key? key}) : super(key: key);
@@ -22,6 +29,22 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _textEditingController = TextEditingController();
   bool isChecked = false;
+  final ApplicationLetterBloc _applicationLetterBloc = ApplicationLetterBloc();
+  List<ApplicationLetter> _applicationLetters = [];
+
+  @override
+  void initState() {
+    _applicationLetterBloc.add(GetApplicationLetterEvent());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // _textEditingController.dispose();
+    _applicationLetterBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,55 +60,105 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
 
   Widget _buildBody() {
     return BackgroundedContainer(
-      child: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.symmetric(
-          vertical: 24,
-          horizontal: 16,
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 50),
-              child: TextWidget(
-                "Permohonan Informasi",
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                textAlign: TextAlign.center,
+      child: BlocConsumer<ApplicationLetterBloc, ApplicationLetterState>(
+        bloc: _applicationLetterBloc,
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is ApplicationLetterInitialState) {
+            return LoadingWidget();
+          } else if (state is ApplicationLetterLoadingState) {
+            return LoadingWidget();
+          } else if (state is ApplicationLetterEmptyState) {
+            return TextWidget('kosong');
+          } else if (state is ApplicationLetterLoadedState) {
+            _applicationLetters = state.list;
+            log('$_applicationLetters');
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                vertical: 24,
+                horizontal: 16,
               ),
-            ),
-            Container(),
-            Column(
-              children: [
-                _buildFirst(),
-                SizedBox(height: 40),
-              ],
-            ),
-            Column(
-              children: [
-                _buildSecond(),
-                SizedBox(height: 150),
-              ],
-            ),
-          ],
-        ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16, 16, 16, 50),
+                    child: TextWidget(
+                      "Permohonan Informasi",
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(),
+                  Column(
+                    children: List.generate(
+                      _applicationLetters.length,
+                      (index) {
+                        return Column(
+                          children: [
+                            _buildItem(
+                              title: _applicationLetters[index].rincian ?? '',
+                              date: _applicationLetters[index]
+                                  .dateCreated
+                                  .toString(),
+                              status:
+                                  _applicationLetters[index].statusPermohonan ??
+                                      '',
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return ApplicationDetailScreen(
+                                      argument: ApplicationLetterArgument(
+                                        _applicationLetters[index],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  // Column(
+                  //   children: [
+                  //     _buildSecond(),
+                  //     SizedBox(height: 150),
+                  //   ],
+                  // ),
+                ],
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
 
-  Widget _buildFirst() {
-    final List<String> content = [
-      'Informasi beasiswa bagi mahasiswa semester akhir',
-    ];
+  Widget _buildItem({
+    required String title,
+    required String date,
+    required String status,
+    required Function()? onTap,
+  }) {
+    Color color = Pallete.blue;
+
+    if (status == 'Ditindaklanjuti') {
+      color = Pallete.yellow;
+    } else if (status == 'Diterima') {
+      color = Pallete.lightGreen;
+    } else if (status == 'Ditolak') {
+      color = Pallete.red;
+    }
+
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) {
-            return PermohonanDiajukan();
-          },
-        ),
-      ),
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 32,
@@ -109,21 +182,21 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
           children: [
             SizedBox(height: 10),
             Column(
-              children: List.generate(content.length, (index) {
-                return Row(
+              children: [
+                Row(
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildBlueDot(),
+                    _buildDot(color: color),
                     SizedBox(width: 8),
                     Flexible(
                       child: TextWidget(
-                        content[index],
+                        title,
                         fontSize: 12,
                       ),
                     ),
                   ],
-                );
-              }),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -134,8 +207,8 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: RichText(
-                        text: const TextSpan(
-                          text: '07/10/2022',
+                        text: TextSpan(
+                          text: date,
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 8,
@@ -156,7 +229,8 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
                   child: Column(
                     children: [
                       _buildStatus(
-                        text: 'Diajukan',
+                        text: status,
+                        color: color,
                       ),
                     ],
                   ),
@@ -386,13 +460,13 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
     );
   }
 
-  Widget _buildBlueDot() {
+  Widget _buildDot({Color? color}) {
     return Container(
       width: 8,
       height: 8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(60),
-        color: Pallete.blue,
+        color: color,
       ),
     );
   }
@@ -408,9 +482,7 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
     );
   }
 
-  Widget _buildStatus({
-    required String text,
-  }) {
+  Widget _buildStatus({required String text, Color? color}) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 4,
@@ -418,7 +490,7 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Pallete.blue,
+        color: color,
       ),
       child: TextWidget(
         text,

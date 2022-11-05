@@ -26,7 +26,7 @@ class NetworkChecker {
 
   checkConnection() async {
     final result = await InternetAddress.lookup('example.com');
-    var  connResult = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+    var connResult = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     try {
       if (connResult) {
         isOnline = connResult;

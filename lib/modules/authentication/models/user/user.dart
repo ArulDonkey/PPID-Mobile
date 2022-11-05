@@ -44,4 +44,8 @@ class User extends Equatable {
 
   @override
   List<Object?> get props => [username, nama, level, keterangan, token];
+
+  getToken() {
+    return token;
+  }
 }
