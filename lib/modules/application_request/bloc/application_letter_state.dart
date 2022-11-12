@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_const_constructors_in_immutables
 
 part of 'application_letter_bloc.dart';
 
@@ -45,4 +45,28 @@ class ApplicationLetterErrorState extends ApplicationLetterState {
 
   @override
   List<Object> get props => [];
+}
+
+class PostApplicationLetterLoadingState extends ApplicationLetterState {
+  @override
+  List<Object> get props => [];
+}
+
+class PostApplicationLetterSuccessState extends ApplicationLetterState {
+  @override
+  List<Object> get props => [];
+}
+
+class PostApplicationLetterFailedState extends ApplicationLetterState {
+  @override
+  List<Object> get props => [];
+}
+
+class PostApplicationLetterErrorState extends ApplicationLetterState {
+  final String message;
+
+  PostApplicationLetterErrorState(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

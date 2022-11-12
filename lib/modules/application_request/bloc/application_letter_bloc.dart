@@ -28,6 +28,8 @@ class ApplicationLetterBloc
       Emitter<ApplicationLetterState> emit) async {
     if (event is GetApplicationLetterEvent) {
       await getApplicationLetterEventHandler(event, emit);
+    } else if (event is PostApplicationLetterEvent) {
+      await postApplicationLetterEventHandler(event, emit);
     }
   }
 
@@ -53,6 +55,34 @@ class ApplicationLetterBloc
     } catch (e) {
       log('$e');
       emit(ApplicationLetterErrorState('$e'));
+    }
+  }
+
+  postApplicationLetterEventHandler(
+    PostApplicationLetterEvent event,
+    Emitter<ApplicationLetterState> emit,
+  ) async {
+    _user = await getCurrentUser();
+    final Map<String, dynamic> body = {
+      'tujuan': event.purpose,
+      'rincian': event.detail,
+      'pernyataan': event.statement
+    };
+    emit(PostApplicationLetterLoadingState());
+    try {
+      var response = await _apiRepository.requestInformation(
+        body: body,
+        token: _user!.token,
+      );
+
+      if (response.statusCode == 200) {
+        emit(PostApplicationLetterSuccessState());
+      } else {
+        emit(PostApplicationLetterFailedState());
+      }
+    } catch (e) {
+      log('$e');
+      emit(PostApplicationLetterErrorState('$e'));
     }
   }
 

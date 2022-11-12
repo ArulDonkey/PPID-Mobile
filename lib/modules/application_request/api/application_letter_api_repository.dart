@@ -14,9 +14,26 @@ class ApplicationLetterApiRepository {
         '$_baseUrl/permohonan-informasi-publik',
         queryParameters: params,
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> requestInformation({
+    Map<String, dynamic>? body,
+    required dynamic token,
+  }) async {
+    try {
+      var response = await _dio.post(
+        '$_baseUrl/permohonan-informasi-publik',
+        data: body,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
         ),
       );
 

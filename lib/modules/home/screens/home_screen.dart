@@ -166,8 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final List<String> navigations = [
       "application-letter",
-      "application-objection",
-      "application-complaint",
+      "under-construction",
+      "under-construction",
     ];
 
     return Padding(

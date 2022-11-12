@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/loading_widget.dart';
@@ -27,9 +25,12 @@ class ApplicationLetterScreen extends StatefulWidget {
 
 class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _detailController = TextEditingController();
+  final TextEditingController _purposeController = TextEditingController();
   bool isChecked = false;
   final ApplicationLetterBloc _applicationLetterBloc = ApplicationLetterBloc();
+  final ApplicationLetterBloc _postApplicationLetterBloc =
+      ApplicationLetterBloc();
   List<ApplicationLetter> _applicationLetters = [];
 
   @override
@@ -40,7 +41,8 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
 
   @override
   void dispose() {
-    // _textEditingController.dispose();
+    // _detailController.dispose();
+    _postApplicationLetterBloc.close();
     _applicationLetterBloc.close();
     super.dispose();
   }
@@ -69,68 +71,81 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
           } else if (state is ApplicationLetterLoadingState) {
             return LoadingWidget();
           } else if (state is ApplicationLetterEmptyState) {
-            return TextWidget('kosong');
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 36),
+                child: TextWidget(
+                  'Anda belum memiliki pengajuan permohonan informasi',
+                  fontSize: 14,
+                ),
+              ),
+            );
           } else if (state is ApplicationLetterLoadedState) {
             _applicationLetters = state.list;
-            log('$_applicationLetters');
-            return SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(
-                vertical: 24,
-                horizontal: 16,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16, 16, 16, 50),
-                    child: TextWidget(
-                      "Permohonan Informasi",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      textAlign: TextAlign.center,
+            return RefreshIndicator(
+              color: Pallete.blue,
+              onRefresh: () async {
+                _applicationLetterBloc.add(GetApplicationLetterEvent());
+              },
+              child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 16,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 50),
+                      child: TextWidget(
+                        "Permohonan Informasi",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Container(),
-                  Column(
-                    children: List.generate(
-                      _applicationLetters.length,
-                      (index) {
-                        return Column(
-                          children: [
-                            _buildItem(
-                              title: _applicationLetters[index].rincian ?? '',
-                              date: _applicationLetters[index]
-                                  .dateCreated
-                                  .toString(),
-                              status:
-                                  _applicationLetters[index].statusPermohonan ??
-                                      '',
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) {
-                                    return ApplicationDetailScreen(
-                                      argument: ApplicationLetterArgument(
-                                        _applicationLetters[index],
-                                      ),
-                                    );
-                                  },
+                    Container(),
+                    Column(
+                      children: List.generate(
+                        _applicationLetters.length,
+                        (index) {
+                          return Column(
+                            children: [
+                              _buildItem(
+                                title: _applicationLetters[index].rincian ?? '',
+                                date: _applicationLetters[index]
+                                    .dateCreated
+                                    .toString(),
+                                status: _applicationLetters[index]
+                                        .statusPermohonan ??
+                                    '',
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) {
+                                      return ApplicationDetailScreen(
+                                        argument: ApplicationLetterArgument(
+                                          _applicationLetters[index],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 16),
-                          ],
-                        );
-                      },
+                              SizedBox(height: 16),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  // Column(
-                  //   children: [
-                  //     _buildSecond(),
-                  //     SizedBox(height: 150),
-                  //   ],
-                  // ),
-                ],
+                    // Column(
+                    //   children: [
+                    //     _buildSecond(),
+                    //     SizedBox(height: 150),
+                    //   ],
+                    // ),
+                  ],
+                ),
               ),
             );
           } else {
@@ -340,123 +355,122 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
 
   Widget _buildFloatingButton() {
     return FloatingActionButton(
-      onPressed: () => showDialog(
-        context: context,
-        builder: (
-          context,
-        ) {
-          return StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                padding: EdgeInsets.fromLTRB(10, 140, 10, 140),
-                child: Material(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return _buildForm();
+          },
+        );
+      },
+      child: Icon(Icons.add),
+    );
+  }
+
+  Widget _buildForm() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
                   color: Colors.white,
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 32,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.white,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: _textEditingController,
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: 4,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Isi form terlebih dahulu';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        hintText:
-                                            'Rincian Informasi yang dibutuhkan',
-                                        hintStyle: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 20),
-                                    TextFormField(
-                                      keyboardType: TextInputType.multiline,
-                                      maxLines: 4,
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Isi form terlebih dahulu';
-                                        }
-                                        return null;
-                                      },
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        hintText: 'Tujuan Pengaduan',
-                                        hintStyle: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _detailController,
+                            keyboardType: TextInputType.multiline,
+                            style: TextStyle(fontSize: 12),
+                            minLines: 1,
+                            maxLines: 4,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Isi form terlebih dahulu';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: isChecked,
-                                    onChanged: (checked) {
-                                      setState(() {
-                                        isChecked = checked!;
-                                      });
-                                    },
-                                  ),
-                                  TextWidget(
-                                    'Dengan mengisi form ini saya telah memahami dan menyetujui\npersyaratan permohonan informasi publik sesuai dengan ketentuan yang berlaku.',
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 5,
-                                    color: Colors.black,
-                                  )
-                                ],
+                              hintText: 'Rincian Informasi yang dibutuhkan',
+                              hintStyle: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
                               ),
-                              _buildElevatedButton(),
-                            ],
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: _purposeController,
+                            style: TextStyle(fontSize: 12),
+                            keyboardType: TextInputType.multiline,
+                            minLines: 1,
+                            maxLines: 4,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Isi form terlebih dahulu';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              hintText: 'Tujuan Pengaduan',
+                              hintStyle: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                    SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Checkbox(
+                          activeColor: Pallete.blue,
+                          value: isChecked,
+                          onChanged: (checked) {
+                            setState(() {
+                              isChecked = checked!;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: TextWidget(
+                            'Dengan mengisi form ini saya telah memahami dan menyetujui persyaratan permohonan informasi publik sesuai dengan ketentuan yang berlaku.',
+                            fontStyle: FontStyle.normal,
+                            fontSize: 10,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    _buildElevatedButton(),
+                  ],
                 ),
-              );
-            },
-          );
-        },
-      ),
-      child: Icon(Icons.add),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -527,52 +541,112 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
   Widget _buildElevatedButton() {
     final ButtonStyle style = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 15),
+      backgroundColor: isChecked ? Colors.green : Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      primary: isChecked ? Colors.green : Colors.grey,
     );
     return Padding(
-      padding: const EdgeInsets.only(left: 185),
-      child: ElevatedButton(
-        onPressed: () {
-          if (!isChecked) {
-          } else {
-            if (_formKey.currentState!.validate()) ;
-            {
-              showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset('assets/images/accept.png', height: 80),
-                      SizedBox(height: 20),
-                      Text(
-                        'Pengajuan berhasil ditambahkan',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
+      padding: const EdgeInsets.only(left: 180),
+      child: BlocConsumer<ApplicationLetterBloc, ApplicationLetterState>(
+        bloc: _postApplicationLetterBloc,
+        listener: (context, state) {
+          if (state is PostApplicationLetterSuccessState) {
+            showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/accept.png', height: 80),
+                    SizedBox(height: 20),
+                    TextWidget(
+                      'Pengajuan berhasil ditambahkan',
+                      textAlign: TextAlign.center,
+                      color: Colors.black,
+                      fontSize: 14,
+                    ),
+                    SizedBox(height: 10),
+                  ],
                 ),
-              );
-            }
+              ),
+            );
+
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              _applicationLetterBloc.add(GetApplicationLetterEvent());
+            });
+          } else if (state is PostApplicationLetterErrorState) {
+            Fluttertoast.showToast(
+              msg: 'Terjadi kesalahan, silahkan coba lagi',
+              toastLength: Toast.LENGTH_SHORT,
+            );
           }
         },
-        style: style,
-        child: Row(
-          children: [
-            Text('Ajukan'),
-            SvgPicture.asset('assets/svgs/ajukan.svg'),
-          ],
-        ),
+        builder: (context, state) {
+          if (state is ApplicationLetterInitialState) {
+            return ElevatedButton(
+              onPressed: () {
+                if (!isChecked) {
+                } else {
+                  if (_formKey.currentState!.validate()) {
+                    _postApplicationLetterBloc.add(
+                      PostApplicationLetterEvent(
+                        detail: _detailController.text,
+                        purpose: _purposeController.text,
+                        statement: 'Setuju',
+                      ),
+                    );
+                  }
+                }
+              },
+              style: style,
+              child: Row(
+                children: [
+                  TextWidget(
+                    'Ajukan',
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 4),
+                  SvgPicture.asset('assets/svgs/ajukan.svg'),
+                ],
+              ),
+            );
+          } else if (state is PostApplicationLetterLoadingState) {
+            return LoadingWidget(
+              size: 20,
+            );
+          }
+          return ElevatedButton(
+            onPressed: () {
+              if (!isChecked) {
+              } else {
+                if (_formKey.currentState!.validate()) {
+                  _postApplicationLetterBloc.add(
+                    PostApplicationLetterEvent(
+                      detail: _detailController.text,
+                      purpose: _purposeController.text,
+                      statement: 'Setuju',
+                    ),
+                  );
+                }
+              }
+            },
+            style: style,
+            child: Row(
+              children: [
+                TextWidget(
+                  'Ajukan',
+                  color: Colors.white,
+                ),
+                SizedBox(width: 4),
+                SvgPicture.asset('assets/svgs/ajukan.svg'),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
