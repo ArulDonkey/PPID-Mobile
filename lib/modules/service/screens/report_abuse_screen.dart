@@ -71,15 +71,14 @@ class _ReportAbuseScreenState extends State<ReportAbuseScreen> {
                 SizedBox(width: 8),
                 Expanded(
                   child: PrimaryButton(
-                    onTap: () {
-                      Navigator.pushNamed(context, 'about-webview',
-                          arguments: AboutWebviewScreenArgument(
-                              'https://www.lapor.go.id/'));
-                    },
-                    contentPadding: EdgeInsets.all(8),
-                    backgroundColor: Pallete.blue,
-                    child: SvgPicture.asset('assets/svgs/lapor.svg'),
-                  ),
+                      onTap: () {
+                        Navigator.pushNamed(context, 'about-webview',
+                            arguments: AboutWebviewScreenArgument(
+                                'https://www.lapor.go.id/'));
+                      },
+                      contentPadding: EdgeInsets.all(5),
+                      backgroundColor: Pallete.blue,
+                      child: Image.asset('assets/images/lapor.png')),
                 ),
               ],
             ),

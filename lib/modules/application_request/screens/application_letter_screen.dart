@@ -541,7 +541,7 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
   Widget _buildElevatedButton() {
     final ButtonStyle style = ElevatedButton.styleFrom(
       textStyle: const TextStyle(fontSize: 15),
-      backgroundColor: isChecked ? Colors.green : Colors.grey,
+      primary: isChecked ? Colors.green : Colors.grey,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
