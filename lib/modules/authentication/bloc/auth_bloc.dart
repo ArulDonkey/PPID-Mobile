@@ -87,14 +87,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       Map<String, dynamic> responseBody = jsonDecode(response.body);
       log('$responseBody');
 
-      var user = User.fromJson(responseBody['data']);
-      _sharedPreferences.setCurrentUserValue(user);
-
-      if (response.statusCode == 200) {
-        emit(SignInSuccessState());
+      if (responseBody['message'] == 'Your account is not verified.') {
+        emit(SignInNotVerifiedState(responseBody['message']));
       } else {
-        String message = responseBody["message"];
-        emit(SignInFailedState(message));
+        var user = User.fromJson(responseBody['data']);
+        _sharedPreferences.setCurrentUserValue(user);
+
+        if (response.statusCode == 200) {
+          emit(SignInSuccessState());
+        } else {
+          String message = responseBody["message"];
+          emit(SignInFailedState(message));
+        }
       }
     } catch (e) {
       emit(SignInErrorState(e.toString()));

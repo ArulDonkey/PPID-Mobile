@@ -35,17 +35,18 @@ class NetworkChecker {
       }
     } on SocketException catch (e) {
       log('$e');
-      isOnline = connResult;
+      isOnline = false;
+    } catch (e) {
+      log('$e');
+      isOnline = false;
     }
-
-    isOnline = connResult;
 
     log("NETWORK STATUS: $connResult");
     log('RESULT: $connResult');
-    // log('CONNECTIVITY RESULT: $connectivityResult');
+    log('CONNECTIVITY RESULT: $connectivityResult');
 
     return isOnline;
   }
-
+ 
   void dispose() => streamController.close();
 }

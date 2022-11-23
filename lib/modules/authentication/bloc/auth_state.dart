@@ -61,6 +61,12 @@ class SignInFailedState extends AuthState {
 
 class SignInLoadingState extends AuthState {}
 
+class SignInNotVerifiedState extends AuthState {
+  String message;
+
+  SignInNotVerifiedState(this.message);
+}
+
 class SignInErrorState extends AuthState {
   String message;
 

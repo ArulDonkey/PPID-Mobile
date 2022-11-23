@@ -238,6 +238,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   (route) => false,
                 );
               }
+
+              if (state is SignInNotVerifiedState) {
+                Fluttertoast.showToast(
+                  msg: state.message,
+                  toastLength: Toast.LENGTH_SHORT,
+                );
+              }
             },
           ),
         ),
