@@ -12,11 +12,11 @@ import 'package:ppid_mobile/components/loading_screen.dart';
 import 'package:ppid_mobile/components/no_connection_screen.dart';
 import 'package:ppid_mobile/components/refresh_component.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
-import 'package:ppid_mobile/modules/information/arguments/information_detail_screen_argument.dart';
 import 'package:ppid_mobile/modules/information/arguments/information_list_screen_argument.dart';
 import 'package:ppid_mobile/modules/information/bloc/public_information_bloc.dart';
 import 'package:ppid_mobile/modules/information/components/information_item.dart';
 import 'package:ppid_mobile/modules/information/models/public_information/public_information.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum InformationListType {
   type1,
@@ -188,16 +188,14 @@ class _InformationListScreenState extends State<InformationListScreen> {
                 type: InformationItemType.secondary,
                 content: _publicInformations[index].namaInfoPub!,
                 secondaryNumber: "${index + 1}. ",
+                showSuffixIcon: subInformation.length > 0 ? false : true,
                 onTap: () {
                   var url = _publicInformations[index].linkInfoPub;
 
                   if (url != "#") {
-                    Navigator.pushNamed(
-                      context,
-                      "information-detail",
-                      arguments: InformationDetailScreenArgument(
-                        url: url,
-                      ),
+                    launchUrl(
+                      Uri.parse(url ?? ''),
+                      mode: LaunchMode.externalApplication,
                     );
                   }
                 },
@@ -217,21 +215,27 @@ class _InformationListScreenState extends State<InformationListScreen> {
                                 padding: EdgeInsets.only(left: 20.0),
                                 child: InformationItem(
                                   type: InformationItemType.secondary,
+                                  showSuffixIcon: widget.argument!.type ==
+                                          InformationListType.type4
+                                      ? false
+                                      : true,
                                   content: subInformation[index]
                                       ["nama_sub_info_pub"],
                                   secondaryNumber: "-",
                                   onTap: () {
-                                    var url = subInformation[index]
+                                    String url = subInformation[index]
                                         ["link_sub_info_pub"];
 
                                     if (url != "#") {
-                                      Navigator.pushNamed(
-                                        context,
-                                        "information-detail",
-                                        arguments:
-                                            InformationDetailScreenArgument(
-                                          url: url,
-                                        ),
+                                      var subInfo = subInformation[index]
+                                          ['nama_sub_info_pub'];
+                                      if (subInfo ==
+                                          'Masukan-masukan dari berbagai pihak atas peraturan, keputusan atau kebijakan yang dibentuk') {
+                                        url = url.trimRight();
+                                      }
+                                      launchUrl(
+                                        Uri.parse(url),
+                                        mode: LaunchMode.externalApplication,
                                       );
                                     }
                                   },
@@ -258,16 +262,15 @@ class _InformationListScreenState extends State<InformationListScreen> {
           type: InformationItemType.secondary,
           content: _publicInformations[index].namaInfoPub!,
           secondaryNumber: "${index + 1}. ",
+          showSuffixIcon:
+              widget.argument!.type == InformationListType.type4 ? false : true,
           onTap: () {
             var url = _publicInformations[index].linkInfoPub;
 
             if (url != "#") {
-              Navigator.pushNamed(
-                context,
-                "information-detail",
-                arguments: InformationDetailScreenArgument(
-                  url: url,
-                ),
+              launchUrl(
+                Uri.parse(url ?? ''),
+                mode: LaunchMode.externalApplication,
               );
             }
           },

@@ -5,8 +5,8 @@ import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
-import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
 import 'package:ppid_mobile/modules/information/components/information_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -95,22 +95,17 @@ class _AboutScreenState extends State<AboutScreen> {
                     }
 
                     if (index == 3) {
-                      Navigator.pushNamed(
-                        context,
-                        "about-webview",
-                        arguments: AboutWebviewScreenArgument(
-                          "https://ppid.uinsgd.ac.id/tugas-fungsi",
-                        ),
+                      launchUrl(
+                        Uri.parse('https://ppid.uinsgd.ac.id/tugas-fungsi'),
+                        mode: LaunchMode.externalApplication,
                       );
                     }
 
                     if (index == 4) {
-                      Navigator.pushNamed(
-                        context,
-                        "about-webview",
-                        arguments: AboutWebviewScreenArgument(
-                          "https://ppid.uinsgd.ac.id/struktur-organisasi",
-                        ),
+                      launchUrl(
+                        Uri.parse(
+                            'https://ppid.uinsgd.ac.id/struktur-organisasi'),
+                        mode: LaunchMode.externalApplication,
                       );
                     }
 

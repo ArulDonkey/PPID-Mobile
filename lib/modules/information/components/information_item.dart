@@ -18,6 +18,7 @@ class InformationItem extends StatelessWidget {
   String? secondaryNumber;
   Function()? onTap;
   Widget? subInformations;
+  bool showSuffixIcon;
   InformationItem({
     Key? key,
     required this.type,
@@ -27,6 +28,7 @@ class InformationItem extends StatelessWidget {
     this.onTap,
     this.secondaryNumber,
     this.subInformations,
+    this.showSuffixIcon = true,
   }) : super(key: key);
 
   @override
@@ -101,10 +103,12 @@ class InformationItem extends StatelessWidget {
               maxLines: 2,
             ),
           ),
-          SvgPicture.asset(
-            "assets/svgs/chevron_right.svg",
-            height: 20,
-          ),
+          showSuffixIcon
+              ? SvgPicture.asset(
+                  "assets/svgs/chevron_right.svg",
+                  height: 20,
+                )
+              : Container(),
         ],
       ),
     );
@@ -164,9 +168,11 @@ class InformationItem extends StatelessWidget {
                 ),
               ),
             ),
-            Flexible(
-              child: SvgPicture.asset("assets/svgs/chevron_right.svg"),
-            ),
+            showSuffixIcon
+                ? Flexible(
+                    child: SvgPicture.asset("assets/svgs/chevron_right.svg"),
+                  )
+                : Container(),
           ],
         ),
       ),

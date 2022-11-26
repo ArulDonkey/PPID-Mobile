@@ -6,7 +6,7 @@ import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
-import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegulationScreen extends StatefulWidget {
   const RegulationScreen({Key? key}) : super(key: key);
@@ -65,10 +65,9 @@ class _RegulationScreenState extends State<RegulationScreen> {
                 return _buildContainer(
                   text: _containerContents[index],
                   onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      'about-webview',
-                      arguments: AboutWebviewScreenArgument(_urls[index]),
+                    launchUrl(
+                      Uri.parse(_urls[index]),
+                      mode: LaunchMode.externalApplication,
                     );
                   },
                 );

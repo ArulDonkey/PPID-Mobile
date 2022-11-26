@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
-import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NoticeScreen extends StatefulWidget {
   const NoticeScreen({Key? key}) : super(key: key);
@@ -96,10 +96,9 @@ class _NoticeScreenState extends State<NoticeScreen> {
           ),
         ),
         onPressed: () {
-          Navigator.pushNamed(
-            context,
-            'about-webview',
-            arguments: AboutWebviewScreenArgument(_urls),
+          launchUrl(
+            Uri.parse(_urls),
+            mode: LaunchMode.externalApplication,
           );
         },
       ),

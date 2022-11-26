@@ -11,7 +11,6 @@ import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/application_request/arguments/application_letter_argument.dart';
 import 'package:ppid_mobile/modules/application_request/bloc/application_letter_bloc.dart';
-import 'package:ppid_mobile/modules/application_request/component/permohonan/ditindak_lanjuti.dart';
 import 'package:ppid_mobile/modules/application_request/models/application_letter.dart';
 import 'package:ppid_mobile/modules/application_request/screens/application_detail_screen.dart';
 
@@ -166,7 +165,7 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
 
     if (status == 'Ditindaklanjuti') {
       color = Pallete.yellow;
-    } else if (status == 'Diterima') {
+    } else if (status == 'Disetujui') {
       color = Pallete.lightGreen;
     } else if (status == 'Ditolak') {
       color = Pallete.red;
@@ -258,100 +257,100 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
     );
   }
 
-  Widget _buildSecond() {
-    final List<String> content2 = [
-      'Informasi lowongan pekerjaan di UIN\nSunan Gunung Djati Bandung'
-    ];
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 32,
-        horizontal: 24,
-      ),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Pallete.componentShadow,
-            offset: Offset(0, 5),
-            spreadRadius: .2,
-            blurRadius: 5,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 10),
-          Column(
-            children: List.generate(content2.length, (index) {
-              return Row(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildBlueDot2(),
-                  SizedBox(width: 8),
-                  Flexible(
-                    child: TextWidget(
-                      content2[index],
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              );
-            }),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: RichText(
-                      text: const TextSpan(
-                        text: '01/10/2022',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 8,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Column(
-                  children: [
-                    _buildStatus2(
-                      text: 'Ditindaklanjuti',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const PermohonanDitindakLanjuti(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildSecond() {
+  //   final List<String> content2 = [
+  //     'Informasi lowongan pekerjaan di UIN\nSunan Gunung Djati Bandung'
+  //   ];
+  //   return Container(
+  //     padding: EdgeInsets.symmetric(
+  //       vertical: 32,
+  //       horizontal: 24,
+  //     ),
+  //     width: double.infinity,
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(10),
+  //       color: Colors.white,
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Pallete.componentShadow,
+  //           offset: Offset(0, 5),
+  //           spreadRadius: .2,
+  //           blurRadius: 5,
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         SizedBox(height: 10),
+  //         Column(
+  //           children: List.generate(content2.length, (index) {
+  //             return Row(
+  //               // crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 _buildBlueDot2(),
+  //                 SizedBox(width: 8),
+  //                 Flexible(
+  //                   child: TextWidget(
+  //                     content2[index],
+  //                     fontSize: 12,
+  //                   ),
+  //                 ),
+  //               ],
+  //             );
+  //           }),
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             Column(
+  //               children: [
+  //                 SizedBox(height: 10),
+  //                 Padding(
+  //                   padding: EdgeInsets.only(left: 20),
+  //                   child: RichText(
+  //                     text: const TextSpan(
+  //                       text: '01/10/2022',
+  //                       style: TextStyle(
+  //                         color: Colors.grey,
+  //                         fontSize: 8,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //         SizedBox(height: 10),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             Padding(
+  //               padding: const EdgeInsets.only(left: 15),
+  //               child: Column(
+  //                 children: [
+  //                   _buildStatus2(
+  //                     text: 'Ditindaklanjuti',
+  //                     onTap: () {
+  //                       Navigator.push(
+  //                         context,
+  //                         MaterialPageRoute(
+  //                           builder: (context) =>
+  //                               const PermohonanDitindakLanjuti(),
+  //                         ),
+  //                       );
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildFloatingButton() {
     return FloatingActionButton(
@@ -485,16 +484,16 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
     );
   }
 
-  Widget _buildBlueDot2() {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(60),
-        color: Pallete.yellow,
-      ),
-    );
-  }
+  // Widget _buildBlueDot2() {
+  //   return Container(
+  //     width: 8,
+  //     height: 8,
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(60),
+  //       color: Pallete.yellow,
+  //     ),
+  //   );
+  // }
 
   Widget _buildStatus({required String text, Color? color}) {
     return Container(
@@ -514,29 +513,29 @@ class _ApplicationLetterScreenState extends State<ApplicationLetterScreen> {
     );
   }
 
-  Widget _buildStatus2({
-    required Function() onTap,
-    required String text,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 4,
-          horizontal: 15,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Pallete.yellow,
-        ),
-        child: TextWidget(
-          text,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
+  // Widget _buildStatus2({
+  //   required Function() onTap,
+  //   required String text,
+  // }) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Container(
+  //       padding: EdgeInsets.symmetric(
+  //         vertical: 4,
+  //         horizontal: 15,
+  //       ),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(20),
+  //         color: Pallete.yellow,
+  //       ),
+  //       child: TextWidget(
+  //         text,
+  //         color: Colors.white,
+  //         fontWeight: FontWeight.bold,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildElevatedButton() {
     final ButtonStyle style = ElevatedButton.styleFrom(

@@ -7,8 +7,8 @@ import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/primary_button.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
-import 'package:ppid_mobile/modules/about/arguments/about_webview_screen_argument.dart';
 import 'package:ppid_mobile/screens/base_screen_argument.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReportAbuseScreen extends StatefulWidget {
   const ReportAbuseScreen({Key? key}) : super(key: key);
@@ -72,9 +72,10 @@ class _ReportAbuseScreenState extends State<ReportAbuseScreen> {
                 Expanded(
                   child: PrimaryButton(
                       onTap: () {
-                        Navigator.pushNamed(context, 'about-webview',
-                            arguments: AboutWebviewScreenArgument(
-                                'https://www.lapor.go.id/'));
+                        launchUrl(
+                          Uri.parse('https://www.lapor.go.id/'),
+                          mode: LaunchMode.externalApplication,
+                        );
                       },
                       contentPadding: EdgeInsets.all(5),
                       backgroundColor: Pallete.blue,

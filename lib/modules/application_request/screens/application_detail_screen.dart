@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
+// ignore_for_file: prefer_const_constructors, must_be_immutable, use_build_context_synchronously, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
 import 'package:ppid_mobile/configs/pallete.config.dart';
 import 'package:ppid_mobile/modules/application_request/arguments/application_letter_argument.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ApplicationDetailScreen extends StatefulWidget {
   ApplicationLetterArgument argument;
@@ -57,6 +59,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
             ),
             _buildStatusContainer(
               status: widget.argument.applicationLetter.statusPermohonan ?? '',
+              followUp: widget.argument.applicationLetter.jawaban ?? '',
             ),
           ],
         ),
@@ -90,7 +93,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
               for (int i = 1; i < colors.length - 1; i++) {
                 colors[i] = Pallete.lightGreen;
               }
-            } else if (status == 'Diterima') {
+            } else if (status == 'Disetujui') {
               for (int i = 1; i < colors.length; i++) {
                 colors[i] = Pallete.lightGreen;
               }
@@ -126,14 +129,14 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
   }
 
   Widget _buildStatusContainer({required String status, String? followUp}) {
-    late String description;
+    String description = '';
 
     if (status == 'Diajukan') {
       description = 'Menunggu\npersetujuan admin';
     } else if (status == 'Ditindaklanjuti') {
       description = 'Permohonan sedang\nditindaklanjuti';
-    } else if (status == 'Diterima') {
-      description = 'Permohonan diterima';
+    } else if (status == 'Disetujui') {
+      description = 'Permohonan disetujui';
     } else if (status == 'Ditolak') {
       description = 'Permohonan ditolak';
     }
@@ -160,7 +163,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
                 ? CrossAxisAlignment.start
                 : status == 'Ditindaklanjuti'
                     ? CrossAxisAlignment.center
-                    : status == 'Diterima' || status == 'Ditolak'
+                    : status == 'Disetujui' || status == 'Ditolak'
                         ? CrossAxisAlignment.end
                         : CrossAxisAlignment.end,
             children: [
@@ -168,7 +171,7 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
               SizedBox(height: 4),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: status == 'Diterima'
+                  horizontal: status == 'Disetujui'
                       ? 24
                       : status == 'Ditolak'
                           ? 30
@@ -217,8 +220,15 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: 8),
-              TextWidget(
-                followUp ?? '-',
+              Html(
+                data: followUp,
+                renderNewlines: true,
+                onLinkTap: (url) {
+                  launchUrl(
+                    Uri.parse(url),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
               ),
             ],
           ),
