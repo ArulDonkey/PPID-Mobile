@@ -360,18 +360,6 @@ class _CallCenterScreenState extends State<CallCenterScreen> {
   }
 
   Widget _buildSecondContainer() {
-    final List<String> contents = [
-      'Jl. A.H. Nasution No. 105A,\nCibiru, Kota Bandung,\nJawa Barat, Indonesia',
-      'ppid@uinsgd.ac.id',
-      '+62 xxx xxx xxx xx',
-    ];
-
-    final List<String> svgsNames = [
-      'map_pin.svg',
-      'email.svg',
-      'phone.svg',
-    ];
-
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(24),
@@ -397,20 +385,69 @@ class _CallCenterScreenState extends State<CallCenterScreen> {
             ),
           ),
           SizedBox(height: 32),
-          ListView.separated(
-            primary: false,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _buildContactInfo(
-                svgName: svgsNames[index],
-                text: contents[index],
-              );
-            },
-            separatorBuilder: (context, index) => SizedBox(
-              height: 20,
-            ),
-            itemCount: contents.length,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      await openUrl(
+                          'https://maps.app.goo.gl/yTCdWC35vpcYkkxv6?g_st=ic');
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/svgs/map_pin.svg',
+                      color: Colors.blue,
+                      height: 20,
+                    ),
+                  ),
+                  SizedBox(width: 14),
+                  Flexible(
+                    child: TextWidget(
+                        'Jl. A.H. Nasution No. 105A,\nCibiru, Kota Bandung,\nJawa Barat, Indonesia',
+                        fontSize: 12),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      await sendEmail('ppid@uinsgd.ac.id');
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/svgs/email.svg',
+                      color: Colors.blue,
+                      height: 20,
+                    ),
+                  ),
+                  SizedBox(width: 14),
+                  Flexible(
+                    child: TextWidget('ppid@uinsgd.ac.id', fontSize: 12),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      await call('+6285173311968');
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/svgs/phone.svg',
+                      color: Colors.blue,
+                      height: 20,
+                    ),
+                  ),
+                  SizedBox(width: 14),
+                  Flexible(
+                    child: TextWidget('+62 xxx xxx xxx xx', fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
           ),
           _buildDivider(),
           // Column(
@@ -423,24 +460,6 @@ class _CallCenterScreenState extends State<CallCenterScreen> {
           // )
         ],
       ),
-    );
-  }
-
-  Widget _buildContactInfo({
-    required String svgName,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        SvgPicture.asset(
-          'assets/svgs/$svgName',
-          color: Colors.blue,
-        ),
-        SizedBox(width: 14),
-        Flexible(
-          child: TextWidget(text, fontSize: 12),
-        ),
-      ],
     );
   }
 
@@ -539,4 +558,12 @@ class LaunchButton extends StatelessWidget {
 Future<void> openUrl(String url,
     {bool forceWebView = false, bool enableJavaScript = false}) async {
   await launch(url);
+}
+
+Future<void> call(String phoneNumber) async {
+  await launch('tel:$phoneNumber');
+}
+
+Future<void> sendEmail(String email) async {
+  await launch('mailto:$email');
 }
