@@ -56,11 +56,7 @@ dependencies:
   youtube_player_iframe: ^3.0.4
   smooth_page_indicator: ^1.0.0+2
   url_launcher: ^6.1.5
-  flutter_html: ^0.11.1
-  flutter_downloader: ^1.9.1
   path_provider: ^2.0.11
-  permission_handler: ^10.2.0
-  open_file_plus: ^3.3.0
 
 dev_dependencies:
   flutter_test:

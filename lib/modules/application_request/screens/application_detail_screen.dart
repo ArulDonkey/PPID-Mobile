@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, use_build_context_synchronously, import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:ppid_mobile/components/backgrounded_container.dart';
 import 'package:ppid_mobile/components/custom_appbar.dart';
 import 'package:ppid_mobile/components/text_widget.dart';
@@ -220,16 +220,16 @@ class _ApplicationDetailScreenState extends State<ApplicationDetailScreen> {
                 fontWeight: FontWeight.w600,
               ),
               SizedBox(height: 8),
-              Html(
-                data: followUp,
-                renderNewlines: true,
-                onLinkTap: (url) {
-                  launchUrl(
-                    Uri.parse(url),
-                    mode: LaunchMode.externalApplication,
-                  );
-                },
-              ),
+              // Html(
+              //   data: followUp,
+              //   renderNewlines: true,
+              //   onLinkTap: (url) {
+              //     launchUrl(
+              //       Uri.parse(url),
+              //       mode: LaunchMode.externalApplication,
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),

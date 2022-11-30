@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ppid_mobile/configs/route.config.dart';
 import 'package:ppid_mobile/screens/splash_screen.dart';
@@ -9,10 +8,6 @@ import 'package:ppid_mobile/utils/network_checker.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(
-    debug: true,
-    ignoreSsl: true,
-  );
   runApp(MyApp());
 } 
 
