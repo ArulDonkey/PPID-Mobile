@@ -8,6 +8,7 @@ import 'package:ppid_mobile/configs/pallete.config.dart';
 enum InformationItemType {
   primary,
   secondary,
+  list,
 }
 
 class InformationItem extends StatelessWidget {

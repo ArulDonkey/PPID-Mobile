@@ -184,75 +184,80 @@ class _InformationListScreenState extends State<InformationListScreen> {
         if (subInformation.runtimeType == List<dynamic>) {
           return Column(
             children: [
-              InformationItem(
-                type: InformationItemType.secondary,
-                content: _publicInformations[index].namaInfoPub!,
-                secondaryNumber: "${index + 1}. ",
-                showSuffixIcon: subInformation.length > 0 ? false : true,
-                onTap: () {
-                  var url = _publicInformations[index].linkInfoPub;
+              ExpansionTile(
+                title: InformationItem(
+                  type: InformationItemType.secondary,
+                  content: _publicInformations[index].namaInfoPub!,
+                  secondaryNumber: "${index + 1}. ",
+                  showSuffixIcon: subInformation.length > 0 ? false : true,
+                  onTap: () {
+                    var url = _publicInformations[index].linkInfoPub;
 
-                  if (url != "#") {
-                    launchUrl(
-                      Uri.parse(url ?? ''),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  }
-                },
-              ),
-              Builder(
-                builder: (context) {
-                  if (subInformation.runtimeType == List<dynamic>) {
-                    for (int i = 0; i < subInformation.length; i++) {
-                      return Column(
-                        children: [
-                          SizedBox(height: 16),
-                          ListView.separated(
-                            primary: false,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(left: 20.0),
-                                child: InformationItem(
-                                  type: InformationItemType.secondary,
-                                  showSuffixIcon: widget.argument!.type ==
-                                          InformationListType.type4
-                                      ? false
-                                      : true,
-                                  content: subInformation[index]
-                                      ["nama_sub_info_pub"],
-                                  secondaryNumber: "-",
-                                  onTap: () {
-                                    String url = subInformation[index]
-                                        ["link_sub_info_pub"];
-
-                                    if (url != "#") {
-                                      var subInfo = subInformation[index]
-                                          ['nama_sub_info_pub'];
-                                      if (subInfo ==
-                                          'Masukan-masukan dari berbagai pihak atas peraturan, keputusan atau kebijakan yang dibentuk') {
-                                        url = url.trimRight();
-                                      }
-                                      launchUrl(
-                                        Uri.parse(url),
-                                        mode: LaunchMode.externalApplication,
-                                      );
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 16),
-                            itemCount: subInformation.length,
-                          ),
-                        ],
+                    if (url != "#") {
+                      launchUrl(
+                        Uri.parse(url ?? ''),
+                        mode: LaunchMode.externalApplication,
                       );
                     }
-                  }
+                  },
+                ),
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (subInformation.runtimeType == List<dynamic>) {
+                        for (int i = 0; i < subInformation.length; i++) {
+                          return Column(
+                            children: [
+                              SizedBox(height: 16),
+                              ListView.separated(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: InformationItem(
+                                      type: InformationItemType.secondary,
+                                      showSuffixIcon: widget.argument!.type ==
+                                              InformationListType.type4
+                                          ? false
+                                          : true,
+                                      content: subInformation[index]
+                                          ["nama_sub_info_pub"],
+                                      secondaryNumber: "-",
+                                      onTap: () {
+                                        String url = subInformation[index]
+                                            ["link_sub_info_pub"];
 
-                  return Container();
-                },
+                                        if (url != "#") {
+                                          var subInfo = subInformation[index]
+                                              ['nama_sub_info_pub'];
+                                          if (subInfo ==
+                                              'Masukan-masukan dari berbagai pihak atas peraturan, keputusan atau kebijakan yang dibentuk') {
+                                            url = url.trimRight();
+                                          }
+                                          launchUrl(
+                                            Uri.parse(url),
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        }
+                                      },
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(height: 16),
+                                itemCount: subInformation.length,
+                              ),
+                            ],
+                          );
+                        }
+                      }
+
+                      return Container();
+                    },
+                  ),
+                ],
               ),
             ],
           );
